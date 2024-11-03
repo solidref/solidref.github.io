@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Design Patterns
+  #
+
+Design patterns are reusable solutions to common problems that occur in software design. They provide templates for solving issues related to object creation, composition, and communication, allowing developers to build robust, scalable, and maintainable systems. Rather than reinventing the wheel, design patterns offer established ways to tackle challenges, making it easier to design flexible and efficient code.
+This section explores various design patterns, grouped by their purpose and functionality.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Design Patterns">
+  <meta property="og:description" content="Design Patterns # Design patterns are reusable solutions to common problems that occur in software design. They provide templates for solving issues related to object creation, composition, and communication, allowing developers to build robust, scalable, and maintainable systems. Rather than reinventing the wheel, design patterns offer established ways to tackle challenges, making it easier to design flexible and efficient code.
+This section explores various design patterns, grouped by their purpose and functionality.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+<title>Design Patterns | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/">
+<link rel="stylesheet" href="/book.min.2d7fec8e866046a7460a1cc86027535586803606a87c87da3098bcd8d5a2b62d.css" integrity="sha256-LX/sjoZgRqdGChzIYCdTVYaANgaofIfaMJi82NWiti0=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.938b8659cefceb55dcf1407166bb85c5c91c7344ef439564d3b5de228d074c1e.js" integrity="sha256-k4uGWc7861Xc8UBxZruFxckcc0TvQ5Vk07XeIo0HTB4=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/docs/design-patterns/index.xml" title="SOLID.ref" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/dependency-inversion/" class="">Dependency Inversion Principle (DIP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/interface-segregation/" class="">Interface Segregation Principle (ISP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/liskov-substitution/" class="">Liskov Substitution Principle (LSP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/open-closed/" class="">Open-Closed Principle (OCP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/single-responsibility/" class="">Single Responsibility Principle (SRP)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="active">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/abstract-factory/" class="">Abstract Factory Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/adapter/" class="">Adapter Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/bridge/" class="">Bridge Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/builder/" class="">Builder Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/chain-of-responsibility/" class="">Chain of Responsibility Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/command/" class="">Command Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/composite/" class="">Composite Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/decorator/" class="">Decorator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/facade/" class="">Facade Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/factory-method/" class="">Factory Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/flyweight/" class="">Flyweight Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/iterator/" class="">Iterator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/mediator/" class="">Mediator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/memento/" class="">Memento Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/observer/" class="">Observer Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/prototype/" class="">Prototype Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/proxy/" class="">Proxy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/singleton/" class="">Singleton Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/state/" class="">State Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/strategy/" class="">Strategy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/template-method/" class="">Template Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/visitor/" class="">Visitor Pattern</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Design Patterns</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-use-design-patterns">Why Use Design Patterns?</a></li>
+    <li><a href="#types-of-design-patterns">Types of Design Patterns</a>
+      <ul>
+        <li><a href="#1-creational-patterns">1. Creational Patterns</a></li>
+        <li><a href="#2-structural-patterns">2. Structural Patterns</a></li>
+        <li><a href="#3-behavioral-patterns">3. Behavioral Patterns</a></li>
+      </ul>
+    </li>
+    <li><a href="#how-to-use-this-section">How to Use This Section</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="design-patterns">
+  Design Patterns
+  <a class="anchor" href="#design-patterns">#</a>
+</h1>
+<p><strong>Design patterns</strong> are reusable solutions to common problems that occur in software design. They provide templates for solving issues related to object creation, composition, and communication, allowing developers to build robust, scalable, and maintainable systems. Rather than reinventing the wheel, design patterns offer established ways to tackle challenges, making it easier to design flexible and efficient code.</p>
+<p>This section explores various design patterns, grouped by their purpose and functionality.</p>
+<h2 id="why-use-design-patterns">
+  Why Use Design Patterns?
+  <a class="anchor" href="#why-use-design-patterns">#</a>
+</h2>
+<p>Design patterns are valuable because they:</p>
+<ul>
+<li><strong>Promote Reusability</strong>: Patterns provide tried-and-tested solutions that can be reused across different projects.</li>
+<li><strong>Improve Communication</strong>: They give developers a common vocabulary for describing solutions, improving collaboration and understanding.</li>
+<li><strong>Encourage Best Practices</strong>: Patterns help enforce good design principles, such as modularity, decoupling, and encapsulation.</li>
+<li><strong>Increase Flexibility</strong>: Many patterns allow for extensibility, making it easier to adapt to new requirements or changes in the system.</li>
+</ul>
+<h2 id="types-of-design-patterns">
+  Types of Design Patterns
+  <a class="anchor" href="#types-of-design-patterns">#</a>
+</h2>
+<p>Design patterns are generally classified into three main categories: <strong>Creational</strong>, <strong>Structural</strong>, and <strong>Behavioral</strong>. Each category addresses different types of design challenges and offers patterns suited to solving specific problems.</p>
+<h3 id="1-creational-patterns">
+  1. Creational Patterns
+  <a class="anchor" href="#1-creational-patterns">#</a>
+</h3>
+<p>Creational patterns deal with object creation mechanisms, aiming to increase flexibility and reuse of code. They help ensure that objects are created in a manner suitable to the situation, avoiding tight coupling and increasing code modularity.</p>
+<ul>
+<li><strong><a href="/design-patterns/abstract-factory">Abstract Factory</a></strong>: Provides an interface for creating families of related or dependent objects without specifying their concrete classes.</li>
+<li><strong><a href="/design-patterns/builder">Builder</a></strong>: Separates the construction of a complex object from its representation, allowing different representations to be created.</li>
+<li><strong><a href="/design-patterns/factory-method">Factory Method</a></strong>: Defines an interface for creating an object but lets subclasses alter the type of object that will be created.</li>
+<li><strong><a href="/design-patterns/prototype">Prototype</a></strong>: Creates new objects by copying an existing object, making it easy to duplicate complex objects.</li>
+<li><strong><a href="/design-patterns/singleton">Singleton</a></strong>: Ensures a class has only one instance and provides a global point of access to it.</li>
+</ul>
+<h3 id="2-structural-patterns">
+  2. Structural Patterns
+  <a class="anchor" href="#2-structural-patterns">#</a>
+</h3>
+<p>Structural patterns focus on composing classes and objects to form larger structures, facilitating the creation of flexible and scalable code. These patterns help establish relationships between entities, making it easier to implement new functionality without changing the existing code.</p>
+<ul>
+<li><strong><a href="/design-patterns/adapter">Adapter</a></strong>: Converts the interface of a class into another interface clients expect, allowing incompatible interfaces to work together.</li>
+<li><strong><a href="/design-patterns/bridge">Bridge</a></strong>: Decouples an abstraction from its implementation so that the two can vary independently.</li>
+<li><strong><a href="/design-patterns/composite">Composite</a></strong>: Composes objects into tree structures to represent part-whole hierarchies, enabling clients to treat individual objects and compositions uniformly.</li>
+<li><strong><a href="/design-patterns/decorator">Decorator</a></strong>: Adds responsibilities to an object dynamically, providing an alternative to subclassing.</li>
+<li><strong><a href="/design-patterns/facade">Facade</a></strong>: Provides a simplified interface to a complex subsystem, making it easier to use.</li>
+<li><strong><a href="/design-patterns/flyweight">Flyweight</a></strong>: Reduces memory usage by sharing as much data as possible with similar objects.</li>
+<li><strong><a href="/design-patterns/proxy">Proxy</a></strong>: Provides a surrogate or placeholder for another object to control access to it.</li>
+</ul>
+<h3 id="3-behavioral-patterns">
+  3. Behavioral Patterns
+  <a class="anchor" href="#3-behavioral-patterns">#</a>
+</h3>
+<p>Behavioral patterns deal with object interactions and responsibilities, defining ways for objects to communicate and interact while keeping the code flexible and scalable. These patterns focus on algorithms, delegation, and the distribution of responsibility.</p>
+<ul>
+<li><strong><a href="/design-patterns/chain-of-responsibility">Chain of Responsibility</a></strong>: Passes a request along a chain of handlers, allowing each handler to process or pass it to the next handler in the chain.</li>
+<li><strong><a href="/design-patterns/command">Command</a></strong>: Encapsulates a request as an object, thereby allowing for parameterization of clients with queues, requests, and operations.</li>
+<li><strong><a href="/design-patterns/iterator">Iterator</a></strong>: Provides a way to access elements of a collection sequentially without exposing its underlying representation.</li>
+<li><strong><a href="/design-patterns/mediator">Mediator</a></strong>: Defines an object that encapsulates how a set of objects interact, reducing the complexity of many-to-many communication.</li>
+<li><strong><a href="/design-patterns/memento">Memento</a></strong>: Captures and externalizes an object’s internal state so that it can be restored later, without violating encapsulation.</li>
+<li><strong><a href="/design-patterns/observer">Observer</a></strong>: Defines a one-to-many dependency between objects, so that when one object changes state, all dependents are notified and updated.</li>
+<li><strong><a href="/design-patterns/state">State</a></strong>: Allows an object to alter its behavior when its internal state changes, appearing as if it changes class.</li>
+<li><strong><a href="/design-patterns/strategy">Strategy</a></strong>: Defines a family of algorithms, encapsulates each one, and makes them interchangeable to let the algorithm vary independently from clients.</li>
+<li><strong><a href="/design-patterns/template-method">Template Method</a></strong>: Defines the skeleton of an algorithm, letting subclasses override specific steps without changing its structure.</li>
+<li><strong><a href="/design-patterns/visitor">Visitor</a></strong>: Represents an operation to be performed on elements of an object structure, allowing for new operations to be added without changing the classes of the elements.</li>
+</ul>
+<h2 id="how-to-use-this-section">
+  How to Use This Section
+  <a class="anchor" href="#how-to-use-this-section">#</a>
+</h2>
+<p>Each design pattern page provides:</p>
+<ul>
+<li><strong>Description</strong>: An overview of the pattern’s purpose and problem-solving approach.</li>
+<li><strong>Example Code</strong>: Sample implementations to illustrate how the pattern works.</li>
+<li><strong>Applicability</strong>: Situations where the pattern is most useful.</li>
+<li><strong>Advantages and Disadvantages</strong>: Key benefits and trade-offs associated with each pattern.</li>
+</ul>
+<p>Understanding and using design patterns can greatly improve the design and structure of your code, making it more adaptable, reusable, and maintainable.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-use-design-patterns">Why Use Design Patterns?</a></li>
+    <li><a href="#types-of-design-patterns">Types of Design Patterns</a>
+      <ul>
+        <li><a href="#1-creational-patterns">1. Creational Patterns</a></li>
+        <li><a href="#2-structural-patterns">2. Structural Patterns</a></li>
+        <li><a href="#3-behavioral-patterns">3. Behavioral Patterns</a></li>
+      </ul>
+    </li>
+    <li><a href="#how-to-use-this-section">How to Use This Section</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

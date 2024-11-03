@@ -1,0 +1,19 @@
+version: '3'
+
+tasks:
+  init:
+    desc: "Initialize Git submodules for Hugo themes"
+    cmds:
+      - "git submodule init"
+      - "git submodule update"
+  
+  dev:
+    desc: "Start Hugo server in development mode"
+    cmds:
+      - "hugo server -D"
+    interactive: true
+  
+  build:
+    desc: "Build the Hugo project"
+    cmds:
+      - "hugo --minify"

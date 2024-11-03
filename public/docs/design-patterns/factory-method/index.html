@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Factory Method Pattern
+  #
+
+The Factory Method pattern is a creational design pattern that defines an interface for creating objects but allows subclasses to decide which class to instantiate. This pattern lets a class defer instantiation to subclasses, promoting flexibility and loose coupling in the codebase.
+
+  Intent
+  #
+
+The main intent of the Factory Method pattern is to define a method in a superclass for creating objects but to let subclasses determine the specific class of object that will be instantiated. This pattern provides a way to create objects without specifying their exact type in the code.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/factory-method/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Factory Method Pattern">
+  <meta property="og:description" content="Factory Method Pattern # The Factory Method pattern is a creational design pattern that defines an interface for creating objects but allows subclasses to decide which class to instantiate. This pattern lets a class defer instantiation to subclasses, promoting flexibility and loose coupling in the codebase.
+Intent # The main intent of the Factory Method pattern is to define a method in a superclass for creating objects but to let subclasses determine the specific class of object that will be instantiated. This pattern provides a way to create objects without specifying their exact type in the code.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Factory Method Pattern | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/factory-method/">
+<link rel="stylesheet" href="/book.min.2d7fec8e866046a7460a1cc86027535586803606a87c87da3098bcd8d5a2b62d.css" integrity="sha256-LX/sjoZgRqdGChzIYCdTVYaANgaofIfaMJi82NWiti0=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.938b8659cefceb55dcf1407166bb85c5c91c7344ef439564d3b5de228d074c1e.js" integrity="sha256-k4uGWc7861Xc8UBxZruFxckcc0TvQ5Vk07XeIo0HTB4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/dependency-inversion/" class="">Dependency Inversion Principle (DIP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/interface-segregation/" class="">Interface Segregation Principle (ISP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/liskov-substitution/" class="">Liskov Substitution Principle (LSP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/open-closed/" class="">Open-Closed Principle (OCP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/single-responsibility/" class="">Single Responsibility Principle (SRP)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/abstract-factory/" class="">Abstract Factory Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/adapter/" class="">Adapter Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/bridge/" class="">Bridge Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/builder/" class="">Builder Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/chain-of-responsibility/" class="">Chain of Responsibility Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/command/" class="">Command Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/composite/" class="">Composite Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/decorator/" class="">Decorator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/facade/" class="">Facade Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/factory-method/" class="active">Factory Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/flyweight/" class="">Flyweight Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/iterator/" class="">Iterator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/mediator/" class="">Mediator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/memento/" class="">Memento Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/observer/" class="">Observer Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/prototype/" class="">Prototype Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/proxy/" class="">Proxy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/singleton/" class="">Singleton Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/state/" class="">State Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/strategy/" class="">Strategy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/template-method/" class="">Template Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/visitor/" class="">Visitor Pattern</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Factory Method Pattern</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-logistics-transport-system">Example: Logistics Transport System</a>
+      <ul>
+        <li><a href="#step-1-define-the-product-interface">Step 1: Define the Product Interface</a></li>
+        <li><a href="#step-2-define-concrete-products">Step 2: Define Concrete Products</a></li>
+        <li><a href="#step-3-define-the-creator-class-with-factory-method">Step 3: Define the Creator Class with Factory Method</a></li>
+        <li><a href="#step-4-implement-concrete-factories">Step 4: Implement Concrete Factories</a></li>
+        <li><a href="#step-5-client-code">Step 5: Client Code</a></li>
+        <li><a href="#explanation">Explanation</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-factory-method-pattern">Best Practices for Implementing the Factory Method Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="factory-method-pattern">
+  Factory Method Pattern
+  <a class="anchor" href="#factory-method-pattern">#</a>
+</h1>
+<p>The <strong>Factory Method</strong> pattern is a creational design pattern that defines an interface for creating objects but allows subclasses to decide which class to instantiate. This pattern lets a class defer instantiation to subclasses, promoting flexibility and loose coupling in the codebase.</p>
+<h2 id="intent">
+  Intent
+  <a class="anchor" href="#intent">#</a>
+</h2>
+<p><strong>The main intent of the Factory Method pattern is to define a method in a superclass for creating objects but to let subclasses determine the specific class of object that will be instantiated.</strong> This pattern provides a way to create objects without specifying their exact type in the code.</p>
+<h2 id="problem-and-solution">
+  Problem and Solution
+  <a class="anchor" href="#problem-and-solution">#</a>
+</h2>
+<h3 id="problem">
+  Problem
+  <a class="anchor" href="#problem">#</a>
+</h3>
+<p>Suppose you are building a logistics application that needs to create various types of transport vehicles, such as <code>Truck</code> and <code>Ship</code>. The exact type of transport might depend on the logistics route (land or sea). If you try to instantiate each type within the main application logic, you risk tightly coupling the code to specific classes, making it harder to extend or maintain.</p>
+<h3 id="solution">
+  Solution
+  <a class="anchor" href="#solution">#</a>
+</h3>
+<p>The Factory Method pattern enables you to define a <code>TransportFactory</code> interface with a <code>createTransport</code> method. Subclasses can implement this interface to create specific transport types, such as <code>Truck</code> or <code>Ship</code>, without modifying the main application logic.</p>
+<h2 id="structure">
+  Structure
+  <a class="anchor" href="#structure">#</a>
+</h2>
+<p>The Factory Method pattern typically includes:</p>
+<ol>
+<li><strong>Creator (Abstract Class or Interface)</strong>: Declares a factory method that returns new objects of a certain type.</li>
+<li><strong>Concrete Creators</strong>: Implement the factory method to create specific types of objects.</li>
+<li><strong>Product (Interface or Abstract Class)</strong>: Defines the interface for the objects the factory method creates.</li>
+<li><strong>Concrete Products</strong>: Concrete classes implementing the product interface, created by the factory.</li>
+</ol>
+<h2 id="uml-diagram">
+  UML Diagram
+  <a class="anchor" href="#uml-diagram">#</a>
+</h2>
+<pre tabindex="0"><code>+------------------+           +--------------------+
+|    Transport     |           |    TransportFactory|
+|------------------|           |--------------------|
+| + deliver()      |           | + createTransport()|
++------------------+           +--------------------+
+        ^                              ^
+        |                              |
++----------------+             +----------------+
+|     Truck      |             |      Ship      |
++----------------+             +----------------+
+</code></pre><h2 id="example-logistics-transport-system">
+  Example: Logistics Transport System
+  <a class="anchor" href="#example-logistics-transport-system">#</a>
+</h2>
+<p>Let’s implement a logistics transport system using the Factory Method pattern. We’ll create a <code>TransportFactory</code> that provides a method to create different transport types, such as <code>Truck</code> for land transport and <code>Ship</code> for sea transport.</p>
+<h3 id="step-1-define-the-product-interface">
+  Step 1: Define the Product Interface
+  <a class="anchor" href="#step-1-define-the-product-interface">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Product interface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Transport</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deliver</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-2-define-concrete-products">
+  Step 2: Define Concrete Products
+  <a class="anchor" href="#step-2-define-concrete-products">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Product for Truck</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Truck</span> <span style="color:#66d9ef">implements</span> Transport {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deliver</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Delivering by land with a truck.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete Product for Ship</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Ship</span> <span style="color:#66d9ef">implements</span> Transport {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deliver</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Delivering by sea with a ship.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-3-define-the-creator-class-with-factory-method">
+  Step 3: Define the Creator Class with Factory Method
+  <a class="anchor" href="#step-3-define-the-creator-class-with-factory-method">#</a>
+</h3>
+<p>The <code>TransportFactory</code> defines a factory method <code>createTransport</code> that will be overridden by subclasses to create specific transport types.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Creator (Abstract Class with Factory Method)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TransportFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> Transport <span style="color:#a6e22e">createTransport</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">planDelivery</span>() {
+</span></span><span style="display:flex;"><span>        Transport transport <span style="color:#f92672">=</span> createTransport();
+</span></span><span style="display:flex;"><span>        transport.<span style="color:#a6e22e">deliver</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-4-implement-concrete-factories">
+  Step 4: Implement Concrete Factories
+  <a class="anchor" href="#step-4-implement-concrete-factories">#</a>
+</h3>
+<p>Each concrete factory implements the <code>createTransport</code> method to produce specific transport objects (<code>Truck</code> or <code>Ship</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Factory for Truck</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TruckFactory</span> <span style="color:#66d9ef">extends</span> TransportFactory {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Transport <span style="color:#a6e22e">createTransport</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Truck();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete Factory for Ship</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShipFactory</span> <span style="color:#66d9ef">extends</span> TransportFactory {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Transport <span style="color:#a6e22e">createTransport</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Ship();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-5-client-code">
+  Step 5: Client Code
+  <a class="anchor" href="#step-5-client-code">#</a>
+</h3>
+<p>The client code can use any concrete factory to create and deliver transport without knowing the specific type of transport.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        TransportFactory truckFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TruckFactory();
+</span></span><span style="display:flex;"><span>        truckFactory.<span style="color:#a6e22e">planDelivery</span>();  <span style="color:#75715e">// Output: Delivering by land with a truck.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        TransportFactory shipFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShipFactory();
+</span></span><span style="display:flex;"><span>        shipFactory.<span style="color:#a6e22e">planDelivery</span>();   <span style="color:#75715e">// Output: Delivering by sea with a ship.</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="explanation">
+  Explanation
+  <a class="anchor" href="#explanation">#</a>
+</h3>
+<p>In this example:</p>
+<ul>
+<li><code>TransportFactory</code> defines a <code>createTransport</code> method that subclasses override to specify the type of transport to be created.</li>
+<li><code>TruckFactory</code> and <code>ShipFactory</code> are concrete factories that produce <code>Truck</code> and <code>Ship</code> objects, respectively.</li>
+<li>The client code can create and use transport objects without knowing their exact type, adhering to the Open-Closed Principle and promoting loose coupling.</li>
+</ul>
+<h2 id="applicability">
+  Applicability
+  <a class="anchor" href="#applicability">#</a>
+</h2>
+<p>Use the Factory Method pattern when:</p>
+<ol>
+<li>You want to allow subclasses to alter the type of object created.</li>
+<li>You have a common interface or base class but want to delegate instantiation to subclasses.</li>
+<li>You want to reduce dependencies between a main class and specific classes, especially when types may change over time.</li>
+</ol>
+<h2 id="advantages-and-disadvantages">
+  Advantages and Disadvantages
+  <a class="anchor" href="#advantages-and-disadvantages">#</a>
+</h2>
+<h3 id="advantages">
+  Advantages
+  <a class="anchor" href="#advantages">#</a>
+</h3>
+<ol>
+<li><strong>Promotes Loose Coupling</strong>: The Factory Method pattern decouples client code from specific implementations, making the system more flexible and modular.</li>
+<li><strong>Supports Open-Closed Principle</strong>: New types of products can be added without modifying the client code.</li>
+<li><strong>Increases Extensibility</strong>: Adding new factories and products is straightforward and doesn’t disrupt existing code.</li>
+</ol>
+<h3 id="disadvantages">
+  Disadvantages
+  <a class="anchor" href="#disadvantages">#</a>
+</h3>
+<ol>
+<li><strong>Increased Complexity</strong>: The Factory Method pattern introduces additional classes and complexity, which can be excessive for simple projects.</li>
+<li><strong>Requires Subclassing</strong>: To add new product types, new subclasses must be created, which may lead to a more complex hierarchy.</li>
+</ol>
+<h2 id="best-practices-for-implementing-the-factory-method-pattern">
+  Best Practices for Implementing the Factory Method Pattern
+  <a class="anchor" href="#best-practices-for-implementing-the-factory-method-pattern">#</a>
+</h2>
+<ol>
+<li><strong>Use Factory Method for Complex Object Creation</strong>: For simple objects, this pattern might be overkill. Reserve it for cases where the construction process benefits from being centralized and managed by subclasses.</li>
+<li><strong>Favor Interface-Based Products</strong>: Define a common interface for products to keep client code consistent and make adding new products easier.</li>
+<li><strong>Consider Alternative Patterns for Object Creation</strong>: In cases where only one type of object is needed, simpler patterns like the <strong>Simple Factory</strong> or <strong>Singleton</strong> might be more appropriate.</li>
+</ol>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The Factory Method pattern provides a flexible and modular way to create objects, allowing subclasses to control the instantiation process. By deferring object creation to subclasses, this pattern promotes loose coupling and extensibility, making it easier to add new product types without modifying existing code.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-logistics-transport-system">Example: Logistics Transport System</a>
+      <ul>
+        <li><a href="#step-1-define-the-product-interface">Step 1: Define the Product Interface</a></li>
+        <li><a href="#step-2-define-concrete-products">Step 2: Define Concrete Products</a></li>
+        <li><a href="#step-3-define-the-creator-class-with-factory-method">Step 3: Define the Creator Class with Factory Method</a></li>
+        <li><a href="#step-4-implement-concrete-factories">Step 4: Implement Concrete Factories</a></li>
+        <li><a href="#step-5-client-code">Step 5: Client Code</a></li>
+        <li><a href="#explanation">Explanation</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-factory-method-pattern">Best Practices for Implementing the Factory Method Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

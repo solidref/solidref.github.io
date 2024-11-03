@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  State Pattern
+  #
+
+The State pattern is a behavioral design pattern that allows an object to alter its behavior when its internal state changes. It encapsulates state-specific behavior in separate classes and delegates state-dependent tasks to the current state object, promoting flexibility and modularity.
+
+  Intent
+  #
+
+The main intent of the State pattern is to allow an object to change its behavior when its internal state changes, making the object appear to change its class. This pattern eliminates the need for complex conditional logic by organizing state-specific behavior into distinct state classes.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/state/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="State Pattern">
+  <meta property="og:description" content="State Pattern # The State pattern is a behavioral design pattern that allows an object to alter its behavior when its internal state changes. It encapsulates state-specific behavior in separate classes and delegates state-dependent tasks to the current state object, promoting flexibility and modularity.
+Intent # The main intent of the State pattern is to allow an object to change its behavior when its internal state changes, making the object appear to change its class. This pattern eliminates the need for complex conditional logic by organizing state-specific behavior into distinct state classes.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>State Pattern | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/state/">
+<link rel="stylesheet" href="/book.min.2d7fec8e866046a7460a1cc86027535586803606a87c87da3098bcd8d5a2b62d.css" integrity="sha256-LX/sjoZgRqdGChzIYCdTVYaANgaofIfaMJi82NWiti0=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.938b8659cefceb55dcf1407166bb85c5c91c7344ef439564d3b5de228d074c1e.js" integrity="sha256-k4uGWc7861Xc8UBxZruFxckcc0TvQ5Vk07XeIo0HTB4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/dependency-inversion/" class="">Dependency Inversion Principle (DIP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/interface-segregation/" class="">Interface Segregation Principle (ISP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/liskov-substitution/" class="">Liskov Substitution Principle (LSP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/open-closed/" class="">Open-Closed Principle (OCP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/single-responsibility/" class="">Single Responsibility Principle (SRP)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/abstract-factory/" class="">Abstract Factory Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/adapter/" class="">Adapter Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/bridge/" class="">Bridge Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/builder/" class="">Builder Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/chain-of-responsibility/" class="">Chain of Responsibility Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/command/" class="">Command Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/composite/" class="">Composite Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/decorator/" class="">Decorator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/facade/" class="">Facade Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/factory-method/" class="">Factory Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/flyweight/" class="">Flyweight Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/iterator/" class="">Iterator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/mediator/" class="">Mediator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/memento/" class="">Memento Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/observer/" class="">Observer Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/prototype/" class="">Prototype Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/proxy/" class="">Proxy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/singleton/" class="">Singleton Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/state/" class="active">State Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/strategy/" class="">Strategy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/template-method/" class="">Template Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/visitor/" class="">Visitor Pattern</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>State Pattern</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-document-workflow-system">Example: Document Workflow System</a>
+      <ul>
+        <li><a href="#step-1-define-the-state-interface">Step 1: Define the State Interface</a></li>
+        <li><a href="#step-2-implement-concrete-states">Step 2: Implement Concrete States</a></li>
+        <li><a href="#step-3-implement-the-context">Step 3: Implement the Context</a></li>
+        <li><a href="#step-4-client-code-using-the-state-pattern">Step 4: Client Code Using the State Pattern</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-state-pattern">Best Practices for Implementing the State Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="state-pattern">
+  State Pattern
+  <a class="anchor" href="#state-pattern">#</a>
+</h1>
+<p>The <strong>State</strong> pattern is a behavioral design pattern that allows an object to alter its behavior when its internal state changes. It encapsulates state-specific behavior in separate classes and delegates state-dependent tasks to the current state object, promoting flexibility and modularity.</p>
+<h2 id="intent">
+  Intent
+  <a class="anchor" href="#intent">#</a>
+</h2>
+<p><strong>The main intent of the State pattern is to allow an object to change its behavior when its internal state changes, making the object appear to change its class.</strong> This pattern eliminates the need for complex conditional logic by organizing state-specific behavior into distinct state classes.</p>
+<h2 id="problem-and-solution">
+  Problem and Solution
+  <a class="anchor" href="#problem-and-solution">#</a>
+</h2>
+<h3 id="problem">
+  Problem
+  <a class="anchor" href="#problem">#</a>
+</h3>
+<p>Consider a document editor where a document can be in different states such as Draft, Moderation, and Published. Each state has its own behavior for actions like editing, approving, and publishing. Without the State pattern, you’d need multiple conditional checks to handle behavior based on the document’s current state, resulting in inflexible, hard-to-maintain code.</p>
+<h3 id="solution">
+  Solution
+  <a class="anchor" href="#solution">#</a>
+</h3>
+<p>The State pattern addresses this by encapsulating each state (Draft, Moderation, Published) in its own class that defines specific behavior for each action. The document delegates state-dependent behavior to the current state object, allowing seamless switching between states without complex conditionals.</p>
+<h2 id="structure">
+  Structure
+  <a class="anchor" href="#structure">#</a>
+</h2>
+<p>The State pattern typically includes:</p>
+<ol>
+<li><strong>Context</strong>: Maintains a reference to a state object and delegates behavior to it.</li>
+<li><strong>State Interface</strong>: Declares methods that all concrete states must implement.</li>
+<li><strong>Concrete States</strong>: Implement the state-specific behavior and manage transitions to other states as needed.</li>
+</ol>
+<h2 id="uml-diagram">
+  UML Diagram
+  <a class="anchor" href="#uml-diagram">#</a>
+</h2>
+<pre tabindex="0"><code>+------------------+       +---------------------+
+|    Context       |       |      State          |
+|------------------|       |---------------------|
+| - state: State   |       | + handleRequest()   |
+| + setState()     |       +---------------------+
+| + request()      |                ^
++------------------+                |
+         |                          |
+         |            +------------------------+
+         +-----------&gt;|    ConcreteStateA      |
+                      |------------------------|
+                      | + handleRequest()      |
+                      +------------------------+
+</code></pre><h2 id="example-document-workflow-system">
+  Example: Document Workflow System
+  <a class="anchor" href="#example-document-workflow-system">#</a>
+</h2>
+<p>Let’s implement a document workflow system using the State pattern. The document can be in states like Draft, Moderation, and Published, each with specific behaviors for actions such as editing and publishing.</p>
+<h3 id="step-1-define-the-state-interface">
+  Step 1: Define the State Interface
+  <a class="anchor" href="#step-1-define-the-state-interface">#</a>
+</h3>
+<p>The <code>State</code> interface declares methods for actions that vary depending on the document’s state, such as <code>edit</code> and <code>publish</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// State Interface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">State</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">edit</span>(Document document);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">publish</span>(Document document);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-2-implement-concrete-states">
+  Step 2: Implement Concrete States
+  <a class="anchor" href="#step-2-implement-concrete-states">#</a>
+</h3>
+<p>Each concrete state class represents a specific state and defines its unique behavior for the actions. Additionally, each state manages transitions to other states.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete State for Draft</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DraftState</span> <span style="color:#66d9ef">implements</span> State {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">edit</span>(Document document) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Editing the draft document.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">publish</span>(Document document) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Moving document to moderation.&#34;</span>);
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> ModerationState());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete State for Moderation</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModerationState</span> <span style="color:#66d9ef">implements</span> State {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">edit</span>(Document document) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Cannot edit document in moderation.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">publish</span>(Document document) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Publishing document.&#34;</span>);
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> PublishedState());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete State for Published</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PublishedState</span> <span style="color:#66d9ef">implements</span> State {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">edit</span>(Document document) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Cannot edit document once published.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">publish</span>(Document document) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Document is already published.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-3-implement-the-context">
+  Step 3: Implement the Context
+  <a class="anchor" href="#step-3-implement-the-context">#</a>
+</h3>
+<p>The <code>Document</code> class is the context that delegates behavior to the current state object and provides a method to transition between states.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Context</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Document</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> State state;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Document</span>() {
+</span></span><span style="display:flex;"><span>        state <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DraftState();  <span style="color:#75715e">// Default initial state</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setState</span>(State state) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> state;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">edit</span>() {
+</span></span><span style="display:flex;"><span>        state.<span style="color:#a6e22e">edit</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">publish</span>() {
+</span></span><span style="display:flex;"><span>        state.<span style="color:#a6e22e">publish</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-4-client-code-using-the-state-pattern">
+  Step 4: Client Code Using the State Pattern
+  <a class="anchor" href="#step-4-client-code-using-the-state-pattern">#</a>
+</h3>
+<p>The client code interacts with the <code>Document</code> class, which delegates behavior to its current state. The document’s behavior changes dynamically based on its current state.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        Document document <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Document();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Initial state: Draft</span>
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">edit</span>();       <span style="color:#75715e">// Output: Editing the draft document.</span>
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">publish</span>();     <span style="color:#75715e">// Output: Moving document to moderation.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// State changed to Moderation</span>
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">edit</span>();       <span style="color:#75715e">// Output: Cannot edit document in moderation.</span>
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">publish</span>();     <span style="color:#75715e">// Output: Publishing document.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// State changed to Published</span>
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">edit</span>();       <span style="color:#75715e">// Output: Cannot edit document once published.</span>
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">publish</span>();     <span style="color:#75715e">// Output: Document is already published.</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="output">
+  Output
+  <a class="anchor" href="#output">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Editing the draft document.
+</span></span><span style="display:flex;"><span>Moving document to moderation.
+</span></span><span style="display:flex;"><span>Cannot edit document in moderation.
+</span></span><span style="display:flex;"><span>Publishing document.
+</span></span><span style="display:flex;"><span>Cannot edit document once published.
+</span></span><span style="display:flex;"><span>Document is already published.
+</span></span></code></pre></div><p>In this example:</p>
+<ul>
+<li>The <code>Document</code> class is the context, maintaining the current state and delegating behavior to it.</li>
+<li><code>DraftState</code>, <code>ModerationState</code>, and <code>PublishedState</code> are concrete states that implement state-specific behavior.</li>
+<li>The client code interacts with <code>Document</code>, and its behavior changes dynamically based on the current state.</li>
+</ul>
+<h2 id="applicability">
+  Applicability
+  <a class="anchor" href="#applicability">#</a>
+</h2>
+<p>Use the State pattern when:</p>
+<ol>
+<li>An object’s behavior depends on its state, and it needs to change behavior dynamically based on that state.</li>
+<li>You have a complex conditional structure that determines the behavior of an object based on multiple states.</li>
+<li>You want to make it easier to add or modify states without changing the context or adding complex conditionals.</li>
+</ol>
+<h2 id="advantages-and-disadvantages">
+  Advantages and Disadvantages
+  <a class="anchor" href="#advantages-and-disadvantages">#</a>
+</h2>
+<h3 id="advantages">
+  Advantages
+  <a class="anchor" href="#advantages">#</a>
+</h3>
+<ol>
+<li><strong>Simplifies Code Structure</strong>: The State pattern eliminates complex conditional logic by organizing behavior into state-specific classes.</li>
+<li><strong>Promotes Single Responsibility</strong>: Each state class focuses on specific behavior, making the code modular and easier to maintain.</li>
+<li><strong>Easily Extensible</strong>: New states can be added without modifying the context, following the Open-Closed Principle.</li>
+</ol>
+<h3 id="disadvantages">
+  Disadvantages
+  <a class="anchor" href="#disadvantages">#</a>
+</h3>
+<ol>
+<li><strong>Increased Class Count</strong>: The pattern can lead to an increased number of classes, especially if there are many states.</li>
+<li><strong>Potential Overhead</strong>: For simple state transitions, the State pattern may add unnecessary complexity and overhead.</li>
+<li><strong>Requires Careful State Management</strong>: Incorrect handling of transitions can lead to unexpected behavior.</li>
+</ol>
+<h2 id="best-practices-for-implementing-the-state-pattern">
+  Best Practices for Implementing the State Pattern
+  <a class="anchor" href="#best-practices-for-implementing-the-state-pattern">#</a>
+</h2>
+<ol>
+<li><strong>Use the State Pattern for Complex Behavior</strong>: The pattern is most effective when an object has complex state-dependent behavior. Avoid using it for simple cases with only a few state transitions.</li>
+<li><strong>Encapsulate Transition Logic in States</strong>: Allow state objects to manage transitions to other states to keep the context clean and focused on delegation.</li>
+<li><strong>Apply When Modularity Is Required</strong>: The State pattern promotes modularity, making it easier to manage and extend complex state-based behavior.</li>
+</ol>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The State pattern provides a flexible way to handle state-dependent behavior by encapsulating state-specific behavior in separate classes. This approach simplifies code by eliminating conditionals and enhances extensibility by allowing new states to be added without modifying the context.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-document-workflow-system">Example: Document Workflow System</a>
+      <ul>
+        <li><a href="#step-1-define-the-state-interface">Step 1: Define the State Interface</a></li>
+        <li><a href="#step-2-implement-concrete-states">Step 2: Implement Concrete States</a></li>
+        <li><a href="#step-3-implement-the-context">Step 3: Implement the Context</a></li>
+        <li><a href="#step-4-client-code-using-the-state-pattern">Step 4: Client Code Using the State Pattern</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-state-pattern">Best Practices for Implementing the State Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

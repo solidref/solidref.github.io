@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Proxy Pattern
+  #
+
+The Proxy pattern is a structural design pattern that provides a surrogate or placeholder for another object. By controlling access to the underlying object, the Proxy pattern allows additional functionality, such as lazy initialization, access control, logging, or caching, to be added without modifying the original object.
+
+  Intent
+  #
+
+The main intent of the Proxy pattern is to control access to an object by acting as a stand-in for it, allowing additional functionality to be added transparently. This pattern is particularly useful when working with resource-intensive objects, objects that need controlled access, or objects that need enhanced functionality.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/proxy/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Proxy Pattern">
+  <meta property="og:description" content="Proxy Pattern # The Proxy pattern is a structural design pattern that provides a surrogate or placeholder for another object. By controlling access to the underlying object, the Proxy pattern allows additional functionality, such as lazy initialization, access control, logging, or caching, to be added without modifying the original object.
+Intent # The main intent of the Proxy pattern is to control access to an object by acting as a stand-in for it, allowing additional functionality to be added transparently. This pattern is particularly useful when working with resource-intensive objects, objects that need controlled access, or objects that need enhanced functionality.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Proxy Pattern | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/proxy/">
+<link rel="stylesheet" href="/book.min.2d7fec8e866046a7460a1cc86027535586803606a87c87da3098bcd8d5a2b62d.css" integrity="sha256-LX/sjoZgRqdGChzIYCdTVYaANgaofIfaMJi82NWiti0=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.938b8659cefceb55dcf1407166bb85c5c91c7344ef439564d3b5de228d074c1e.js" integrity="sha256-k4uGWc7861Xc8UBxZruFxckcc0TvQ5Vk07XeIo0HTB4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/dependency-inversion/" class="">Dependency Inversion Principle (DIP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/interface-segregation/" class="">Interface Segregation Principle (ISP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/liskov-substitution/" class="">Liskov Substitution Principle (LSP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/open-closed/" class="">Open-Closed Principle (OCP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/single-responsibility/" class="">Single Responsibility Principle (SRP)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/abstract-factory/" class="">Abstract Factory Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/adapter/" class="">Adapter Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/bridge/" class="">Bridge Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/builder/" class="">Builder Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/chain-of-responsibility/" class="">Chain of Responsibility Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/command/" class="">Command Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/composite/" class="">Composite Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/decorator/" class="">Decorator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/facade/" class="">Facade Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/factory-method/" class="">Factory Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/flyweight/" class="">Flyweight Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/iterator/" class="">Iterator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/mediator/" class="">Mediator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/memento/" class="">Memento Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/observer/" class="">Observer Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/prototype/" class="">Prototype Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/proxy/" class="active">Proxy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/singleton/" class="">Singleton Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/state/" class="">State Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/strategy/" class="">Strategy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/template-method/" class="">Template Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/visitor/" class="">Visitor Pattern</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Proxy Pattern</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-image-viewer-with-lazy-loading">Example: Image Viewer with Lazy Loading</a>
+      <ul>
+        <li><a href="#step-1-define-the-subject-interface">Step 1: Define the Subject Interface</a></li>
+        <li><a href="#step-2-implement-the-real-subject">Step 2: Implement the Real Subject</a></li>
+        <li><a href="#step-3-implement-the-proxy">Step 3: Implement the Proxy</a></li>
+        <li><a href="#step-4-client-code-using-the-proxy">Step 4: Client Code Using the Proxy</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#types-of-proxy">Types of Proxy</a></li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-proxy-pattern">Best Practices for Implementing the Proxy Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="proxy-pattern">
+  Proxy Pattern
+  <a class="anchor" href="#proxy-pattern">#</a>
+</h1>
+<p>The <strong>Proxy</strong> pattern is a structural design pattern that provides a surrogate or placeholder for another object. By controlling access to the underlying object, the Proxy pattern allows additional functionality, such as lazy initialization, access control, logging, or caching, to be added without modifying the original object.</p>
+<h2 id="intent">
+  Intent
+  <a class="anchor" href="#intent">#</a>
+</h2>
+<p><strong>The main intent of the Proxy pattern is to control access to an object by acting as a stand-in for it, allowing additional functionality to be added transparently.</strong> This pattern is particularly useful when working with resource-intensive objects, objects that need controlled access, or objects that need enhanced functionality.</p>
+<h2 id="problem-and-solution">
+  Problem and Solution
+  <a class="anchor" href="#problem-and-solution">#</a>
+</h2>
+<h3 id="problem">
+  Problem
+  <a class="anchor" href="#problem">#</a>
+</h3>
+<p>Suppose you’re building an image viewer that can display high-resolution images from a remote server. Loading every image in full resolution at once can be slow and resource-intensive. Without a mechanism to manage the loading process, the application might become sluggish or unresponsive.</p>
+<h3 id="solution">
+  Solution
+  <a class="anchor" href="#solution">#</a>
+</h3>
+<p>The Proxy pattern can address this by creating an <code>ImageProxy</code> class that stands in for the actual image. The <code>ImageProxy</code> can handle loading the image only when it’s actually needed (lazy loading), making the application more responsive. Once loaded, the proxy forwards requests to the real image, making the process seamless to the client.</p>
+<h2 id="structure">
+  Structure
+  <a class="anchor" href="#structure">#</a>
+</h2>
+<p>The Proxy pattern typically includes:</p>
+<ol>
+<li><strong>Subject</strong>: Defines the common interface for both the Real Subject and the Proxy.</li>
+<li><strong>Real Subject</strong>: The actual object that performs the work and to which access is controlled.</li>
+<li><strong>Proxy</strong>: Controls access to the Real Subject and may add additional functionality before or after forwarding requests to it.</li>
+</ol>
+<h2 id="uml-diagram">
+  UML Diagram
+  <a class="anchor" href="#uml-diagram">#</a>
+</h2>
+<pre tabindex="0"><code>+------------------+     +------------------+
+|     Subject      |&lt;----|  RealSubject     |
+|------------------|     |------------------|
+| + request()      |     | + request()      |
++------------------+     +------------------+
+        ^
+        |
++------------------+
+|      Proxy      |
+|-----------------|
+| + request()     |
++-----------------+
+</code></pre><h2 id="example-image-viewer-with-lazy-loading">
+  Example: Image Viewer with Lazy Loading
+  <a class="anchor" href="#example-image-viewer-with-lazy-loading">#</a>
+</h2>
+<p>Let’s implement an image viewer using the Proxy pattern. We’ll create an <code>ImageProxy</code> that controls access to the high-resolution <code>RealImage</code> object, loading it only when necessary.</p>
+<h3 id="step-1-define-the-subject-interface">
+  Step 1: Define the Subject Interface
+  <a class="anchor" href="#step-1-define-the-subject-interface">#</a>
+</h3>
+<p>The <code>Image</code> interface defines the <code>display</code> method that both the real image and the proxy must implement.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Subject Interface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Image</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">display</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-2-implement-the-real-subject">
+  Step 2: Implement the Real Subject
+  <a class="anchor" href="#step-2-implement-the-real-subject">#</a>
+</h3>
+<p>The <code>RealImage</code> class represents a high-resolution image that takes time and resources to load.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Real Subject</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RealImage</span> <span style="color:#66d9ef">implements</span> Image {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String filename;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RealImage</span>(String filename) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">filename</span> <span style="color:#f92672">=</span> filename;
+</span></span><span style="display:flex;"><span>        loadImageFromDisk();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">loadImageFromDisk</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Loading image from disk: &#34;</span> <span style="color:#f92672">+</span> filename);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">display</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Displaying image: &#34;</span> <span style="color:#f92672">+</span> filename);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-3-implement-the-proxy">
+  Step 3: Implement the Proxy
+  <a class="anchor" href="#step-3-implement-the-proxy">#</a>
+</h3>
+<p>The <code>ImageProxy</code> class controls access to the <code>RealImage</code>, only loading it when the <code>display</code> method is called for the first time.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Proxy</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ImageProxy</span> <span style="color:#66d9ef">implements</span> Image {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RealImage realImage;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String filename;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ImageProxy</span>(String filename) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">filename</span> <span style="color:#f92672">=</span> filename;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">display</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (realImage <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            realImage <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RealImage(filename); <span style="color:#75715e">// Load only when needed</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        realImage.<span style="color:#a6e22e">display</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-4-client-code-using-the-proxy">
+  Step 4: Client Code Using the Proxy
+  <a class="anchor" href="#step-4-client-code-using-the-proxy">#</a>
+</h3>
+<p>The client interacts with <code>ImageProxy</code> just as it would with <code>RealImage</code>, without knowing if the image has been loaded yet.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        Image image1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ImageProxy(<span style="color:#e6db74">&#34;high_res_image1.jpg&#34;</span>);
+</span></span><span style="display:flex;"><span>        Image image2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ImageProxy(<span style="color:#e6db74">&#34;high_res_image2.jpg&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// The image is loaded only when display() is called for the first time</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Displaying images:&#34;</span>);
+</span></span><span style="display:flex;"><span>        image1.<span style="color:#a6e22e">display</span>();  <span style="color:#75715e">// Loads and displays high_res_image1.jpg</span>
+</span></span><span style="display:flex;"><span>        image1.<span style="color:#a6e22e">display</span>();  <span style="color:#75715e">// Displays high_res_image1.jpg without loading again</span>
+</span></span><span style="display:flex;"><span>        image2.<span style="color:#a6e22e">display</span>();  <span style="color:#75715e">// Loads and displays high_res_image2.jpg</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="output">
+  Output
+  <a class="anchor" href="#output">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Displaying images:
+</span></span><span style="display:flex;"><span>Loading image from disk: high_res_image1.jpg
+</span></span><span style="display:flex;"><span>Displaying image: high_res_image1.jpg
+</span></span><span style="display:flex;"><span>Displaying image: high_res_image1.jpg
+</span></span><span style="display:flex;"><span>Loading image from disk: high_res_image2.jpg
+</span></span><span style="display:flex;"><span>Displaying image: high_res_image2.jpg
+</span></span></code></pre></div><p>In this example:</p>
+<ul>
+<li><code>RealImage</code> is the resource-intensive object that loads an image from disk.</li>
+<li><code>ImageProxy</code> controls access to <code>RealImage</code>, only creating it when <code>display</code> is called for the first time (lazy loading).</li>
+<li>The client interacts with <code>ImageProxy</code>, which behaves like <code>RealImage</code> and loads the image only when necessary.</li>
+</ul>
+<h2 id="types-of-proxy">
+  Types of Proxy
+  <a class="anchor" href="#types-of-proxy">#</a>
+</h2>
+<p>The Proxy pattern can be implemented in different ways, depending on the additional functionality needed:</p>
+<ol>
+<li><strong>Virtual Proxy</strong>: Manages access to a resource-intensive object by creating it only when necessary (e.g., lazy loading).</li>
+<li><strong>Remote Proxy</strong>: Manages interaction with an object located on a remote server, handling communication details.</li>
+<li><strong>Protection Proxy</strong>: Controls access to an object by enforcing permissions or authentication checks.</li>
+<li><strong>Cache Proxy</strong>: Provides temporary storage to improve performance by caching responses from a resource-intensive or remote object.</li>
+</ol>
+<h2 id="applicability">
+  Applicability
+  <a class="anchor" href="#applicability">#</a>
+</h2>
+<p>Use the Proxy pattern when:</p>
+<ol>
+<li>You need to control access to a resource-intensive or remote object.</li>
+<li>You want to add additional functionality, such as lazy loading, caching, or access control, to an object without modifying it.</li>
+<li>You want to separate concerns in your code, allowing a proxy to manage specific tasks independently of the real subject.</li>
+</ol>
+<h2 id="advantages-and-disadvantages">
+  Advantages and Disadvantages
+  <a class="anchor" href="#advantages-and-disadvantages">#</a>
+</h2>
+<h3 id="advantages">
+  Advantages
+  <a class="anchor" href="#advantages">#</a>
+</h3>
+<ol>
+<li><strong>Controlled Access</strong>: Proxy allows controlled access to the real subject, enhancing security, performance, or resource management.</li>
+<li><strong>Lazy Initialization</strong>: The pattern supports lazy loading, reducing resource usage by delaying object creation until necessary.</li>
+<li><strong>Decoupling</strong>: Proxy separates client code from specific functionalities (e.g., caching, loading), making the system more modular and maintainable.</li>
+</ol>
+<h3 id="disadvantages">
+  Disadvantages
+  <a class="anchor" href="#disadvantages">#</a>
+</h3>
+<ol>
+<li><strong>Increased Complexity</strong>: Proxy introduces additional layers, which may increase code complexity.</li>
+<li><strong>Potential Performance Overhead</strong>: Depending on implementation, proxies can add some latency, especially if multiple layers are involved.</li>
+<li><strong>May Lead to Over-Engineering</strong>: Proxy should be used judiciously, as adding unnecessary proxies can lead to a complex and difficult-to-understand codebase.</li>
+</ol>
+<h2 id="best-practices-for-implementing-the-proxy-pattern">
+  Best Practices for Implementing the Proxy Pattern
+  <a class="anchor" href="#best-practices-for-implementing-the-proxy-pattern">#</a>
+</h2>
+<ol>
+<li><strong>Identify Core Functionality and Additional Concerns</strong>: Use Proxy to separate additional concerns like security, caching, or logging from the main functionality.</li>
+<li><strong>Use Lazy Loading and Caching Carefully</strong>: Ensure that lazy loading and caching improve performance without introducing excessive delays or stale data.</li>
+<li><strong>Keep Proxy Interface Consistent</strong>: Maintain consistency between the Proxy and Real Subject interfaces to avoid confusion and unexpected behavior.</li>
+</ol>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The Proxy pattern provides a flexible way to control access to objects, allowing you to add functionality such as lazy loading, caching, or access control transparently. This pattern enhances modularity and performance in systems with resource-intensive, remote, or protected objects.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-image-viewer-with-lazy-loading">Example: Image Viewer with Lazy Loading</a>
+      <ul>
+        <li><a href="#step-1-define-the-subject-interface">Step 1: Define the Subject Interface</a></li>
+        <li><a href="#step-2-implement-the-real-subject">Step 2: Implement the Real Subject</a></li>
+        <li><a href="#step-3-implement-the-proxy">Step 3: Implement the Proxy</a></li>
+        <li><a href="#step-4-client-code-using-the-proxy">Step 4: Client Code Using the Proxy</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#types-of-proxy">Types of Proxy</a></li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-proxy-pattern">Best Practices for Implementing the Proxy Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

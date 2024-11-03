@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Abstract Factory Pattern
+  #
+
+The Abstract Factory pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is particularly useful when we need to enforce consistency across multiple products or components that belong to the same family.
+
+  Intent
+  #
+
+The main intent of the Abstract Factory pattern is to encapsulate a group of individual factories with a common interface. This allows clients to create families of related objects without coupling the code to specific implementations. It promotes a more modular and scalable design by allowing the creation of product families independently of the client code.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/abstract-factory/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Abstract Factory Pattern">
+  <meta property="og:description" content="Abstract Factory Pattern # The Abstract Factory pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is particularly useful when we need to enforce consistency across multiple products or components that belong to the same family.
+Intent # The main intent of the Abstract Factory pattern is to encapsulate a group of individual factories with a common interface. This allows clients to create families of related objects without coupling the code to specific implementations. It promotes a more modular and scalable design by allowing the creation of product families independently of the client code.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Abstract Factory Pattern | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/abstract-factory/">
+<link rel="stylesheet" href="/book.min.2d7fec8e866046a7460a1cc86027535586803606a87c87da3098bcd8d5a2b62d.css" integrity="sha256-LX/sjoZgRqdGChzIYCdTVYaANgaofIfaMJi82NWiti0=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.938b8659cefceb55dcf1407166bb85c5c91c7344ef439564d3b5de228d074c1e.js" integrity="sha256-k4uGWc7861Xc8UBxZruFxckcc0TvQ5Vk07XeIo0HTB4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/dependency-inversion/" class="">Dependency Inversion Principle (DIP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/interface-segregation/" class="">Interface Segregation Principle (ISP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/liskov-substitution/" class="">Liskov Substitution Principle (LSP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/open-closed/" class="">Open-Closed Principle (OCP)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/solid/single-responsibility/" class="">Single Responsibility Principle (SRP)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/abstract-factory/" class="active">Abstract Factory Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/adapter/" class="">Adapter Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/bridge/" class="">Bridge Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/builder/" class="">Builder Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/chain-of-responsibility/" class="">Chain of Responsibility Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/command/" class="">Command Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/composite/" class="">Composite Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/decorator/" class="">Decorator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/facade/" class="">Facade Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/factory-method/" class="">Factory Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/flyweight/" class="">Flyweight Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/iterator/" class="">Iterator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/mediator/" class="">Mediator Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/memento/" class="">Memento Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/observer/" class="">Observer Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/prototype/" class="">Prototype Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/proxy/" class="">Proxy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/singleton/" class="">Singleton Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/state/" class="">State Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/strategy/" class="">Strategy Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/template-method/" class="">Template Method Pattern</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/visitor/" class="">Visitor Pattern</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Abstract Factory Pattern</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-cross-platform-ui-components">Example: Cross-Platform UI Components</a>
+      <ul>
+        <li><a href="#step-1-define-abstract-product-interfaces">Step 1: Define Abstract Product Interfaces</a></li>
+        <li><a href="#step-2-define-concrete-products">Step 2: Define Concrete Products</a></li>
+        <li><a href="#step-3-define-the-abstract-factory-interface">Step 3: Define the Abstract Factory Interface</a></li>
+        <li><a href="#step-4-implement-concrete-factories">Step 4: Implement Concrete Factories</a></li>
+        <li><a href="#step-5-client-code">Step 5: Client Code</a></li>
+        <li><a href="#explanation">Explanation</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="abstract-factory-pattern">
+  Abstract Factory Pattern
+  <a class="anchor" href="#abstract-factory-pattern">#</a>
+</h1>
+<p>The <strong>Abstract Factory</strong> pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is particularly useful when we need to enforce consistency across multiple products or components that belong to the same family.</p>
+<h2 id="intent">
+  Intent
+  <a class="anchor" href="#intent">#</a>
+</h2>
+<p><strong>The main intent of the Abstract Factory pattern is to encapsulate a group of individual factories with a common interface.</strong> This allows clients to create families of related objects without coupling the code to specific implementations. It promotes a more modular and scalable design by allowing the creation of product families independently of the client code.</p>
+<h2 id="problem-and-solution">
+  Problem and Solution
+  <a class="anchor" href="#problem-and-solution">#</a>
+</h2>
+<h3 id="problem">
+  Problem
+  <a class="anchor" href="#problem">#</a>
+</h3>
+<p>Imagine you’re building a cross-platform GUI application that needs different sets of UI components (e.g., buttons, text fields) for Windows, macOS, and Linux. You want the application to remain consistent on each platform but don’t want to hard-code the specifics of each platform in the main application code.</p>
+<h3 id="solution">
+  Solution
+  <a class="anchor" href="#solution">#</a>
+</h3>
+<p>The Abstract Factory pattern allows you to define an interface (<code>GUIFactory</code>) that provides methods to create a family of related objects, such as <code>Button</code> and <code>TextField</code>. Each platform (Windows, macOS, Linux) has its own factory implementation that provides platform-specific instances of these components.</p>
+<h2 id="structure">
+  Structure
+  <a class="anchor" href="#structure">#</a>
+</h2>
+<p>The Abstract Factory pattern typically includes:</p>
+<ol>
+<li><strong>Abstract Factory Interface</strong>: Declares methods for creating abstract product types.</li>
+<li><strong>Concrete Factories</strong>: Implementations of the abstract factory interface that return specific types of products.</li>
+<li><strong>Abstract Product Interfaces</strong>: Interfaces or abstract classes for each type of product created by the factory.</li>
+<li><strong>Concrete Products</strong>: Implementations of the abstract product interfaces.</li>
+</ol>
+<h2 id="uml-diagram">
+  UML Diagram
+  <a class="anchor" href="#uml-diagram">#</a>
+</h2>
+<pre tabindex="0"><code>+-------------------+       +---------------------+
+|   GUIFactory      |       |   Button           |
+|-------------------|       |---------------------|
+| + createButton()  |       | + render()         |
+| + createTextField()|      |---------------------|
++-------------------+       |  LinuxButton       |
+                            |  WindowsButton     |
+                            +---------------------+
+</code></pre><h2 id="example-cross-platform-ui-components">
+  Example: Cross-Platform UI Components
+  <a class="anchor" href="#example-cross-platform-ui-components">#</a>
+</h2>
+<p>Let’s implement a simplified cross-platform UI system with the Abstract Factory pattern in Java. We’ll create an interface <code>GUIFactory</code> that provides factory methods for creating <code>Button</code> and <code>TextField</code> objects. Each platform (Windows and Linux) has its own factory that produces platform-specific components.</p>
+<h3 id="step-1-define-abstract-product-interfaces">
+  Step 1: Define Abstract Product Interfaces
+  <a class="anchor" href="#step-1-define-abstract-product-interfaces">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Abstract Product for Buttons</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Button</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Abstract Product for TextFields</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TextField</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-2-define-concrete-products">
+  Step 2: Define Concrete Products
+  <a class="anchor" href="#step-2-define-concrete-products">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Button for Windows</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WindowsButton</span> <span style="color:#66d9ef">implements</span> Button {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Rendering Windows Button&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete TextField for Windows</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WindowsTextField</span> <span style="color:#66d9ef">implements</span> TextField {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Rendering Windows TextField&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete Button for Linux</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LinuxButton</span> <span style="color:#66d9ef">implements</span> Button {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Rendering Linux Button&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete TextField for Linux</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LinuxTextField</span> <span style="color:#66d9ef">implements</span> TextField {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Rendering Linux TextField&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h3 id="step-3-define-the-abstract-factory-interface">
+  Step 3: Define the Abstract Factory Interface
+  <a class="anchor" href="#step-3-define-the-abstract-factory-interface">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Abstract Factory</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GUIFactory</span> {
+</span></span><span style="display:flex;"><span>    Button <span style="color:#a6e22e">createButton</span>();
+</span></span><span style="display:flex;"><span>    TextField <span style="color:#a6e22e">createTextField</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-4-implement-concrete-factories">
+  Step 4: Implement Concrete Factories
+  <a class="anchor" href="#step-4-implement-concrete-factories">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Factory for Windows</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WindowsFactory</span> <span style="color:#66d9ef">implements</span> GUIFactory {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Button <span style="color:#a6e22e">createButton</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WindowsButton();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TextField <span style="color:#a6e22e">createTextField</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WindowsTextField();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete Factory for Linux</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LinuxFactory</span> <span style="color:#66d9ef">implements</span> GUIFactory {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Button <span style="color:#a6e22e">createButton</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> LinuxButton();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TextField <span style="color:#a6e22e">createTextField</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> LinuxTextField();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-5-client-code">
+  Step 5: Client Code
+  <a class="anchor" href="#step-5-client-code">#</a>
+</h3>
+<p>The client code uses the factory to create objects without needing to know about specific implementations. This makes it easy to switch between different families of products.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Application</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Button button;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TextField textField;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Application</span>(GUIFactory factory) {
+</span></span><span style="display:flex;"><span>        button <span style="color:#f92672">=</span> factory.<span style="color:#a6e22e">createButton</span>();
+</span></span><span style="display:flex;"><span>        textField <span style="color:#f92672">=</span> factory.<span style="color:#a6e22e">createTextField</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">renderUI</span>() {
+</span></span><span style="display:flex;"><span>        button.<span style="color:#a6e22e">render</span>();
+</span></span><span style="display:flex;"><span>        textField.<span style="color:#a6e22e">render</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Client code</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        GUIFactory factory;
+</span></span><span style="display:flex;"><span>        String os <span style="color:#f92672">=</span> System.<span style="color:#a6e22e">getProperty</span>(<span style="color:#e6db74">&#34;os.name&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (os.<span style="color:#a6e22e">contains</span>(<span style="color:#e6db74">&#34;Windows&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WindowsFactory();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinuxFactory();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Application app <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Application(factory);
+</span></span><span style="display:flex;"><span>        app.<span style="color:#a6e22e">renderUI</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="explanation">
+  Explanation
+  <a class="anchor" href="#explanation">#</a>
+</h3>
+<p>In this example:</p>
+<ul>
+<li><code>Application</code> depends on the <code>GUIFactory</code> interface, not specific implementations, which adheres to the Dependency Inversion Principle.</li>
+<li>We can easily switch between different platforms by providing different factory implementations (e.g., <code>WindowsFactory</code> or <code>LinuxFactory</code>) without changing <code>Application</code>’s code.</li>
+<li>This design makes the system open for extension but closed for modification, aligning with the Open-Closed Principle.</li>
+</ul>
+<h2 id="applicability">
+  Applicability
+  <a class="anchor" href="#applicability">#</a>
+</h2>
+<p>Use the Abstract Factory pattern when:</p>
+<ol>
+<li>You need to create families of related objects, such as UI components that should be consistent across an application.</li>
+<li>You want to isolate the client code from concrete implementations and enforce consistency among related objects.</li>
+<li>Your application needs to be scalable with minimal modification to existing code.</li>
+</ol>
+<h2 id="advantages-and-disadvantages">
+  Advantages and Disadvantages
+  <a class="anchor" href="#advantages-and-disadvantages">#</a>
+</h2>
+<h3 id="advantages">
+  Advantages
+  <a class="anchor" href="#advantages">#</a>
+</h3>
+<ol>
+<li><strong>Encapsulates Object Creation</strong>: Abstract Factory centralizes object creation, making the code more organized and easier to manage.</li>
+<li><strong>Promotes Consistency</strong>: Ensures that related products are consistent and can work together.</li>
+<li><strong>Improves Scalability</strong>: Adding new product families requires only creating new factory implementations, without altering existing code.</li>
+</ol>
+<h3 id="disadvantages">
+  Disadvantages
+  <a class="anchor" href="#disadvantages">#</a>
+</h3>
+<ol>
+<li><strong>Increased Complexity</strong>: Using multiple interfaces and classes can make the code more complex, especially for small projects.</li>
+<li><strong>Limited Flexibility with Families</strong>: Each concrete factory produces a specific family of products, so adding new products outside of existing families may require additional modifications.</li>
+</ol>
+<h2 id="summary">
+  Summary
+  <a class="anchor" href="#summary">#</a>
+</h2>
+<p>The Abstract Factory pattern is a powerful tool for creating families of related objects in a consistent and scalable way. By encapsulating object creation and enforcing consistent product families, this pattern helps decouple the client code from specific implementations, making the system more modular and adaptable to change.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-cross-platform-ui-components">Example: Cross-Platform UI Components</a>
+      <ul>
+        <li><a href="#step-1-define-abstract-product-interfaces">Step 1: Define Abstract Product Interfaces</a></li>
+        <li><a href="#step-2-define-concrete-products">Step 2: Define Concrete Products</a></li>
+        <li><a href="#step-3-define-the-abstract-factory-interface">Step 3: Define the Abstract Factory Interface</a></li>
+        <li><a href="#step-4-implement-concrete-factories">Step 4: Implement Concrete Factories</a></li>
+        <li><a href="#step-5-client-code">Step 5: Client Code</a></li>
+        <li><a href="#explanation">Explanation</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

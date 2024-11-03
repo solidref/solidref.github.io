@@ -1,0 +1,12 @@
+baseURL = "http://localhost:1313/"
+languageCode = "en-us"
+title = "SOLID.ref"
+theme = "hugo-book"
+enableRobotsTXT = true
+
+[params]
+BookTheme = 'dark'
+BookToC = true             # Enables table of contents
+bookSearch = true          # Enables search
+bookCollapseSection = true # Collapses sections by default
+featured_posts = true
