@@ -1,6 +1,16 @@
 {{ define "main" }} {{ $section := where $.Site.RegularPages "Section" "posts"
-}} {{ $section_count := len $section }} {{ if ge $section_count 1 }} {{ range
-sort $section }}
+}} {{ $section_count := len $section }} {{ if eq $section_count 1 }} {{/* If
+only one post exists, render the full post content */}} {{ with (first 1
+$section) }} {{ range . }}
+<article class="markdown book-post">
+  <h2>{{ .Title }}</h2>
+  {{ partial "docs/post-meta" . }}
+  <div class="book-post-content">
+    {{- .Content -}}
+  </div>
+</article>
+{{ end }} {{ end }} {{ else if ge $section_count 2 }} {{/* If multiple posts
+exist, render each post as a summary */}} {{ range sort $section }}
 <article class="markdown book-post">
   <h2>
     <a href="{{ .RelPermalink }}">{{ partial "docs/title.html" . }}</a>
@@ -8,7 +18,7 @@ sort $section }}
   {{ partial "docs/post-meta" . }}
   <div class="book-post-content">
     {{- .Summary -}} {{ if .Truncated }}
-    <a href="{{ .RelPermalink }}">...</a>
+    <a href="{{ .RelPermalink }}">More</a>
     {{ end }}
   </div>
 </article>
