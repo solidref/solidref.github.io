@@ -1,0 +1,15 @@
+
+.book-toc {
+  .book-toc-content {
+    position: relative;
+  }
+
+  .book-toc-languages {
+    width: $toc-width;
+    padding: $padding-16;
+
+    @include fixed;
+
+    position: relative;
+  }
+}

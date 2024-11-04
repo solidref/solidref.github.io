@@ -2,6 +2,9 @@
 title: 'Coding Principles in TypeScript'
 draft: false
 bookHidden: true
+languageExample: true
+languageExampleTitle: TypeScript
+showLanguageFilter: true
 ---
 
 # Coding Principles in TypeScript

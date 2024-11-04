@@ -1,6 +1,7 @@
 ---
 title: 'Coding Principles'
 draft: false
+showLanguageFilter: true
 ---
 
 # Coding Principles

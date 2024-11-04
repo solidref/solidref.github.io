@@ -2,6 +2,9 @@
 title: 'Coding Principles in JavaScript'
 draft: false
 bookHidden: true
+languageExample: true
+languageExampleTitle: JavaScript
+showLanguageFilter: true
 ---
 
 # Coding Principles in JavaScript

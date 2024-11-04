@@ -2,6 +2,9 @@
 title: 'Coding Principles in Go'
 draft: false
 bookHidden: true
+languageExample: true
+languageExampleTitle: Go
+showLanguageFilter: true
 ---
 
 # Coding Principles in Go
