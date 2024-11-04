@@ -1,0 +1,30 @@
+request:
+  description: "Develop a NestJS service named UserService with proper error handling and logging."
+  requirements:
+    - "Adhere to NestJS best practices."
+    - "Implement error handling for database operations."
+    - "Incorporate logging using NestJS's Logger service."
+  files:
+    - path: src/services/user.service.ts
+      content: |
+        import { Injectable } from '@nestjs/common';
+
+        @Injectable()
+        export class UserService {
+          // Existing code...
+        }
+
+    - path: src/controllers/user.controller.ts
+      content: |
+        import { Controller, Get } from '@nestjs/common';
+        import { UserService } from '../services/user.service';
+
+        @Controller('users')
+        export class UserController {
+          constructor(private readonly userService: UserService) {}
+
+          @Get()
+          getAllUsers() {
+            // Existing code...
+          }
+        }
