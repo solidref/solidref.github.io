@@ -1,6 +1,7 @@
 ---
 title: 'Strategy Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Strategy Pattern

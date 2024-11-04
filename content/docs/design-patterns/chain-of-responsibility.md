@@ -1,6 +1,7 @@
 ---
 title: 'Chain of Responsibility Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Chain of Responsibility Pattern

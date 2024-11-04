@@ -1,6 +1,7 @@
 ---
 title: 'Iterator Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Iterator Pattern

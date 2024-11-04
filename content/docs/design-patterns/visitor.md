@@ -1,6 +1,7 @@
 ---
 title: 'Visitor Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Visitor Pattern

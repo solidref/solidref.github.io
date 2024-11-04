@@ -1,6 +1,7 @@
 ---
 title: 'Abstract Factory Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Abstract Factory Pattern

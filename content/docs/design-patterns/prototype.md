@@ -1,6 +1,7 @@
 ---
 title: 'Prototype Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Prototype Pattern

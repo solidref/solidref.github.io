@@ -1,6 +1,7 @@
 ---
 title: 'Open-Closed Principle (OCP)'
 draft: false
+bookHidden: true
 ---
 
 # Open-Closed Principle (OCP)

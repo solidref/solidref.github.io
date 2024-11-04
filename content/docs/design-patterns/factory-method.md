@@ -1,6 +1,7 @@
 ---
 title: 'Factory Method Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Factory Method Pattern

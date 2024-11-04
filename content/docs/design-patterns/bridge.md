@@ -1,6 +1,7 @@
 ---
 title: 'Bridge Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Bridge Pattern

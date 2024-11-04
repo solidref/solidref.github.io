@@ -1,6 +1,7 @@
 ---
 title: 'Template Method Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Template Method Pattern

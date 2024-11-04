@@ -1,6 +1,7 @@
 ---
 title: 'Singleton Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Singleton Pattern

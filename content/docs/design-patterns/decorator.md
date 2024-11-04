@@ -1,6 +1,7 @@
 ---
 title: 'Decorator Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Decorator Pattern

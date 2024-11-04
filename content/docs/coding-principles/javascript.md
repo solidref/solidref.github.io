@@ -1,6 +1,7 @@
 ---
 title: 'Coding Principles in JavaScript'
 draft: false
+bookHidden: true
 ---
 
 # Coding Principles in JavaScript

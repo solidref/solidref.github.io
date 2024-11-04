@@ -1,6 +1,7 @@
 ---
 title: 'Liskov Substitution Principle (LSP)'
 draft: false
+bookHidden: true
 ---
 
 # Liskov Substitution Principle (LSP)

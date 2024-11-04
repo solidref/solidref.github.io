@@ -1,6 +1,7 @@
 ---
 title: 'Facade Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Facade Pattern

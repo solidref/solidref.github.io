@@ -1,6 +1,7 @@
 ---
 title: 'Memento Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Memento Pattern

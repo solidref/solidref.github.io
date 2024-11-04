@@ -1,6 +1,7 @@
 ---
 title: 'Adapter Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Adapter Pattern

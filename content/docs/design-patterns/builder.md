@@ -1,6 +1,7 @@
 ---
 title: 'Builder Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Builder Pattern

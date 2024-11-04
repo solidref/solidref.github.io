@@ -1,6 +1,7 @@
 ---
 title: 'Composite Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Composite Pattern

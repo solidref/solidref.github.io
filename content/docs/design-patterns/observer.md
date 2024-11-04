@@ -1,6 +1,7 @@
 ---
 title: 'Observer Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Observer Pattern

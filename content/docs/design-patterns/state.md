@@ -1,6 +1,7 @@
 ---
 title: 'State Pattern'
 draft: false
+bookHidden: true
 ---
 
 # State Pattern

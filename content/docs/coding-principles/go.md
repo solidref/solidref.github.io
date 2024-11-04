@@ -1,6 +1,7 @@
 ---
 title: 'Coding Principles in Go'
 draft: false
+bookHidden: true
 ---
 
 # Coding Principles in Go

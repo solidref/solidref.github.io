@@ -1,6 +1,7 @@
 ---
 title: 'Interface Segregation Principle (ISP)'
 draft: false
+bookHidden: true
 ---
 
 # Interface Segregation Principle (ISP)

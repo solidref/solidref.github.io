@@ -1,6 +1,7 @@
 ---
 title: 'Mediator Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Mediator Pattern

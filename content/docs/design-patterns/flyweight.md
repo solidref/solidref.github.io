@@ -1,6 +1,7 @@
 ---
 title: 'Flyweight Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Flyweight Pattern

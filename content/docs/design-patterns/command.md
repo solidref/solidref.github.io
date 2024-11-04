@@ -1,6 +1,7 @@
 ---
 title: 'Command Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Command Pattern

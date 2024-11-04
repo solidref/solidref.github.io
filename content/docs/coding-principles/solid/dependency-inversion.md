@@ -1,6 +1,7 @@
 ---
 title: Dependency Inversion Principle (DIP)
 draft: false
+bookHidden: true
 ---
 
 # Dependency Inversion Principle (DIP)

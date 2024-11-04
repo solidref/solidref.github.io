@@ -1,6 +1,7 @@
 ---
 title: 'Single Responsibility Principle (SRP)'
 draft: false
+bookHidden: true
 ---
 
 # Single Responsibility Principle (SRP)

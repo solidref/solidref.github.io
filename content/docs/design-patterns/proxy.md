@@ -1,6 +1,7 @@
 ---
 title: 'Proxy Pattern'
 draft: false
+bookHidden: true
 ---
 
 # Proxy Pattern

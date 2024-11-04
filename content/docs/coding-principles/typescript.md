@@ -1,6 +1,7 @@
 ---
 title: 'Coding Principles in TypeScript'
 draft: false
+bookHidden: true
 ---
 
 # Coding Principles in TypeScript
