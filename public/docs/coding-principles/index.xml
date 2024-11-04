@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Coding Principles on SOLID.ref</title>
+    <link>http://localhost:1313/docs/coding-principles/</link>
+    <description>Recent content in Coding Principles on SOLID.ref</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/docs/coding-principles/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Coding Principles in Go</title>
+      <link>http://localhost:1313/docs/coding-principles/go/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/go/</guid>
+      <description>&lt;h1 id=&#34;coding-principles-in-go&#34;&gt;&#xA;  Coding Principles in Go&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#coding-principles-in-go&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;Go (Golang) is known for its simplicity, efficiency, and focus on readability. Applying coding principles in Go is straightforward but requires understanding Go’s unique approach to programming. In this article, we’ll explore core coding principles—like DRY, KISS, and SOLID—and how they apply to Go, along with some Go-specific best practices.&lt;/p&gt;&#xA;&lt;h2 id=&#34;dry-dont-repeat-yourself&#34;&gt;&#xA;  DRY (Don’t Repeat Yourself)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#dry-dont-repeat-yourself&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;The DRY principle aims to reduce code duplication. Go emphasizes small, reusable functions and packages, making it easy to centralize logic and avoid repeating code.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Coding Principles in JavaScript</title>
+      <link>http://localhost:1313/docs/coding-principles/javascript/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/javascript/</guid>
+      <description>&lt;h1 id=&#34;coding-principles-in-javascript&#34;&gt;&#xA;  Coding Principles in JavaScript&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#coding-principles-in-javascript&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;JavaScript is one of the most widely-used programming languages, both in the browser and on the server with Node.js. Applying coding principles to JavaScript ensures your code is clean, efficient, and maintainable. In this article, we’ll cover foundational principles like DRY, KISS, and SOLID, as well as JavaScript-specific best practices.&lt;/p&gt;&#xA;&lt;h2 id=&#34;dry-dont-repeat-yourself&#34;&gt;&#xA;  DRY (Don’t Repeat Yourself)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#dry-dont-repeat-yourself&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;In JavaScript, the DRY principle applies to both function and class structures. By avoiding duplicate code, you can keep logic centralized, making updates easier and reducing errors.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Coding Principles in TypeScript</title>
+      <link>http://localhost:1313/docs/coding-principles/typescript/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/typescript/</guid>
+      <description>&lt;h1 id=&#34;coding-principles-in-typescript&#34;&gt;&#xA;  Coding Principles in TypeScript&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#coding-principles-in-typescript&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;TypeScript brings static typing and powerful tooling to JavaScript, helping developers catch errors early and write more structured code. By following core coding principles—like DRY, KISS, and SOLID—you can ensure that your TypeScript code is clean, efficient, and maintainable. This article explores these principles with TypeScript-specific examples and best practices.&lt;/p&gt;&#xA;&lt;h2 id=&#34;dry-dont-repeat-yourself&#34;&gt;&#xA;  DRY (Don’t Repeat Yourself)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#dry-dont-repeat-yourself&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;The DRY principle helps you avoid code duplication. TypeScript’s interfaces, types, and generics make it easier to encapsulate repetitive logic in a reusable way.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dependency Inversion Principle (DIP)</title>
+      <link>http://localhost:1313/docs/coding-principles/solid/dependency-inversion/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/solid/dependency-inversion/</guid>
+      <description>&lt;h1 id=&#34;dependency-inversion-principle-dip&#34;&gt;&#xA;  Dependency Inversion Principle (DIP)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#dependency-inversion-principle-dip&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The Dependency Inversion Principle (DIP) is the fifth and final principle in the SOLID principles of object-oriented design. It states:&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;“High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.”&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;In simpler terms, DIP encourages us to decouple high-level business logic from low-level details by relying on abstract interfaces or classes instead of concrete implementations. This approach promotes flexibility, ease of testing, and scalability.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Interface Segregation Principle (ISP)</title>
+      <link>http://localhost:1313/docs/coding-principles/solid/interface-segregation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/solid/interface-segregation/</guid>
+      <description>&lt;h1 id=&#34;interface-segregation-principle-isp&#34;&gt;&#xA;  Interface Segregation Principle (ISP)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#interface-segregation-principle-isp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The Interface Segregation Principle (ISP) is the fourth principle in the SOLID principles of object-oriented design. It states:&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;“A client should not be forced to depend on methods it does not use.”&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;In simpler terms, ISP encourages us to create more focused, specific interfaces rather than large, general-purpose interfaces. This makes interfaces easier to implement, reduces unnecessary dependencies, and improves code flexibility.&lt;/p&gt;&#xA;&lt;h2 id=&#34;why-use-the-interface-segregation-principle&#34;&gt;&#xA;  Why Use the Interface Segregation Principle?&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#why-use-the-interface-segregation-principle&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;When interfaces are too large, they often include methods that certain implementations do not need. This leads to what’s known as a &amp;ldquo;fat interface,&amp;rdquo; which can create problems such as:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Liskov Substitution Principle (LSP)</title>
+      <link>http://localhost:1313/docs/coding-principles/solid/liskov-substitution/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/solid/liskov-substitution/</guid>
+      <description>&lt;h1 id=&#34;liskov-substitution-principle-lsp&#34;&gt;&#xA;  Liskov Substitution Principle (LSP)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#liskov-substitution-principle-lsp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The Liskov Substitution Principle (LSP) is the third principle in the SOLID principles of object-oriented design. It states:&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;“Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program.”&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;In other words, if class &lt;code&gt;B&lt;/code&gt; is a subclass of class &lt;code&gt;A&lt;/code&gt;, then instances of &lt;code&gt;A&lt;/code&gt; should be replaceable by instances of &lt;code&gt;B&lt;/code&gt; without altering the program&amp;rsquo;s behavior. LSP ensures that a derived class can stand in for its base class without breaking functionality, making inheritance more predictable and reliable.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Open-Closed Principle (OCP)</title>
+      <link>http://localhost:1313/docs/coding-principles/solid/open-closed/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/solid/open-closed/</guid>
+      <description>&lt;h1 id=&#34;open-closed-principle-ocp&#34;&gt;&#xA;  Open-Closed Principle (OCP)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#open-closed-principle-ocp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The Open-Closed Principle (OCP) is the second principle in the SOLID principles of object-oriented design. It states:&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;“Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification.”&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;In other words, you should be able to add new functionality to existing code without altering its core structure. OCP is fundamental to creating systems that are easy to extend, reducing the need to modify existing, tested code and thereby decreasing the risk of introducing new bugs.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Single Responsibility Principle (SRP)</title>
+      <link>http://localhost:1313/docs/coding-principles/solid/single-responsibility/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/coding-principles/solid/single-responsibility/</guid>
+      <description>&lt;h1 id=&#34;single-responsibility-principle-srp&#34;&gt;&#xA;  Single Responsibility Principle (SRP)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#single-responsibility-principle-srp&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The Single Responsibility Principle (SRP) is the first principle in the SOLID principles of object-oriented design. It states:&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;“A class should have only one reason to change.”&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;In other words, each class should focus on a single task or responsibility, ensuring that its functionality is cohesive and that it has a specific, well-defined purpose. Following SRP helps avoid tightly coupled code and makes systems easier to maintain, extend, and test.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
