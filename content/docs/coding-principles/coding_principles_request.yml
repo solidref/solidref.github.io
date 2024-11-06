@@ -3,9 +3,8 @@ request:
   requirements:
     - "You have, as examples, the _index.md (Generic articles for Coding Principles) and go.md (Coding Principles for Golang article) files"
     - "Write similar article for the mentioned under the mentioned file"
-    - "Cover all principles in the main article, unless they are not fit for the mentioned language."
+    - "Cover all principles in the main article, unless they are not fit for the mentioned language (in this case, mention it is not fit)"
     - "Make sure you include specific Coding Principles as well for the mentioned language"
-    - "Include a section on Java's best practices for memory management and garbage collection."
   files:
     - path: _index.md
     - path: go.md

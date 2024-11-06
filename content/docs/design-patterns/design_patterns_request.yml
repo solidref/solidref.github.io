@@ -1,30 +1,12 @@
 request:
-  description: "Develop a NestJS service named UserService with proper error handling and logging."
+  description: "Generate new article named Design Patterns in [language]"
+  language: JavaScript
   requirements:
-    - "Adhere to NestJS best practices."
-    - "Implement error handling for database operations."
-    - "Incorporate logging using NestJS's Logger service."
+    - "You have, as example, the _index.md (Design Patterns) which is the main article"
+    - "You have, as 2nd example, the go.md (Design Patterns in Go)"
+    - "Provide [language] specific examples for each Design Pattern which applies to the mentioned [language]"
+    - "Include any other [language] specific Design Pattern that you are aware of"
+    - "Provide links to external resources for further reading on mentioned [language] Design Patterns as shown in the Go example"
+    - "Add the response under a new file [lowercase(language)].md"
   files:
-    - path: src/services/user.service.ts
-      content: |
-        import { Injectable } from '@nestjs/common';
-
-        @Injectable()
-        export class UserService {
-          // Existing code...
-        }
-
-    - path: src/controllers/user.controller.ts
-      content: |
-        import { Controller, Get } from '@nestjs/common';
-        import { UserService } from '../services/user.service';
-
-        @Controller('users')
-        export class UserController {
-          constructor(private readonly userService: UserService) {}
-
-          @Get()
-          getAllUsers() {
-            // Existing code...
-          }
-        }
+    - path: _index.md
