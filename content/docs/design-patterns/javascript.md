@@ -9,7 +9,9 @@ showLanguageFilter: true
 
 # Design Patterns in JavaScript
 
-JavaScript's versatility and support for both object-oriented and functional programming make it suitable for implementing a wide range of design patterns. With ES6+ features like classes, modules, and `Proxy`, many traditional design patterns can be applied to JavaScript effectively. This article provides examples of **Creational**, **Structural**, and **Behavioral** design patterns, each tailored for JavaScript.
+JavaScript's versatility and support for both object-oriented and functional programming make it suitable for implementing a wide range of design patterns. 
+
+With ES6+ features like classes, modules, and `Proxy`, many traditional design patterns can be applied to JavaScript effectively. This article provides examples of **Creational**, **Structural**, and **Behavioral** design patterns, each tailored for JavaScript.
 
 ## Why Design Patterns Matter in JavaScript
 
@@ -18,6 +20,258 @@ Design patterns are reusable solutions to common software design problems. They 
 ## Creational Patterns
 
 Creational patterns deal with object creation, making it more flexible and decoupled from the client.
+
+### Abstract Factory
+
+The Abstract Factory pattern provides an interface for creating families of related objects. In JavaScript, factories can return objects configured with different properties or methods.
+
+```javascript
+// using ES5 features (similar with Factory Method)
+function createUIFactory(theme) {
+    return theme === "dark"
+        ? { background: "black", textColor: "white" }
+        : { background: "white", textColor: "black" };
+}
+```
+Although JavaScript does not have the `interface` and `abstract` concepts, we can still try and implement a solution.
+
+```javascript
+// Button and Checkbox become classed with unimplemented (throwing error) methods
+class Button {
+  render() {
+    throw new Error("Method 'render()' must be implemented.");
+  }
+}
+
+class Checkbox {
+  render() {
+    throw new Error("Method 'render()' must be implemented.");
+  }
+}
+
+
+// Dark* and Ligh* classes with extend Button and Checkbox implementing/overriding their methods to have relevant actions
+
+class DarkButton extends Button {
+  render() {
+    console.log("Rendering Dark Mode Button");
+  }
+}
+
+class DarkCheckbox extends Checkbox {
+  render() {
+    console.log("Rendering Dark Mode Checkbox");
+  }
+}
+
+class LightButton extends Button {
+  render() {
+    console.log("Rendering Light Mode Button");
+  }
+}
+
+class LightCheckbox extends Checkbox {
+  render() {
+    console.log("Rendering Light Mode Checkbox");
+  }
+}
+
+// Similar with Button and Checkbox, UIFactory becomes a class with unimplemented (throwing error) methods
+class UIFactory {
+  createButton() {
+    throw new Error("Method 'createButton()' must be implemented.");
+  }
+
+  createCheckbox() {
+    throw new Error("Method 'createCheckbox()' must be implemented.");
+  }
+}
+
+
+// Concrete factory for Dark Mode components
+class DarkUIFactory extends UIFactory {
+    public Button createButton() {
+        return new DarkButton();
+    }
+
+    public Checkbox createCheckbox() {
+        return new DarkCheckbox();
+    }
+}
+
+// Concrete factory for Light Mode components
+class LightUIFactory extends UIFactory {
+    public Button createButton() {
+        return new LightButton();
+    }
+
+    public Checkbox createCheckbox() {
+        return new LightCheckbox();
+    }
+}
+
+// Function to choose the appropriate factory based on theme
+function getThemeFactory(theme) {
+  if (theme === "dark") {
+    return new DarkUIFactory();
+  } else if (theme === "light") {
+    return new LightUIFactory();
+  } else {
+    throw new Error("Unknown theme: " + theme);
+  }
+}
+
+// Usage example
+const theme = "dark"; // This could be dynamically chosen
+const factory = getThemeFactory(theme);
+
+const button = factory.createButton();
+const checkbox = factory.createCheckbox();
+
+button.render();      // Output: Rendering Dark Mode Button
+checkbox.render();    // Output: Rendering Dark Mode Checkbox
+```
+
+### Builder
+
+The Builder pattern constructs complex objects step-by-step. JavaScript’s chaining methods and object literals make it well-suited for this pattern.
+
+```javascript
+// using ES5 capabilities
+function carBuilder() {
+    var _color = "Default Color"; // Default value
+    var _engine = "Default Engine"; // Default value
+
+    return {
+        setColor: function(color) {
+            _color = color;
+            return this; // Enable chaining
+        },
+        setEngine: function(engine) {
+            _engine = engine;
+            return this; // Enable chaining
+        },
+        build: function() {
+            // Return a new Car object with the current settings
+            return {
+                color: _color,
+                engine: _engine
+            };
+        }
+    };
+}
+
+// Usage
+var car = carBuilder()
+    .setColor("Red")
+    .setEngine("V8")
+    .build();
+```
+
+```javascript
+// using ES6+ capabilities
+class Car {
+  constructor(builder) {
+    this.color = builder.color;
+    this.engine = builder.engine;
+  }
+
+  // Nested Builder Class
+  static get Builder() {
+    return class {
+      constructor() {
+        // Optional default values
+        this.color = "";
+        this.engine = "";
+      }
+
+      setColor(color) {
+        this.color = color;
+        return this; // Enable chaining
+      }
+
+      setEngine(engine) {
+        this.engine = engine;
+        return this; // Enable chaining
+      }
+
+      build() {
+        return new Car(this);
+      }
+    };
+  }
+}
+
+// Usage
+const car = new Car.Builder()
+  .setColor("Red")
+  .setEngine("V8")
+  .build();
+```
+
+### Factory Method
+
+The Factory Method pattern provides a way to create objects without specifying the exact class. JavaScript commonly uses factory functions to produce instances.
+
+```javascript
+function createUser(type) {
+    if (type === "admin") {
+        return { role: "admin", permissions: ["read", "write", "delete"] };
+    } else if (type === "guest") {
+        return { role: "guest", permissions: ["read"] };
+    }
+}
+```
+
+```javascript
+class Product {
+  use() { throw new Error("Method 'use()' must be implemented."); }
+}
+
+class ConcreteProductA extends Product {
+  use() {
+    console.log("Using Product A");
+  }
+}
+
+class ConcreteProductB extends Product {
+  use() {
+    console.log("Using Product B");
+  }
+}
+
+const createProduct = (type) => {
+  switch (type ) {
+    case "A":
+      return new ConcreteProductA();
+    case "B":
+      return new ConcreteProductB();
+    // Add more types as needed
+    default:
+      return null;
+  }
+}
+
+// Usage
+const product = createProduct("A");
+product.use();
+```
+
+### Prototype
+
+The Prototype pattern creates objects based on a prototype object, ideal for cloning objects. JavaScript's `Object.create()` method supports this pattern natively.
+
+```javascript
+const vehicle = {
+    type: "vehicle",
+    start() {
+        console.log("Starting the vehicle...");
+    }
+};
+
+const car = Object.create(vehicle);
+car.wheels = 4;
+```
 
 ### Singleton
 
@@ -100,75 +354,6 @@ console.log(instance1 === instance2); // true
 console.log(instance1.message);       // "This is the single instance"
 ```
 
-### Factory Method
-
-The Factory Method pattern provides a way to create objects without specifying the exact class. JavaScript commonly uses factory functions to produce instances.
-
-```javascript
-function createUser(type) {
-    if (type === "admin") {
-        return { role: "admin", permissions: ["read", "write", "delete"] };
-    } else if (type === "guest") {
-        return { role: "guest", permissions: ["read"] };
-    }
-}
-```
-
-### Abstract Factory
-
-The Abstract Factory pattern provides an interface for creating families of related objects. In JavaScript, factories can return objects configured with different properties or methods.
-
-```javascript
-function createUIFactory(theme) {
-    return theme === "dark"
-        ? { background: "black", textColor: "white" }
-        : { background: "white", textColor: "black" };
-}
-```
-
-### Builder
-
-The Builder pattern constructs complex objects step-by-step. JavaScript’s chaining methods and object literals make it well-suited for this pattern.
-
-```javascript
-class Car {
-    constructor() {
-        this.color = "white";
-        this.engine = "V4";
-    }
-
-    setColor(color) {
-        this.color = color;
-        return this;
-    }
-
-    setEngine(engine) {
-        this.engine = engine;
-        return this;
-    }
-
-    build() {
-        return `Car with ${this.color} color and ${this.engine} engine`;
-    }
-}
-```
-
-### Prototype
-
-The Prototype pattern creates objects based on a prototype object, ideal for cloning objects. JavaScript's `Object.create()` method supports this pattern natively.
-
-```javascript
-const vehicle = {
-    type: "vehicle",
-    start() {
-        console.log("Starting the vehicle...");
-    }
-};
-
-const car = Object.create(vehicle);
-car.wheels = 4;
-```
-
 ## Structural Patterns
 
 Structural patterns organize object composition, making it more flexible and extendable.
@@ -178,20 +363,83 @@ Structural patterns organize object composition, making it more flexible and ext
 The Adapter pattern allows incompatible interfaces to work together, often used for integrating third-party libraries or APIs.
 
 ```javascript
-class OldCalculator {
-    add(a, b) {
-        return a + b;
-    }
+// The unified interface for database interactions
+class Database {
+  connect() { throw new Error("Method 'use()' must be implemented."); }
+  insert(data) { throw new Error("Method 'use()' must be implemented."); }
+  disconnect() { throw new Error("Method 'use()' must be implemented."); }
 }
 
-class CalculatorAdapter {
-    constructor() {
-        this.calculator = new NewCalculator();
-    }
+// The SQL database class implementing the unified interface directly
+class SQLDatabase extends Database {
+  public connect() {
+    console.log("Connecting to SQL database...");
+  }
+  
+  public insert(data) {
+    console.log("Inserting data into SQL database: ", data);
+  }
 
-    add(a, b) {
-        return this.calculator.sum(a, b);
-    }
+  public disconnect() {
+    console.log("Disconnecting from SQL database.");
+  }
+}
+
+// The NoSQL database class with a different interface
+class NoSQLDatabase {
+  public openConnection() {
+    console.log("Opening connection to NoSQL database...");
+  }
+
+  public saveDocument(document) {
+  console.log("Saving document to NoSQL database: ", document);
+}
+
+public closeConnection() {
+  console.log("Closing connection to NoSQL database.");
+}
+}
+
+// The Adapter class to make NoSQLDatabase compatible with the Database interface
+class NoSQLDatabaseAdapter extends Database {
+  private final noSQLDatabase;
+
+  public NoSQLDatabaseAdapter(NoSQLDatabase noSQLDatabase) {
+  this.noSQLDatabase = noSQLDatabase;
+}
+
+@Override
+public connect() {
+  noSQLDatabase.openConnection(); // Adapting openConnection to connect
+}
+
+@Override
+public insert(data) {
+  noSQLDatabase.saveDocument(data); // Adapting saveDocument to insert
+}
+
+@Override
+public disconnect() {
+  noSQLDatabase.closeConnection(); // Adapting closeConnection to disconnect
+}
+}
+
+// Usage
+public class DatabaseClient {
+  public static main(String[] args) {
+  // Using SQLDatabase directly with the Database interface
+  Database sqlDatabase = new SQLDatabase();
+  sqlDatabase.connect();
+  sqlDatabase.insert("SQL Record");
+  sqlDatabase.disconnect();
+
+  console.log();
+
+  // Using NoSQLDatabase through the NoSQLDatabaseAdapter
+  Database noSQLDatabase = new NoSQLDatabaseAdapter(new NoSQLDatabase());
+  noSQLDatabase.connect();
+  noSQLDatabase.insert("NoSQL Document");
+  noSQLDatabase.disconnect();
 }
 ```
 
