@@ -365,82 +365,81 @@ The Adapter pattern allows incompatible interfaces to work together, often used 
 ```javascript
 // The unified interface for database interactions
 class Database {
-  connect() { throw new Error("Method 'use()' must be implemented."); }
-  insert(data) { throw new Error("Method 'use()' must be implemented."); }
-  disconnect() { throw new Error("Method 'use()' must be implemented."); }
+  connect() {
+    throw new Error("Method 'connect()' must be implemented.");
+  }
+
+  insert(data) {
+    throw new Error("Method 'insert()' must be implemented.");
+  }
+
+  disconnect() {
+    throw new Error("Method 'disconnect()' must be implemented.");
+  }
 }
 
-// The SQL database class implementing the unified interface directly
+// The SQLDatabase class implementing the unified interface directly
 class SQLDatabase extends Database {
-  public connect() {
+  connect() {
     console.log("Connecting to SQL database...");
   }
-  
-  public insert(data) {
-    console.log("Inserting data into SQL database: ", data);
+
+  insert(data) {
+    console.log("Inserting data into SQL database: " + data);
   }
 
-  public disconnect() {
+  disconnect() {
     console.log("Disconnecting from SQL database.");
   }
 }
 
-// The NoSQL database class with a different interface
+// The NoSQLDatabase class with a different interface
 class NoSQLDatabase {
-  public openConnection() {
+  openConnection() {
     console.log("Opening connection to NoSQL database...");
   }
 
-  public saveDocument(document) {
-  console.log("Saving document to NoSQL database: ", document);
-}
+  saveDocument(document) {
+    console.log("Saving document to NoSQL database: " + document);
+  }
 
-public closeConnection() {
-  console.log("Closing connection to NoSQL database.");
-}
+  closeConnection() {
+    console.log("Closing connection to NoSQL database.");
+  }
 }
 
 // The Adapter class to make NoSQLDatabase compatible with the Database interface
 class NoSQLDatabaseAdapter extends Database {
-  private final noSQLDatabase;
+  constructor(noSQLDatabase) {
+    super();
+    this.noSQLDatabase = noSQLDatabase;
+  }
 
-  public NoSQLDatabaseAdapter(NoSQLDatabase noSQLDatabase) {
-  this.noSQLDatabase = noSQLDatabase;
+  connect() {
+    this.noSQLDatabase.openConnection(); // Adapting openConnection to connect
+  }
+
+  insert(data) {
+    this.noSQLDatabase.saveDocument(data); // Adapting saveDocument to insert
+  }
+
+  disconnect() {
+    this.noSQLDatabase.closeConnection(); // Adapting closeConnection to disconnect
+  }
 }
 
-@Override
-public connect() {
-  noSQLDatabase.openConnection(); // Adapting openConnection to connect
-}
+// Usage example
+const sqlDatabase = new SQLDatabase();
+sqlDatabase.connect();
+sqlDatabase.insert("SQL Record");
+sqlDatabase.disconnect();
 
-@Override
-public insert(data) {
-  noSQLDatabase.saveDocument(data); // Adapting saveDocument to insert
-}
+console.log();
 
-@Override
-public disconnect() {
-  noSQLDatabase.closeConnection(); // Adapting closeConnection to disconnect
-}
-}
-
-// Usage
-public class DatabaseClient {
-  public static main(String[] args) {
-  // Using SQLDatabase directly with the Database interface
-  Database sqlDatabase = new SQLDatabase();
-  sqlDatabase.connect();
-  sqlDatabase.insert("SQL Record");
-  sqlDatabase.disconnect();
-
-  console.log();
-
-  // Using NoSQLDatabase through the NoSQLDatabaseAdapter
-  Database noSQLDatabase = new NoSQLDatabaseAdapter(new NoSQLDatabase());
-  noSQLDatabase.connect();
-  noSQLDatabase.insert("NoSQL Document");
-  noSQLDatabase.disconnect();
-}
+const noSQLDatabase = new NoSQLDatabaseAdapter(new NoSQLDatabase());
+noSQLDatabase.connect();
+noSQLDatabase.insert("NoSQL Document");
+noSQLDatabase.disconnect();
 ```
 
 ### Decorator
@@ -454,6 +453,35 @@ function withLogging(fn) {
         return fn(...args);
     };
 }
+```
+In ES6+, JavaScript introduced decorators as a proposal that, while still in the stage 2 proposal phase, can be used in many environments with a transpiler like Babel. Decorators provide a cleaner and more readable way to wrap or extend functions or methods.
+
+Here’s how to create a logging decorator that can be applied directly to a method using the `@decorator` syntax.
+
+```javascript
+// Decorator function
+function withLogging(target, key, descriptor) {
+    const originalFunction = descriptor.value;
+
+    // Modify the method to include logging functionality
+    descriptor.value = function (...args) {
+        console.log(`Calling ${key} with arguments:`, args);
+        return originalFunction.apply(this, args);
+    };
+
+    return descriptor;
+}
+
+class Example {
+    @withLogging
+    myMethod(a, b) {
+        return a + b;
+    }
+}
+
+// Usage
+const example = new Example();
+example.myMethod(5, 7); // Output: Calling myMethod with arguments: [5, 7]
 ```
 
 ### Proxy
