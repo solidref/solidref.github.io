@@ -1,13 +1,13 @@
 name: Deploy Website
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [closed]
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    types: [closed]
+#    branches:
+#      - main
   workflow_dispatch: # Allow manual triggering
     inputs:
       hugo_version:
