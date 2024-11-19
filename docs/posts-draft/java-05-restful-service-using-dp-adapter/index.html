@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of DatabaseAdapter (Adapter Pattern)
+
+Purpose of DatabaseAdapter:
+The DatabaseAdapter class allows the application to interact with different database systems through a common interface. By applying the Adapter Pattern, it enables the application to work with multiple database types (e.g., SQLite, MySQL) without changing the core business logic.
+
+Adapter Pattern Implementation:
+
+Target Interface (DatabaseOperations):
+
+
+Defines the standard operations that the application expects for database interactions.
+Includes methods like connect(), saveTask(Task task), getTask(UUID id), updateTask(Task task), and deleteTask(UUID id).
+
+
+Adaptee Classes (SQLiteDatabase, MySQLDatabase):
+
+
+These are the existing classes that implement database-specific operations.
+Their interfaces may not match the DatabaseOperations interface.
+
+
+Adapter Class (DatabaseAdapter):
+
+
+Implements the DatabaseOperations interface.
+Internally uses an instance of an adaptee class.
+Translates calls from the target interface to the adaptee&rsquo;s methods.
+
+
+Implementation Details:">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-05-restful-service-using-dp-adapter/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of DatabaseAdapter (Adapter Pattern)
+Purpose of DatabaseAdapter:
+The DatabaseAdapter class allows the application to interact with different database systems through a common interface. By applying the Adapter Pattern, it enables the application to work with multiple database types (e.g., SQLite, MySQL) without changing the core business logic.
+Adapter Pattern Implementation:
+Target Interface (DatabaseOperations): Defines the standard operations that the application expects for database interactions. Includes methods like connect(), saveTask(Task task), getTask(UUID id), updateTask(Task task), and deleteTask(UUID id). Adaptee Classes (SQLiteDatabase, MySQLDatabase): These are the existing classes that implement database-specific operations. Their interfaces may not match the DatabaseOperations interface. Adapter Class (DatabaseAdapter): Implements the DatabaseOperations interface. Internally uses an instance of an adaptee class. Translates calls from the target interface to the adaptee’s methods. Implementation Details:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 05 Restful Service Using Dp Adapter | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-05-restful-service-using-dp-adapter/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 05 Restful Service Using Dp Adapter</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>DatabaseAdapter</code> (Adapter Pattern)</strong></p>
+<hr>
+<p><strong>Purpose of <code>DatabaseAdapter</code>:</strong></p>
+<p>The <code>DatabaseAdapter</code> class allows the application to interact with different database systems through a common interface. By applying the <strong>Adapter Pattern</strong>, it enables the application to work with multiple database types (e.g., SQLite, MySQL) without changing the core business logic.</p>
+<hr>
+<p><strong>Adapter Pattern Implementation:</strong></p>
+<ol>
+<li><strong>Target Interface (<code>DatabaseOperations</code>):</strong></li>
+</ol>
+<ul>
+<li>Defines the standard operations that the application expects for database interactions.</li>
+<li>Includes methods like <code>connect()</code>, <code>saveTask(Task task)</code>, <code>getTask(UUID id)</code>, <code>updateTask(Task task)</code>, and <code>deleteTask(UUID id)</code>.</li>
+</ul>
+<ol start="2">
+<li><strong>Adaptee Classes (<code>SQLiteDatabase</code>, <code>MySQLDatabase</code>):</strong></li>
+</ol>
+<ul>
+<li>These are the existing classes that implement database-specific operations.</li>
+<li>Their interfaces may not match the <code>DatabaseOperations</code> interface.</li>
+</ul>
+<ol start="3">
+<li><strong>Adapter Class (<code>DatabaseAdapter</code>):</strong></li>
+</ol>
+<ul>
+<li>Implements the <code>DatabaseOperations</code> interface.</li>
+<li>Internally uses an instance of an adaptee class.</li>
+<li>Translates calls from the target interface to the adaptee&rsquo;s methods.</li>
+</ul>
+<hr>
+<p><strong>Implementation Details:</strong></p>
+<p><strong>1. Target Interface (<code>DatabaseOperations</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">DatabaseOperations</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">connect</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveTask</span>(Task task);
+</span></span><span style="display:flex;"><span>    Task <span style="color:#a6e22e">getTask</span>(UUID id);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteTask</span>(UUID id);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Provides a consistent interface for database operations.</li>
+<li>Abstracts the underlying database implementation.</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Adaptee Classes:</strong></p>
+<p><strong><code>SQLiteDatabase</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SQLiteDatabase</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Methods specific to SQLite operations</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">openConnection</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to open SQLite connection</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insertTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to insert a task into SQLite database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">fetchTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to retrieve a task from SQLite database</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Task(); <span style="color:#75715e">// Placeholder</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">modifyTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to update a task in SQLite database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">removeTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to delete a task from SQLite database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong><code>MySQLDatabase</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MySQLDatabase</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Methods specific to MySQL operations</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">establishConnection</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to establish MySQL connection</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to add a task to MySQL database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">retrieveTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to retrieve a task from MySQL database</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Task(); <span style="color:#75715e">// Placeholder</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTaskInDB</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to update a task in MySQL database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteTaskFromDB</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Code to delete a task from MySQL database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>3. Adapter Class (<code>DatabaseAdapter</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DatabaseAdapter</span> <span style="color:#66d9ef">implements</span> DatabaseOperations {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Object database;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String dbType;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DatabaseAdapter</span>(String dbType) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dbType</span> <span style="color:#f92672">=</span> dbType;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            database <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SQLiteDatabase();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;MySQL&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            database <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MySQLDatabase();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unsupported database type: &#34;</span> <span style="color:#f92672">+</span> dbType);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((SQLiteDatabase) database).<span style="color:#a6e22e">openConnection</span>();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;MySQL&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((MySQLDatabase) database).<span style="color:#a6e22e">establishConnection</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((SQLiteDatabase) database).<span style="color:#a6e22e">insertTask</span>(task);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;MySQL&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((MySQLDatabase) database).<span style="color:#a6e22e">addTask</span>(task);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">getTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> ((SQLiteDatabase) database).<span style="color:#a6e22e">fetchTask</span>(id);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;MySQL&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> ((MySQLDatabase) database).<span style="color:#a6e22e">retrieveTask</span>(id);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((SQLiteDatabase) database).<span style="color:#a6e22e">modifyTask</span>(task);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;MySQL&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((MySQLDatabase) database).<span style="color:#a6e22e">updateTaskInDB</span>(task);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((SQLiteDatabase) database).<span style="color:#a6e22e">removeTask</span>(id);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;MySQL&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            ((MySQLDatabase) database).<span style="color:#a6e22e">deleteTaskFromDB</span>(id);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The <code>DatabaseAdapter</code> class implements the <code>DatabaseOperations</code> interface.</li>
+<li>It holds a reference to the specific database instance (<code>SQLiteDatabase</code> or <code>MySQLDatabase</code>).</li>
+<li>Methods in <code>DatabaseOperations</code> are adapted to the methods of the underlying database class.</li>
+<li>The adapter checks the <code>dbType</code> to determine which database operations to invoke.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Usage Example:</strong></p>
+<p><strong>Initializing the Database Adapter:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Application</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Choose the database type (could be from config)</span>
+</span></span><span style="display:flex;"><span>        String dbType <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SQLite&#34;</span>; <span style="color:#75715e">// or &#34;MySQL&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Create the adapter</span>
+</span></span><span style="display:flex;"><span>        DatabaseOperations dbAdapter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatabaseAdapter(dbType);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Connect to the database</span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">connect</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Use the adapter to perform database operations</span>
+</span></span><span style="display:flex;"><span>        Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(<span style="color:#e6db74">&#34;Design Patterns&#34;</span>).<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Study Adapter Pattern&#34;</span>).<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">saveTask</span>(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Retrieve the task</span>
+</span></span><span style="display:flex;"><span>        Task retrievedTask <span style="color:#f92672">=</span> dbAdapter.<span style="color:#a6e22e">getTask</span>(task.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Update the task</span>
+</span></span><span style="display:flex;"><span>        retrievedTask.<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Study Adapter Pattern in detail&#34;</span>);
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">updateTask</span>(retrievedTask);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Delete the task</span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">deleteTask</span>(task.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The application initializes the <code>DatabaseAdapter</code> with the desired database type.</li>
+<li>It performs database operations using the <code>DatabaseOperations</code> interface.</li>
+<li>The underlying database implementation is transparent to the application.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Advantages of the Adapter Pattern:</strong></p>
+<ol>
+<li><strong>Flexibility:</strong></li>
+</ol>
+<ul>
+<li>Allows the application to switch between different databases without changing business logic.</li>
+<li>Supports adding new database types with minimal changes.</li>
+</ul>
+<ol start="2">
+<li><strong>Reusability:</strong></li>
+</ol>
+<ul>
+<li>The adapter provides a common interface, making it easy to reuse code across different database implementations.</li>
+</ul>
+<ol start="3">
+<li><strong>Decoupling:</strong></li>
+</ol>
+<ul>
+<li>Separates the application&rsquo;s logic from database-specific code.</li>
+<li>Enhances maintainability and scalability.</li>
+</ul>
+<hr>
+<p><strong>Integration with Other Components:</strong></p>
+<ul>
+<li>
+<p><strong>In <code>TaskRequestHandler</code>:</strong></p>
+<ul>
+<li>The handler can use <code>DatabaseOperations</code> to interact with tasks, without worrying about the specific database implementation.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DatabaseOperations dbAdapter;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskRequestHandler</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dbAdapter</span> <span style="color:#f92672">=</span> dbAdapter;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing methods...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Create task using TaskBuilder...</span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">saveTask</span>(task);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Return response...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+<li>
+<p><strong>In <code>MainServer</code>:</strong></p>
+<ul>
+<li>When initializing the server, pass the <code>dbAdapter</code> to handlers.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">startServer</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Initialize the database adapter</span>
+</span></span><span style="display:flex;"><span>    DatabaseOperations dbAdapter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatabaseAdapter(<span style="color:#e6db74">&#34;SQLite&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Pass dbAdapter to the handler</span>
+</span></span><span style="display:flex;"><span>    server.<span style="color:#a6e22e">createContext</span>(<span style="color:#e6db74">&#34;/tasks&#34;</span>, <span style="color:#66d9ef">new</span> TaskRequestHandler(dbAdapter));
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Start the server...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<p><strong>Considerations and Simplifications:</strong></p>
+<ul>
+<li>
+<p><strong>Simplified Database Classes:</strong></p>
+<ul>
+<li>The <code>SQLiteDatabase</code> and <code>MySQLDatabase</code> classes are simplified and may not include actual database code.</li>
+<li>In a real application, these classes would handle actual database connections and queries.</li>
+</ul>
+</li>
+<li>
+<p><strong>Type Checking:</strong></p>
+<ul>
+<li>The adapter uses <code>instanceof</code> and casting based on <code>dbType</code>.</li>
+<li>For a cleaner design, consider using polymorphism or a more scalable approach.</li>
+</ul>
+</li>
+<li>
+<p><strong>Error Handling:</strong></p>
+<ul>
+<li>Exception handling is minimal.</li>
+<li>Proper error checking and handling should be implemented for robustness.</li>
+</ul>
+</li>
+<li>
+<p><strong>Configuration:</strong></p>
+<ul>
+<li>The database type is hard-coded; in a real application, it should come from configuration files or environment variables.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Alternative Implementation with Polymorphism:</strong></p>
+<p>To improve the design and avoid using <code>instanceof</code> and casting, we can define specific adapters for each database type that implement the <code>DatabaseOperations</code> interface.</p>
+<p><strong><code>SQLiteAdapter</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SQLiteAdapter</span> <span style="color:#66d9ef">implements</span> DatabaseOperations {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> SQLiteDatabase database;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SQLiteAdapter</span>() {
+</span></span><span style="display:flex;"><span>        database <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SQLiteDatabase();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">openConnection</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">insertTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">getTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> database.<span style="color:#a6e22e">fetchTask</span>(id);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">modifyTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">removeTask</span>(id);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong><code>MySQLAdapter</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MySQLAdapter</span> <span style="color:#66d9ef">implements</span> DatabaseOperations {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> MySQLDatabase database;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MySQLAdapter</span>() {
+</span></span><span style="display:flex;"><span>        database <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MySQLDatabase();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">establishConnection</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">addTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">getTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> database.<span style="color:#a6e22e">retrieveTask</span>(id);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">updateTaskInDB</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteTask</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        database.<span style="color:#a6e22e">deleteTaskFromDB</span>(id);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Factory for Adapters (<code>DatabaseAdapterFactory</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DatabaseAdapterFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> DatabaseOperations <span style="color:#a6e22e">getDatabaseAdapter</span>(String dbType) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> SQLiteAdapter();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (dbType.<span style="color:#a6e22e">equalsIgnoreCase</span>(<span style="color:#e6db74">&#34;MySQL&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> MySQLAdapter();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unsupported database type: &#34;</span> <span style="color:#f92672">+</span> dbType);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Usage:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DatabaseOperations dbAdapter <span style="color:#f92672">=</span> DatabaseAdapterFactory.<span style="color:#a6e22e">getDatabaseAdapter</span>(<span style="color:#e6db74">&#34;SQLite&#34;</span>);
+</span></span></code></pre></div><ul>
+<li><strong>Advantages:</strong>
+<ul>
+<li>Eliminates the need for casting and <code>instanceof</code>.</li>
+<li>Adheres to the Open/Closed Principle, allowing easy addition of new database adapters.</li>
+<li>Each adapter is responsible for adapting a specific database, improving code organization.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Why Use the Adapter Pattern Here?</strong></p>
+<ul>
+<li>
+<p><strong>Compatibility:</strong></p>
+<ul>
+<li>Allows integration of classes with incompatible interfaces.</li>
+<li>The application code interacts with a consistent interface (<code>DatabaseOperations</code>), regardless of the underlying database.</li>
+</ul>
+</li>
+<li>
+<p><strong>Code Reuse:</strong></p>
+<ul>
+<li>Existing database classes can be used without modification.</li>
+<li>Adapters translate the interface, enabling reuse.</li>
+</ul>
+</li>
+<li>
+<p><strong>Maintainability:</strong></p>
+<ul>
+<li>Changes to database-specific code are isolated within the adapter classes.</li>
+<li>Reduces the impact of changes on the rest of the application.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Key Components of the Adapter Pattern:</strong></p>
+<ol>
+<li><strong>Target Interface (<code>DatabaseOperations</code>):</strong></li>
+</ol>
+<ul>
+<li>The interface expected by the client code.</li>
+</ul>
+<ol start="2">
+<li><strong>Adaptee (<code>SQLiteDatabase</code>, <code>MySQLDatabase</code>):</strong></li>
+</ol>
+<ul>
+<li>The existing classes needing adaptation.</li>
+</ul>
+<ol start="3">
+<li><strong>Adapter (<code>DatabaseAdapter</code>, <code>SQLiteAdapter</code>, <code>MySQLAdapter</code>):</strong></li>
+</ol>
+<ul>
+<li>Converts the interface of the adaptee into the target interface.</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>DatabaseAdapter</code> class exemplifies the <strong>Adapter Pattern</strong> by allowing the application to interact with different database systems through a unified interface. This design enhances flexibility, promotes code reuse, and decouples the application logic from database-specific implementations.</p>
+<p>By implementing <code>DatabaseAdapter</code>:</p>
+<ul>
+<li>The application can switch databases without altering core logic.</li>
+<li>New databases can be integrated with minimal changes.</li>
+<li>The codebase remains clean, maintainable, and scalable.</li>
+</ul>
+<p>This implementation aligns with our goal of using design patterns to create a robust Java web service application within approximately 20 classes.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>
+<p><strong>Implement Database Logic:</strong></p>
+<ul>
+<li>Flesh out the <code>SQLiteDatabase</code> and <code>MySQLDatabase</code> classes with actual database connection and query code.</li>
+</ul>
+</li>
+<li>
+<p><strong>Enhance Error Handling:</strong></p>
+<ul>
+<li>Implement proper exception handling and resource management (e.g., closing connections).</li>
+</ul>
+</li>
+<li>
+<p><strong>Configuration Management:</strong></p>
+<ul>
+<li>Externalize database configuration to properties files or environment variables.</li>
+</ul>
+</li>
+<li>
+<p><strong>Testing:</strong></p>
+<ul>
+<li>Write unit tests to verify the adapter functionality with different databases.</li>
+</ul>
+</li>
+<li>
+<p><strong>Apply Additional Patterns:</strong></p>
+<ul>
+<li>Consider using the <strong>Singleton Pattern</strong> for database connections to manage resources efficiently.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>**By completing the implementation and explanation of <code>DatabaseAdapter</code>, we have advanced our simple Java web service application. This demonstrates how the <strong>Adapter Pattern</strong> can be used to integrate incompatible interfaces, enhancing flexibility and maintainability within the constraints of a limited number of classes.</p>
+<hr>
+<p><strong>Implementation of <code>DatabaseConnectionManager</code> (Singleton Pattern)</strong></p>
+<hr>
+<p><strong>DatabaseConnectionManager.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.sql.Connection;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.sql.DriverManager;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.sql.SQLException;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DatabaseConnectionManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Static variable to hold the single instance</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">volatile</span> DatabaseConnectionManager instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Database connection parameters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String url;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String username;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String password;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The database connection object</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Connection connection;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Private constructor to prevent instantiation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">DatabaseConnectionManager</span>(String url, String username, String password) <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> url;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">username</span> <span style="color:#f92672">=</span> username;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Initialize the database connection</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">connection</span> <span style="color:#f92672">=</span> createConnection();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Public method to provide access to the instance</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> DatabaseConnectionManager <span style="color:#a6e22e">getInstance</span>(String url, String username, String password) <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">synchronized</span> (DatabaseConnectionManager.<span style="color:#a6e22e">class</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                    instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatabaseConnectionManager(url, username, password);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> instance;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Method to create a new database connection</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Connection <span style="color:#a6e22e">createConnection</span>() <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Load the JDBC driver if necessary (depends on the JDBC version)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Class.forName(&#34;org.sqlite.JDBC&#34;); // For SQLite</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Class.forName(&#34;com.mysql.cj.jdbc.Driver&#34;); // For MySQL</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Create and return the connection</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> DriverManager.<span style="color:#a6e22e">getConnection</span>(url, username, password);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (SQLException <span style="color:#75715e">/*| ClassNotFoundException*/</span> e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> e;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getter for the connection</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Connection <span style="color:#a6e22e">getConnection</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> connection;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Method to close the connection</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">closeConnection</span>() <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (connection <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>connection.<span style="color:#a6e22e">isClosed</span>()) {
+</span></span><span style="display:flex;"><span>            connection.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Purpose of <code>DatabaseConnectionManager</code>:</strong></p>
+<p>The <code>DatabaseConnectionManager</code> class is responsible for managing the database connection in the application. It ensures that only one instance of the database connection exists throughout the application&rsquo;s lifecycle by implementing the <strong>Singleton</strong> design pattern. This approach helps in:</p>
+<ul>
+<li><strong>Resource Management:</strong> Database connections are resource-intensive. Managing them centrally avoids unnecessary overhead.</li>
+<li><strong>Consistency:</strong> Ensures all parts of the application use the same database connection settings.</li>
+<li><strong>Thread Safety:</strong> By controlling access to the connection, it helps prevent concurrency issues.</li>
+</ul>
+<hr>
+<p><strong>Singleton Pattern Implementation:</strong></p>
+<ol>
+<li>
+<p><strong>Private Static Instance Variable:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">volatile</span> DatabaseConnectionManager instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>Declared <code>static</code> to belong to the class.</li>
+<li>Declared <code>volatile</code> to ensure visibility of changes across threads.</li>
+</ul>
+<ol start="2">
+<li>
+<p><strong>Private Constructor:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#a6e22e">DatabaseConnectionManager</span>(String url, String username, String password) <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> url;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">username</span> <span style="color:#f92672">=</span> username;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">connection</span> <span style="color:#f92672">=</span> createConnection();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li><strong>Purpose:</strong> Prevents instantiation from outside the class.</li>
+<li>Initializes the database connection.</li>
+</ul>
+<ol start="3">
+<li>
+<p><strong>Public Static Access Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> DatabaseConnectionManager <span style="color:#a6e22e">getInstance</span>(String url, String username, String password) <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">synchronized</span> (DatabaseConnectionManager.<span style="color:#a6e22e">class</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatabaseConnectionManager(url, username, password);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> instance;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>Uses <strong>double-checked locking</strong> to ensure thread safety and avoid unnecessary synchronization after the instance is created.</li>
+<li>Parameters <code>url</code>, <code>username</code>, and <code>password</code> are required for the initial connection setup.</li>
+<li>Throws <code>SQLException</code> to indicate database connection issues.</li>
+</ul>
+<ol start="4">
+<li><strong>Connection Management:</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>Create Connection Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Connection <span style="color:#a6e22e">createConnection</span>() <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Load the JDBC driver if necessary</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return the connection</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> DriverManager.<span style="color:#a6e22e">getConnection</span>(url, username, password);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>Responsible for establishing the database connection.</li>
+<li>Optionally loads the JDBC driver (depending on the JDBC version and driver).</li>
+</ul>
+</li>
+<li>
+<p><strong>Get Connection Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Connection <span style="color:#a6e22e">getConnection</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> connection;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>Provides access to the database connection for other classes.</li>
+</ul>
+</li>
+<li>
+<p><strong>Close Connection Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">closeConnection</span>() <span style="color:#66d9ef">throws</span> SQLException {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (connection <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>connection.<span style="color:#a6e22e">isClosed</span>()) {
+</span></span><span style="display:flex;"><span>        connection.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>Closes the database connection when it&rsquo;s no longer needed.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Usage Example:</strong></p>
+<p><strong>In the Application Initialization:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Application</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Database parameters (could be loaded from a config file)</span>
+</span></span><span style="display:flex;"><span>            String url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/mydatabase&#34;</span>;
+</span></span><span style="display:flex;"><span>            String username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span>;
+</span></span><span style="display:flex;"><span>            String password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;password&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Get the DatabaseConnectionManager instance</span>
+</span></span><span style="display:flex;"><span>            DatabaseConnectionManager dbManager <span style="color:#f92672">=</span> DatabaseConnectionManager.<span style="color:#a6e22e">getInstance</span>(url, username, password);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Pass the connection to the DatabaseAdapter</span>
+</span></span><span style="display:flex;"><span>            DatabaseOperations dbAdapter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatabaseAdapter(dbManager.<span style="color:#a6e22e">getConnection</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Continue with application logic...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (SQLException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exception (e.g., exit application or retry)</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Modifying <code>DatabaseAdapter</code> to Use <code>Connection</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DatabaseAdapter</span> <span style="color:#66d9ef">implements</span> DatabaseOperations {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Connection connection;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DatabaseAdapter</span>(Connection connection) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">connection</span> <span style="color:#f92672">=</span> connection;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Connection is already established via DatabaseConnectionManager</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Use the connection to save the task</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Example:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// String sql = &#34;INSERT INTO tasks (id, title, description) VALUES (?, ?, ?)&#34;;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// PreparedStatement stmt = connection.prepareStatement(sql);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// stmt.setString(1, task.getId().toString());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// stmt.setString(2, task.getTitle());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// stmt.setString(3, task.getDescription());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// stmt.executeUpdate();</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Implement other methods similarly</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The <code>DatabaseAdapter</code> now receives a <code>Connection</code> object, which it uses for database operations.</li>
+<li>This approach decouples connection management from the adapter.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Why Singleton Pattern for <code>DatabaseConnectionManager</code>?</strong></p>
+<ol>
+<li><strong>Single Point of Access:</strong></li>
+</ol>
+<ul>
+<li>Ensures only one connection manager exists, preventing multiple connections from being opened unnecessarily.</li>
+</ul>
+<ol start="2">
+<li><strong>Resource Efficiency:</strong></li>
+</ol>
+<ul>
+<li>Database connections consume resources; managing them centrally avoids resource leaks.</li>
+</ul>
+<ol start="3">
+<li><strong>Thread Safety:</strong></li>
+</ol>
+<ul>
+<li>By controlling the instantiation and access to the connection, the singleton pattern helps in maintaining thread safety.</li>
+</ul>
+<ol start="4">
+<li><strong>Configuration Consistency:</strong></li>
+</ol>
+<ul>
+<li>All parts of the application use the same database parameters (URL, username, password).</li>
+</ul>
+<hr>
+<p><strong>Key Components:</strong></p>
+<ol>
+<li><strong>Private Constructor:</strong></li>
+</ol>
+<ul>
+<li>Prevents external instantiation.</li>
+</ul>
+<ol start="2">
+<li><strong>Static Access Method:</strong></li>
+</ol>
+<ul>
+<li>Controls the creation and access to the singleton instance.</li>
+</ul>
+<ol start="3">
+<li><strong>Thread Safety Measures:</strong></li>
+</ol>
+<ul>
+<li><strong>Double-checked Locking:</strong>
+<ul>
+<li>Reduces synchronization overhead.</li>
+<li>Ensures that only one instance is created even in a multithreaded environment.</li>
+</ul>
+</li>
+<li><strong>Volatile Keyword:</strong>
+<ul>
+<li>Ensures that the instance variable is read from the main memory, not from a thread&rsquo;s local cache.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Considerations and Best Practices:</strong></p>
+<ol>
+<li><strong>Exception Handling:</strong></li>
+</ol>
+<ul>
+<li>The constructor and <code>getInstance</code> method throw <code>SQLException</code> to handle database connection issues.</li>
+<li>Callers should handle these exceptions appropriately.</li>
+</ul>
+<ol start="2">
+<li><strong>Connection Pooling:</strong></li>
+</ol>
+<ul>
+<li>For high-load applications, consider implementing connection pooling to manage multiple connections efficiently.</li>
+<li>Libraries like HikariCP or Apache DBCP can be integrated.</li>
+</ul>
+<ol start="3">
+<li><strong>Closing Connections:</strong></li>
+</ol>
+<ul>
+<li>Ensure <code>closeConnection</code> is called appropriately to release resources.</li>
+<li>Consider using a shutdown hook or application context listener to close the connection when the application stops.</li>
+</ul>
+<ol start="4">
+<li><strong>Configuration Management:</strong></li>
+</ol>
+<ul>
+<li>Database parameters can be externalized to configuration files or environment variables.</li>
+<li>Avoid hardcoding sensitive information like usernames and passwords.</li>
+</ul>
+<ol start="5">
+<li><strong>Driver Loading:</strong></li>
+</ol>
+<ul>
+<li>In newer JDBC versions, explicit driver loading (<code>Class.forName</code>) is not required.</li>
+<li>For older drivers or when using specific database systems, you may need to load the driver class manually.</li>
+</ul>
+<hr>
+<p><strong>Integration with Other Components:</strong></p>
+<ul>
+<li>
+<p><strong><code>DatabaseAdapter</code>:</strong></p>
+<ul>
+<li>Uses the <code>Connection</code> provided by <code>DatabaseConnectionManager</code> to perform database operations.</li>
+<li>By passing the connection, we ensure that all database interactions use the same connection.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>TaskRequestHandler</code>:</strong></p>
+<ul>
+<li>Interacts with <code>DatabaseAdapter</code> to perform CRUD operations on tasks.</li>
+<li>The database connection details are abstracted away, promoting decoupling.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Example Flow:</strong></p>
+<ol>
+<li><strong>Application Startup:</strong></li>
+</ol>
+<ul>
+<li>Initializes <code>DatabaseConnectionManager</code> with database parameters.</li>
+<li>Obtains the singleton instance.</li>
+</ul>
+<ol start="2">
+<li><strong>Database Adapter Initialization:</strong></li>
+</ol>
+<ul>
+<li><code>DatabaseAdapter</code> is created with the connection from <code>DatabaseConnectionManager</code>.</li>
+</ul>
+<ol start="3">
+<li><strong>Request Handling:</strong></li>
+</ol>
+<ul>
+<li>When a request comes in, <code>TaskRequestHandler</code> uses <code>DatabaseAdapter</code> to interact with the database.</li>
+</ul>
+<ol start="4">
+<li><strong>Application Shutdown:</strong></li>
+</ol>
+<ul>
+<li>Calls <code>closeConnection</code> to release the database connection.</li>
+</ul>
+<hr>
+<p><strong>Advantages:</strong></p>
+<ol>
+<li><strong>Centralized Connection Management:</strong></li>
+</ol>
+<ul>
+<li>Simplifies the management of database connections.</li>
+<li>Reduces the risk of connection leaks.</li>
+</ul>
+<ol start="2">
+<li><strong>Consistent Configuration:</strong></li>
+</ol>
+<ul>
+<li>All components use the same database settings.</li>
+</ul>
+<ol start="3">
+<li><strong>Ease of Maintenance:</strong></li>
+</ol>
+<ul>
+<li>Changes to database connection logic are made in one place.</li>
+</ul>
+<hr>
+<p><strong>Potential Drawbacks and Mitigation:</strong></p>
+<ol>
+<li><strong>Single Point of Failure:</strong></li>
+</ol>
+<ul>
+<li>If the singleton instance encounters an issue, it may affect the entire application.</li>
+<li><strong>Mitigation:</strong> Implement proper exception handling and consider failover strategies.</li>
+</ul>
+<ol start="2">
+<li><strong>Limited Scalability:</strong></li>
+</ol>
+<ul>
+<li>A single connection may become a bottleneck in high-concurrency scenarios.</li>
+<li><strong>Mitigation:</strong> Implement connection pooling or allow multiple connections if necessary.</li>
+</ul>
+<ol start="3">
+<li><strong>Testing Challenges:</strong></li>
+</ol>
+<ul>
+<li>Singletons can make unit testing difficult due to their global state.</li>
+<li><strong>Mitigation:</strong> Use dependency injection or mock the singleton in tests.</li>
+</ul>
+<hr>
+<p><strong>Extending the Design:</strong></p>
+<ul>
+<li>
+<p><strong>Lazy Initialization:</strong></p>
+<ul>
+<li>The connection is established only when <code>getConnection</code> is called, not at instance creation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Connection Validation:</strong></p>
+<ul>
+<li>Implement methods to check if the connection is still valid and reconnect if necessary.</li>
+</ul>
+</li>
+<li>
+<p><strong>Singleton via Enum (Alternative):</strong></p>
+<ul>
+<li>In Java, singletons can be implemented using an enum to prevent multiple instantiations.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> DatabaseConnectionManager {
+</span></span><span style="display:flex;"><span>    INSTANCE;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Connection connection;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">DatabaseConnectionManager</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Initialize connection</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Connection <span style="color:#a6e22e">getConnection</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> connection;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Note:</strong> This approach is thread-safe and protects against serialization/deserialization issues.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>DatabaseConnectionManager</code> class effectively implements the <strong>Singleton Pattern</strong> to manage database connections within the application. It ensures that:</p>
+<ul>
+<li>Only one instance of the connection manager exists.</li>
+<li>Database connections are efficiently managed.</li>
+<li>The application maintains consistent database configurations.</li>
+</ul>
+<p>By centralizing connection management, the application becomes more maintainable, scalable, and robust.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ol>
+<li><strong>Implement Connection Pooling (Optional):</strong></li>
+</ol>
+<ul>
+<li>For applications with high concurrency, integrate a connection pool.</li>
+</ul>
+<ol start="2">
+<li><strong>Enhance Exception Handling:</strong></li>
+</ol>
+<ul>
+<li>Provide more detailed error messages and recovery strategies.</li>
+</ul>
+<ol start="3">
+<li><strong>Externalize Configuration:</strong></li>
+</ol>
+<ul>
+<li>Move database parameters to a configuration file or environment variables.</li>
+</ul>
+<ol start="4">
+<li><strong>Integrate with Dependency Injection (Optional):</strong></li>
+</ol>
+<ul>
+<li>Use a DI framework like Spring to manage bean lifecycles and dependencies.</li>
+</ul>
+<hr>
+<p>**By completing the implementation and explanation of <code>DatabaseConnectionManager</code>, we have advanced our simple Java web service application. This demonstrates how the <strong>Singleton Pattern</strong> can be used to manage shared resources efficiently, promoting maintainability and consistency within the constraints of a limited number of classes.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

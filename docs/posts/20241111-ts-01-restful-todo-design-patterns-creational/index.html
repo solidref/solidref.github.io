@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Let’s talk about creational design patterns—arguably the foundation of any well-architected system. At their core, these patterns focus on how objects are created. Why does this matter? Well, if you’ve ever written code that tightly couples object creation to the logic that depends on those objects, you’ve likely felt the pain of trying to refactor it later.
+Creational patterns abstract that creation process, giving us flexibility and reuse. By adopting these patterns, our systems become more scalable, maintainable, and adaptable. In this article, we’ll explore how creational patterns can bring order and elegance to a RESTful API built with TypeScript. And yes, we’ll sprinkle in some practical examples to keep things grounded.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts/20241111-ts-01-restful-todo-design-patterns-creational/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="A TypeScript RESTful API Using Design Patterns, Creational">
+  <meta property="og:description" content="Let’s talk about creational design patterns—arguably the foundation of any well-architected system. At their core, these patterns focus on how objects are created. Why does this matter? Well, if you’ve ever written code that tightly couples object creation to the logic that depends on those objects, you’ve likely felt the pain of trying to refactor it later.
+Creational patterns abstract that creation process, giving us flexibility and reuse. By adopting these patterns, our systems become more scalable, maintainable, and adaptable. In this article, we’ll explore how creational patterns can bring order and elegance to a RESTful API built with TypeScript. And yes, we’ll sprinkle in some practical examples to keep things grounded.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-11-11T00:00:00+00:00">
+<title>A TypeScript RESTful API Using Design Patterns, Creational | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts/20241111-ts-01-restful-todo-design-patterns-creational/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.1ca45c072f658d605da4c39f5488baab8f623eee0de706444de815f392fc14b2.js" integrity="sha256-HKRcBy9ljWBdpMOfVIi6q49iPu4N5wZETegV85L8FLI=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>A TypeScript RESTful API Using Design Patterns, Creational</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#abstract-factory">Abstract Factory</a>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#implementation">Implementation</a></li>
+      </ul>
+    </li>
+    <li><a href="#builder">Builder</a>
+      <ul>
+        <li><a href="#overview-1">Overview</a></li>
+        <li><a href="#implementation-1">Implementation</a></li>
+      </ul>
+    </li>
+    <li><a href="#factory-method">Factory Method</a></li>
+    <li><a href="#prototype">Prototype</a></li>
+    <li><a href="#singleton">Singleton</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h2>
+    A TypeScript RESTful API Using Design Patterns, Creational
+  </h2>
+  
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>November 11, 2024</span>
+  </div>
+
+
+
+  
+
+  
+
+
+  <div class="book-post-content"><p>Let’s talk about <strong>creational design patterns</strong>—arguably the foundation of any well-architected system. At their core, these patterns focus on how objects are created. Why does this matter? Well, if you’ve ever written code that tightly couples object creation to the logic that depends on those objects, you’ve likely felt the pain of trying to refactor it later.</p>
+<p>Creational patterns abstract that creation process, giving us flexibility and reuse. By adopting these patterns, our systems become more scalable, maintainable, and adaptable. In this article, we’ll explore how creational patterns can bring order and elegance to a RESTful API built with TypeScript. And yes, we’ll sprinkle in some practical examples to keep things grounded.</p>
+<h2 id="abstract-factory">
+  Abstract Factory
+  <a class="anchor" href="#abstract-factory">#</a>
+</h2>
+<h3 id="overview">
+  Overview
+  <a class="anchor" href="#overview">#</a>
+</h3>
+<p>The <strong>Abstract Factory</strong> pattern is essentially about creating families of related objects. Imagine a factory—let’s say one for custom error responses. It churns out objects like <code>404 Not Found</code> or <code>500 Internal Server Error</code>, all following a consistent structure. This pattern ensures we centralize the creation logic for these objects, which makes our code more predictable and, dare I say, pleasant to maintain.</p>
+<h3 id="implementation">
+  Implementation
+  <a class="anchor" href="#implementation">#</a>
+</h3>
+<p>Let’s start simple. Suppose we need to generate error responses. For example, every <code>404</code> has the same code but a different message. Instead of repeatedly writing boilerplate code, why not create reusable factories?</p>
+<p>Here’s a function-based Abstract Factory—straightforward, clean, and very TypeScript-y:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CreateErrorResponse</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">ErrorResponse</span>;
+</span></span></code></pre></div><p>With this template, we define factories for each error type:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createBadRequestResponse</span>: <span style="color:#66d9ef">CreateErrorResponse</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ErrorResponse</span> <span style="color:#f92672">=&gt;</span> ({ <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">400</span>, <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">message</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;Bad Request&#34;</span> });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createNotFoundResponse</span>: <span style="color:#66d9ef">CreateErrorResponse</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ErrorResponse</span> <span style="color:#f92672">=&gt;</span> ({ <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">404</span>, <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">message</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;Not Found&#34;</span> });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createInternalServerErrorResponse</span>: <span style="color:#66d9ef">CreateErrorResponse</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ErrorResponse</span> <span style="color:#f92672">=&gt;</span> ({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">500</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">message</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;Internal Server Error&#34;</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Now, you might wonder, “What about using classes?” Sure, we can, but—and I’ll admit this is personal preference—I’m a fan of keeping things simple when the situation calls for it. Why complicate something clean with unnecessary abstractions? That said, for those of you who prefer a class-based approach, here’s an example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ErrorResponseFactory</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">create</span>(<span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ErrorResponse</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BadRequestResponseFactory</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">ErrorResponseFactory</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">create</span>(<span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ErrorResponse</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">400</span>, <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">message</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;Bad Request&#34;</span> };
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotFoundResponseFactory</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">ErrorResponseFactory</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">create</span>(<span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ErrorResponse</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">404</span>, <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">message</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;Not Found&#34;</span> };
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Use this approach if your project demands more extensibility or you want to standardize object creation across various implementations.</p>
+<h2 id="builder">
+  Builder
+  <a class="anchor" href="#builder">#</a>
+</h2>
+<h3 id="overview-1">
+  Overview
+  <a class="anchor" href="#overview-1">#</a>
+</h3>
+<p>Let’s move to the <strong>Builder</strong> pattern. Imagine you’re assembling a complex object like our <code>Task</code> model. It’s not just about instantiating an object—it’s about constructing it piece by piece, ensuring everything is configured correctly. The Builder pattern is perfect for this scenario.</p>
+<p>But here’s the twist: our <code>Task</code> creation logic has a small oversight. When building the <code>create</code> action in the initial RESTful API, we overlooked a key detail—<code>Task</code> objects include properties like <code>id</code> and <code>createdAt</code> that aren’t part of the user’s input. To fix this, we introduce a new <code>TaskInput</code> class.</p>
+<h3 id="implementation-1">
+  Implementation
+  <a class="anchor" href="#implementation-1">#</a>
+</h3>
+<h4 id="task-input">
+  Task Input
+  <a class="anchor" href="#task-input">#</a>
+</h4>
+<p>This lightweight class represents the input expected when creating a task:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskInput</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">DefaultTaskInputDescription</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Default Task Description&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">title</span>: <span style="color:#66d9ef">string</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">description</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">TaskInput</span>.<span style="color:#a6e22e">DefaultTaskInputDescription</span>
+</span></span><span style="display:flex;"><span>  ) {}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="task-model">
+  Task Model
+  <a class="anchor" href="#task-model">#</a>
+</h4>
+<p>Now let’s redefine our <code>Task</code> model. It extends <code>TaskInput</code> and adds properties like <code>id</code>, <code>status</code>, and timestamps:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">TaskInput</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">TaskStatus</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">createdAt</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">updatedAt</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">title</span>: <span style="color:#66d9ef">string</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">description</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Task</span>.<span style="color:#a6e22e">DefaultTaskInputDescription</span>
+</span></span><span style="display:flex;"><span>  ) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>(<span style="color:#a6e22e">title</span>, <span style="color:#a6e22e">description</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">uuid</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">TaskStatus</span>.<span style="color:#a6e22e">Pending</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">createdAt</span> <span style="color:#f92672">=</span> Date.<span style="color:#a6e22e">now</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">updatedAt</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">createdAt</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="task-builder">
+  Task Builder
+  <a class="anchor" href="#task-builder">#</a>
+</h4>
+<p>Here’s where the Builder pattern shines. It simplifies <code>Task</code> creation by handling validation and configuration steps:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskBuilder</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">task</span>: <span style="color:#66d9ef">Task</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">constructor</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Task</span>(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">Task</span>.<span style="color:#a6e22e">DefaultTaskInputDescription</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fromTaskInput</span>(<span style="color:#a6e22e">input</span>: <span style="color:#66d9ef">TaskInput</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">setTitle</span>(<span style="color:#a6e22e">input</span>.<span style="color:#a6e22e">title</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">setDescription</span>(<span style="color:#a6e22e">input</span>.<span style="color:#a6e22e">description</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setId</span>(<span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">id</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setTitle</span>(<span style="color:#a6e22e">title</span>: <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">title</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setDescription</span>(<span style="color:#a6e22e">description</span>: <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">description</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setStatus</span>(<span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">TaskStatus</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">status</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setCreatedAt</span>(<span style="color:#a6e22e">date</span>: <span style="color:#66d9ef">Date</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">createdAt</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">date</span>.<span style="color:#a6e22e">getTime</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setUpdatedAt</span>(<span style="color:#a6e22e">date</span>: <span style="color:#66d9ef">Date</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">updatedAt</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">date</span>.<span style="color:#a6e22e">getTime</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">build</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Task</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;&#34;</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Title is required.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Notice how <code>build()</code> enforces validation. No more wondering if <code>Task</code> objects are missing critical properties—this method ensures they’re always valid.</p>
+<h2 id="factory-method">
+  Factory Method
+  <a class="anchor" href="#factory-method">#</a>
+</h2>
+<p>The <strong>Factory Method</strong> pattern is like the next step after you realize that manually creating objects everywhere in your code is a terrible idea. Think about it—what happens when the way you create an object changes? Do you really want to dive into dozens of files, updating instantiation logic one by one? No, thank you.</p>
+<p>The Factory Method pattern centralizes the creation process for a specific object, giving you a single point of truth. It also makes your code easier to extend, because adding new creation logic doesn’t require changing existing code—it just means adding a new factory method.</p>
+<p>Let’s start simple and build up.</p>
+<p>Remember when we discussed creating error responses in the <strong>Abstract Factory</strong> section? Each of those factories can also be seen as Factory Methods when considered individually. Here’s a super simple Factory Method:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createErrorResponse</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">number</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">message?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ErrorResponse</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">message</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">code</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">400</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">message</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Bad Request&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">404</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">message</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Not Found&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">500</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">message</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Internal Server Error&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Unknown Error&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">code</span>, <span style="color:#a6e22e">message</span> };
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>This function encapsulates the object creation logic, allowing us to generate consistent error responses without duplicating code. Notice how it defaults to standard messages when none are provided. Simple, effective, and easily extensible.</p>
+<p>The <strong>TaskBuilder</strong> class we discussed earlier is a great candidate for a Factory Method. Instead of directly instantiating a builder in multiple places, we create a dedicated method:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">createTaskBuilder</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">TaskBuilder</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">TaskBuilder</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now, wherever we need to build a <code>Task</code>, we call <code>createTaskBuilder()</code> instead of sprinkling <code>new TaskBuilder()</code> all over our codebase. This abstraction makes it easy to adjust the builder instantiation in one place without hunting down instances throughout your code.</p>
+<p>If you’re looking to embrace object-oriented principles fully, you can design a factory class that encapsulates the creation logic for builders:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskBuilderFactory</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">createTaskBuilder</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">TaskBuilder</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">TaskBuilder</span>();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Why might you do this? Maybe your project has multiple builder types (e.g., <code>TaskBuilder</code>, <code>SubTaskBuilder</code>, etc.), and you want a single factory class to manage their creation. This approach keeps things organized and allows for future extensions without altering the existing logic.</p>
+<p>The beauty of the Factory Method lies in its simplicity. It centralizes object creation, making your code easier to maintain and extend. And the best part? It’s a small change with a significant impact. Even something as straightforward as a <code>createTaskBuilder</code> function can save you headaches down the road.</p>
+<p>But keep in mind, not every object needs a factory. Use this pattern when object creation is complex, repetitive, or likely to change.</p>
+<h2 id="prototype">
+  Prototype
+  <a class="anchor" href="#prototype">#</a>
+</h2>
+<p>Let’s move on to the <strong>Prototype</strong> pattern, which is a fascinating one. At its heart, this pattern is all about duplicating objects. Imagine you have an object that took time and effort to set up—maybe it has a bunch of deeply nested properties, or it involved a series of computations. Instead of recreating it from scratch, you simply make a copy.</p>
+<p>The Prototype pattern lets us do this efficiently while keeping our code clean and flexible.</p>
+<p>In TypeScript, the spread operator is your best friend for shallow cloning:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">errorResponse</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createErrorResponse</span>(<span style="color:#ae81ff">404</span>, <span style="color:#e6db74">&#34;Task Not Found&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">errorResponseDuplicate</span> <span style="color:#f92672">=</span> { ...<span style="color:#a6e22e">errorResponse</span> };
+</span></span></code></pre></div><p>This works perfectly for objects composed of primitive types. However, if your object has nested properties or complex references, shallow cloning won’t cut it. That’s when we need a more robust approach.</p>
+<p>Inspired by languages like Java, we can introduce a <code>Cloneable</code> interface to standardize how cloning is handled:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Cloneable</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">clone</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Cloneable</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This interface ensures that any class implementing it must provide a <code>clone</code> method. Let’s apply this to the <code>Task</code> class:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">Cloneable</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;../utils/Cloneable&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">TaskInput</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;./TaskInput&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">TaskStatus</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;./TaskStatus&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">v4</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">uuid</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;uuid&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">TaskInput</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Cloneable</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">TaskStatus</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">createdAt</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">updatedAt</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Other methods...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">clone</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Cloneable</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">clone</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Task</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">clone</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">clone</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">status</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">clone</span>.<span style="color:#a6e22e">createdAt</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">createdAt</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">clone</span>.<span style="color:#a6e22e">updatedAt</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">updatedAt</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">clone</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Here’s what’s happening:</p>
+<ol>
+<li>The <code>clone</code> method creates a new <code>Task</code> instance, duplicating all its properties.</li>
+<li>This approach ensures a deep copy, even if the object contains complex types.</li>
+</ol>
+<p>Why go through this effort? Because having a consistent way to clone objects makes your code more predictable and reusable.</p>
+<h2 id="singleton">
+  Singleton
+  <a class="anchor" href="#singleton">#</a>
+</h2>
+<p>Finally, let’s talk about the <strong>Singleton</strong> pattern. This one’s a classic—it ensures a class has only one instance. It’s great for shared resources like a database connection, a configuration manager, or, in our case, the <code>Database</code> class.</p>
+<p>But let’s get something out of the way: not every single-use instance is a Singleton. To qualify, it must enforce that only one instance can exist and provide global access to it.</p>
+<p>Here’s how to implement a Singleton <code>Database</code> class:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#a6e22e">instance</span>: <span style="color:#66d9ef">Database</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">tasks</span>: <span style="color:#66d9ef">Task</span>[] <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">constructor</span>() {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#a6e22e">getInstance</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">Database</span>.<span style="color:#a6e22e">instance</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Database</span>.<span style="color:#a6e22e">instance</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Database</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Database</span>.<span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This class ensures that only one <code>Database</code> instance exists. Whenever <code>getInstance</code> is called, it either returns the existing instance or creates it if it doesn’t already exist.</p>
+<p>Sometimes, a full-blown Singleton class feels like overkill. For instance, consider our <code>taskNotFound404</code> error response. Do we really need a class to manage a single shared constant? Probably not.</p>
+<p>Here’s a simpler approach:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">taskNotFound404</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createNotFoundResponse</span>(<span style="color:#e6db74">&#34;Task Not Found&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">deleteTask</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">Request</span>, <span style="color:#a6e22e">res</span>: <span style="color:#66d9ef">Response</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">getTaskById</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">task</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">deleteTask</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">204</span>).<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">404</span>).<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">taskNotFound404</span>));
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>The Singleton pattern is powerful but often overused. Before reaching for it, ask yourself: Do I truly need a single, global instance? If the answer is yes, go for it. If not, consider simpler alternatives like module-level constants.</p>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>Creational patterns are all about making object creation predictable, reusable, and flexible. They help us write cleaner, more maintainable code by abstracting away the details of how objects are instantiated. Whether it’s an elegant <code>TaskBuilder</code> or a reliable <code>Database</code> Singleton, these patterns are invaluable tools in a developer’s toolbox.</p>
+<p>For the full implementation of the examples in this article, visit <a href="https://github.com/solidref/typescript-todo-restful-dp/tree/01_creational_patterns">GitHub</a>.</p>
+<p>In the next article, we’ll explore <strong>Structural</strong> patterns and how they can simplify complex relationships in our RESTful API. See you there!</p>
+</div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#abstract-factory">Abstract Factory</a>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#implementation">Implementation</a></li>
+      </ul>
+    </li>
+    <li><a href="#builder">Builder</a>
+      <ul>
+        <li><a href="#overview-1">Overview</a></li>
+        <li><a href="#implementation-1">Implementation</a></li>
+      </ul>
+    </li>
+    <li><a href="#factory-method">Factory Method</a></li>
+    <li><a href="#prototype">Prototype</a></li>
+    <li><a href="#singleton">Singleton</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

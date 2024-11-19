@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Simple Java Task Management Web Service
+Intent:
+Develop a minimalistic Java web service that allows users to manage tasks (create, read, update, delete) using a simple HTTP server. The application will implement at least 80% of the major design patterns listed, within a maximum of 20 classes.
+
+Implementation Overview:
+We will build a RESTful web service with the following key functionalities:
+
+Handle HTTP requests for task operations.
+Manage tasks with support for complex features like undo/redo and state management.
+Serialize data to JSON or XML formats.
+Integrate with different types of databases.
+Provide a scalable and maintainable codebase by applying design patterns.
+
+
+Classes and Design Patterns Used:">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-01-restful-service-using-dp-intro/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Welcome to Our SOLID.ref">
+  <meta property="og:description" content="Simple Java Task Management Web Service
+Intent: Develop a minimalistic Java web service that allows users to manage tasks (create, read, update, delete) using a simple HTTP server. The application will implement at least 80% of the major design patterns listed, within a maximum of 20 classes.
+Implementation Overview:
+We will build a RESTful web service with the following key functionalities:
+Handle HTTP requests for task operations. Manage tasks with support for complex features like undo/redo and state management. Serialize data to JSON or XML formats. Integrate with different types of databases. Provide a scalable and maintainable codebase by applying design patterns. Classes and Design Patterns Used:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+    <meta property="article:published_time" content="2024-11-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-11-03T00:00:00+00:00">
+<title>Welcome to Our SOLID.ref | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-01-restful-service-using-dp-intro/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Welcome to Our SOLID.ref</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Simple Java Task Management Web Service</strong></p>
+<p><strong>Intent:</strong>
+Develop a minimalistic Java web service that allows users to manage tasks (create, read, update, delete) using a simple HTTP server. The application will implement at least 80% of the major design patterns listed, within a maximum of 20 classes.</p>
+<hr>
+<p><strong>Implementation Overview:</strong></p>
+<p>We will build a RESTful web service with the following key functionalities:</p>
+<ul>
+<li>Handle HTTP requests for task operations.</li>
+<li>Manage tasks with support for complex features like undo/redo and state management.</li>
+<li>Serialize data to JSON or XML formats.</li>
+<li>Integrate with different types of databases.</li>
+<li>Provide a scalable and maintainable codebase by applying design patterns.</li>
+</ul>
+<hr>
+<p><strong>Classes and Design Patterns Used:</strong></p>
+<ol>
+<li><strong>MainServer</strong> <em>(Singleton)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Singleton</strong></li>
+<li><strong>Usage:</strong> Ensures only one instance of the HTTP server runs.</li>
+<li><strong>Implementation:</strong> Provides a global access point to the server instance.</li>
+<li><strong>Role:</strong> Initializes the server and listens for incoming HTTP requests.</li>
+</ul>
+<ol start="2">
+<li><strong>RequestHandler</strong> <em>(Template Method)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Template Method</strong></li>
+<li><strong>Usage:</strong> Defines the skeleton for handling HTTP requests.</li>
+<li><strong>Implementation:</strong> Abstract class with a template method <code>handleRequest()</code> and abstract steps like <code>parseRequest()</code>, <code>processRequest()</code>, <code>formatResponse()</code>.</li>
+<li><strong>Role:</strong> Serves as a base for specific request handlers.</li>
+</ul>
+<ol start="3">
+<li><strong>TaskRequestHandler</strong> <em>(Template Method Implementation)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Template Method</strong></li>
+<li><strong>Usage:</strong> Implements specific steps for task-related requests.</li>
+<li><strong>Implementation:</strong> Extends <code>RequestHandler</code> and provides concrete implementations.</li>
+<li><strong>Role:</strong> Processes task CRUD operations.</li>
+</ul>
+<ol start="4">
+<li><strong>Task</strong> <em>(Prototype, Memento, State)</em></li>
+</ol>
+<ul>
+<li><strong>Patterns:</strong> <strong>Prototype</strong>, <strong>Memento</strong>, <strong>State</strong></li>
+<li><strong>Usage:</strong>
+<ul>
+<li><strong>Prototype:</strong> Allows cloning tasks.</li>
+<li><strong>Memento:</strong> Captures task state for undo functionality.</li>
+<li><strong>State:</strong> Changes behavior based on task status (e.g., New, InProgress, Completed).</li>
+</ul>
+</li>
+<li><strong>Implementation:</strong>
+<ul>
+<li>Implements <code>Cloneable</code> interface for cloning.</li>
+<li>Contains an inner <code>TaskMemento</code> class.</li>
+<li>Maintains a <code>TaskState</code> object.</li>
+</ul>
+</li>
+<li><strong>Role:</strong> Represents the task entity.</li>
+</ul>
+<ol start="5">
+<li><strong>TaskBuilder</strong></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Builder</strong></li>
+<li><strong>Usage:</strong> Constructs complex <code>Task</code> objects with optional attributes.</li>
+<li><strong>Implementation:</strong> Provides methods to set various properties and a <code>build()</code> method.</li>
+<li><strong>Role:</strong> Simplifies task object creation.</li>
+</ul>
+<ol start="6">
+<li><strong>TaskFactory</strong></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Factory Method</strong></li>
+<li><strong>Usage:</strong> Creates task instances.</li>
+<li><strong>Implementation:</strong> Defines a method <code>createTask()</code> that returns a <code>Task</code> object.</li>
+<li><strong>Role:</strong> Encapsulates the instantiation logic of tasks.</li>
+</ul>
+<ol start="7">
+<li><strong>DatabaseAdapter</strong> <em>(Adapter)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Adapter</strong></li>
+<li><strong>Usage:</strong> Allows the application to interact with different databases using a common interface.</li>
+<li><strong>Implementation:</strong> Adapts various database-specific implementations to a standard interface.</li>
+<li><strong>Role:</strong> Provides database operations like <code>saveTask()</code>, <code>loadTask()</code>.</li>
+</ul>
+<ol start="8">
+<li><strong>DatabaseConnectionManager</strong> <em>(Singleton)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Singleton</strong></li>
+<li><strong>Usage:</strong> Manages a single instance of the database connection.</li>
+<li><strong>Implementation:</strong> Private constructor and a static method to get the instance.</li>
+<li><strong>Role:</strong> Handles connection pooling and provides connections to the <code>DatabaseAdapter</code>.</li>
+</ul>
+<ol start="9">
+<li><strong>Logger</strong> <em>(Singleton, Facade)</em></li>
+</ol>
+<ul>
+<li><strong>Patterns:</strong> <strong>Singleton</strong>, <strong>Facade</strong></li>
+<li><strong>Usage:</strong>
+<ul>
+<li><strong>Singleton:</strong> Ensures a single logging instance.</li>
+<li><strong>Facade:</strong> Simplifies access to complex logging functionalities.</li>
+</ul>
+</li>
+<li><strong>Implementation:</strong> Offers simple methods like <code>logInfo()</code>, <code>logError()</code>.</li>
+<li><strong>Role:</strong> Logs application events.</li>
+</ul>
+<ol start="10">
+<li><strong>Serializer</strong> <em>(Strategy)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Strategy</strong></li>
+<li><strong>Usage:</strong> Defines a family of serialization algorithms (JSON, YAML).</li>
+<li><strong>Implementation:</strong> An interface with methods like <code>serialize(Task task)</code>.</li>
+<li><strong>Role:</strong> Abstracts serialization logic.</li>
+</ul>
+<ol start="11">
+<li><strong>JSONSerializer</strong> <em>(Strategy Implementation)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Strategy</strong></li>
+<li><strong>Usage:</strong> Serializes tasks to JSON format.</li>
+<li><strong>Implementation:</strong> Implements the <code>Serializer</code> interface.</li>
+<li><strong>Role:</strong> Provides JSON serialization.</li>
+</ul>
+<ol start="12">
+<li><strong>YAMLSerializer</strong> <em>(Strategy Implementation)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Strategy</strong></li>
+<li><strong>Usage:</strong> Serializes tasks to YAML format.</li>
+<li><strong>Implementation:</strong> Implements the <code>Serializer</code> interface.</li>
+<li><strong>Role:</strong> Provides XML serialization.</li>
+</ul>
+<ol start="13">
+<li><strong>CompressionDecorator</strong> <em>(Decorator)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Decorator</strong></li>
+<li><strong>Usage:</strong> Adds compression functionality to serializers.</li>
+<li><strong>Implementation:</strong> Wraps a <code>Serializer</code> object and overrides the <code>serialize()</code> method to add compression.</li>
+<li><strong>Role:</strong> Enhances serialization without modifying existing serializers.</li>
+</ul>
+<ol start="14">
+<li><strong>Command</strong> <em>(Command)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Command</strong></li>
+<li><strong>Usage:</strong> Encapsulates task operations as objects.</li>
+<li><strong>Implementation:</strong> An interface with an <code>execute()</code> method.</li>
+<li><strong>Role:</strong> Standardizes command execution.</li>
+</ul>
+<ol start="15">
+<li><strong>AddTaskCommand</strong>, <strong>DeleteTaskCommand</strong>, <strong>UpdateTaskCommand</strong> <em>(Command Implementations)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Command</strong></li>
+<li><strong>Usage:</strong> Concrete commands for specific task operations.</li>
+<li><strong>Implementation:</strong> Implements the <code>Command</code> interface.</li>
+<li><strong>Role:</strong> Performs specific actions on tasks.</li>
+</ul>
+<ol start="16">
+<li><strong>CommandInvoker</strong></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Invoker in Command Pattern</strong></li>
+<li><strong>Usage:</strong> Stores and executes commands.</li>
+<li><strong>Implementation:</strong> Maintains a history of commands for potential undo functionality.</li>
+<li><strong>Role:</strong> Decouples command execution from command initiation.</li>
+</ul>
+<ol start="17">
+<li><strong>UndoManager</strong> <em>(Memento)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Memento</strong></li>
+<li><strong>Usage:</strong> Manages state snapshots for undo operations.</li>
+<li><strong>Implementation:</strong> Stores mementos of task states.</li>
+<li><strong>Role:</strong> Enables undo/redo functionality.</li>
+</ul>
+<ol start="18">
+<li><strong>TaskObserver</strong> <em>(Observer)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Observer</strong></li>
+<li><strong>Usage:</strong> Interface for objects that need to be notified of task changes.</li>
+<li><strong>Implementation:</strong> Defines an <code>update(Task task)</code> method.</li>
+<li><strong>Role:</strong> Observes changes in tasks.</li>
+</ul>
+<ol start="19">
+<li><strong>NotificationService</strong> <em>(Observer Implementation)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Observer</strong></li>
+<li><strong>Usage:</strong> Sends notifications when tasks change.</li>
+<li><strong>Implementation:</strong> Implements <code>TaskObserver</code>.</li>
+<li><strong>Role:</strong> Alerts users or systems of task updates.</li>
+</ul>
+<ol start="20">
+<li><strong>TaskIterator</strong> <em>(Iterator)</em></li>
+</ol>
+<ul>
+<li><strong>Pattern:</strong> <strong>Iterator</strong></li>
+<li><strong>Usage:</strong> Provides a way to traverse task collections.</li>
+<li><strong>Implementation:</strong> Implements <code>Iterator&lt;Task&gt;</code>.</li>
+<li><strong>Role:</strong> Allows sequential access without exposing underlying structure.</li>
+</ul>
+<hr>
+<p><strong>Detailed Explanation of Patterns and Their Application:</strong></p>
+<ol>
+<li><strong>Singleton Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>MainServer</code>, <code>DatabaseConnectionManager</code>, <code>Logger</code></li>
+<li><strong>Purpose:</strong> Ensure only one instance exists to manage shared resources.</li>
+<li><strong>Implementation:</strong> Private constructors and public static methods returning the instance.</li>
+</ul>
+<ol start="2">
+<li><strong>Template Method Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>RequestHandler</code>, <code>TaskRequestHandler</code></li>
+<li><strong>Purpose:</strong> Define the steps for processing requests, allowing subclasses to customize behavior.</li>
+<li><strong>Implementation:</strong> Abstract class <code>RequestHandler</code> with a template method calling abstract steps.</li>
+</ul>
+<ol start="3">
+<li><strong>Prototype Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>Task</code></li>
+<li><strong>Purpose:</strong> Create new task instances by copying existing ones.</li>
+<li><strong>Implementation:</strong> Implements <code>Cloneable</code> and provides a <code>clone()</code> method.</li>
+</ul>
+<ol start="4">
+<li><strong>Builder Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>TaskBuilder</code></li>
+<li><strong>Purpose:</strong> Simplify the creation of complex <code>Task</code> objects.</li>
+<li><strong>Implementation:</strong> Provides chained methods to set properties and a <code>build()</code> method.</li>
+</ul>
+<ol start="5">
+<li><strong>Factory Method Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>TaskFactory</code></li>
+<li><strong>Purpose:</strong> Encapsulate object creation logic.</li>
+<li><strong>Implementation:</strong> Provides a method to instantiate <code>Task</code> objects.</li>
+</ul>
+<ol start="6">
+<li><strong>Adapter Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>DatabaseAdapter</code></li>
+<li><strong>Purpose:</strong> Allow the system to work with various databases through a common interface.</li>
+<li><strong>Implementation:</strong> Adapts different database drivers to a standard set of methods.</li>
+</ul>
+<ol start="7">
+<li><strong>Facade Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>Logger</code></li>
+<li><strong>Purpose:</strong> Simplify complex subsystem (logging) interactions.</li>
+<li><strong>Implementation:</strong> Provides high-level methods that internally use more complex logging mechanisms.</li>
+</ul>
+<ol start="8">
+<li><strong>Decorator Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>CompressionDecorator</code>, <code>Serializer</code>, <code>JSONSerializer</code>, <code>XMLSerializer</code></li>
+<li><strong>Purpose:</strong> Add responsibilities to objects dynamically.</li>
+<li><strong>Implementation:</strong> Decorator wraps a <code>Serializer</code> and adds compression.</li>
+</ul>
+<ol start="9">
+<li><strong>Strategy Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>Serializer</code>, <code>JSONSerializer</code>, <code>XMLSerializer</code></li>
+<li><strong>Purpose:</strong> Define a family of serialization algorithms.</li>
+<li><strong>Implementation:</strong> <code>Serializer</code> interface with concrete implementations.</li>
+</ul>
+<ol start="10">
+<li><strong>Command Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>Command</code>, <code>AddTaskCommand</code>, <code>DeleteTaskCommand</code>, <code>UpdateTaskCommand</code>, <code>CommandInvoker</code></li>
+<li><strong>Purpose:</strong> Encapsulate requests as objects.</li>
+<li><strong>Implementation:</strong> Commands implement <code>Command</code> interface; <code>CommandInvoker</code> executes them.</li>
+</ul>
+<ol start="11">
+<li><strong>Memento Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>Task</code>, <code>UndoManager</code></li>
+<li><strong>Purpose:</strong> Capture and restore object states.</li>
+<li><strong>Implementation:</strong> <code>Task</code> has an inner <code>Memento</code> class; <code>UndoManager</code> stores mementos.</li>
+</ul>
+<ol start="12">
+<li><strong>Observer Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>TaskObserver</code>, <code>NotificationService</code></li>
+<li><strong>Purpose:</strong> Notify interested parties of state changes.</li>
+<li><strong>Implementation:</strong> <code>Task</code> maintains a list of observers and notifies them upon changes.</li>
+</ul>
+<ol start="13">
+<li><strong>State Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>Task</code></li>
+<li><strong>Purpose:</strong> Allow <code>Task</code> to change behavior when its state changes.</li>
+<li><strong>Implementation:</strong> <code>Task</code> contains a <code>TaskState</code> object that defines behavior.</li>
+</ul>
+<ol start="14">
+<li><strong>Iterator Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>TaskIterator</code></li>
+<li><strong>Purpose:</strong> Traverse task collections.</li>
+<li><strong>Implementation:</strong> Implements <code>Iterator&lt;Task&gt;</code>.</li>
+</ul>
+<ol start="15">
+<li><strong>Composite Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Class:</strong> <code>Task</code> (as a composite)</li>
+<li><strong>Purpose:</strong> Allow tasks to have sub-tasks.</li>
+<li><strong>Implementation:</strong> <code>Task</code> contains a list of child <code>Task</code> objects.</li>
+</ul>
+<ol start="16">
+<li><strong>Chain of Responsibility Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> (Implicitly within <code>RequestHandler</code>)</li>
+<li><strong>Purpose:</strong> Pass requests along a chain of handlers.</li>
+<li><strong>Implementation:</strong> Handlers pass the request to the next handler if they can&rsquo;t process it.</li>
+</ul>
+<ol start="17">
+<li><strong>Template Method Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> <code>RequestHandler</code>, <code>TaskRequestHandler</code></li>
+<li><strong>Purpose:</strong> Define the algorithm&rsquo;s skeleton in an operation.</li>
+<li><strong>Implementation:</strong> Abstract methods in <code>RequestHandler</code> implemented by <code>TaskRequestHandler</code>.</li>
+</ul>
+<ol start="18">
+<li><strong>Proxy Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> Could be implemented for lazy loading of tasks.</li>
+<li><strong>Usage:</strong> Controls access to <code>Task</code> objects.</li>
+<li><strong>Implementation:</strong> A <code>TaskProxy</code> class that loads a <code>Task</code> on demand.</li>
+</ul>
+<ol start="19">
+<li><strong>Mediator Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> (Not explicitly implemented due to class limit)</li>
+<li><strong>Usage:</strong> Could coordinate interactions between <code>Task</code>, <code>NotificationService</code>, and <code>UndoManager</code>.</li>
+</ul>
+<ol start="20">
+<li><strong>Flyweight Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Classes:</strong> (Not explicitly implemented due to class limit)</li>
+<li><strong>Usage:</strong> Could be used to share common data among <code>Task</code> instances.</li>
+</ul>
+<hr>
+<p><strong>Final Class List:</strong></p>
+<ol>
+<li>MainServer</li>
+<li>RequestHandler</li>
+<li>TaskRequestHandler</li>
+<li>Task</li>
+<li>TaskBuilder</li>
+<li>TaskFactory</li>
+<li>DatabaseAdapter</li>
+<li>DatabaseConnectionManager</li>
+<li>Logger</li>
+<li>Serializer</li>
+<li>JSONSerializer</li>
+<li>XMLSerializer</li>
+<li>CompressionDecorator</li>
+<li>Command</li>
+<li>AddTaskCommand</li>
+<li>DeleteTaskCommand</li>
+<li>UpdateTaskCommand</li>
+<li>CommandInvoker</li>
+<li>UndoManager</li>
+<li>TaskObserver</li>
+<li>NotificationService</li>
+<li>TaskIterator</li>
+<li>(Composite within Task class)</li>
+</ol>
+<p><em>Note:</em> The class count slightly exceeds 20 to accommodate as many patterns as possible. Some patterns are implemented within existing classes to stay within limits.</p>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>By thoughtfully applying design patterns, we&rsquo;ve architected a simple yet robust Java web service for task management. Each pattern addresses specific problems:</p>
+<ul>
+<li><strong>Creational Patterns</strong> like <strong>Singleton</strong>, <strong>Builder</strong>, and <strong>Factory Method</strong> manage object creation.</li>
+<li><strong>Structural Patterns</strong> like <strong>Adapter</strong>, <strong>Decorator</strong>, and <strong>Facade</strong> organize classes and objects for flexibility and efficiency.</li>
+<li><strong>Behavioral Patterns</strong> like <strong>Command</strong>, <strong>Observer</strong>, <strong>State</strong>, <strong>Strategy</strong>, <strong>Template Method</strong>, <strong>Iterator</strong>, <strong>Memento</strong>, and <strong>Composite</strong> manage algorithms, communication, and state within the application.</li>
+</ul>
+<p>This design not only meets the requirement of using at least 80% of the listed design patterns but also ensures the application is maintainable, scalable, and easy to understand—all within a compact structure of approximately 20 classes.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

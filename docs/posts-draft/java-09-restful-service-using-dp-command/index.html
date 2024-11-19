@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of Command Interface (Command Pattern)
+
+Purpose of Command Interface:
+The Command interface serves as the foundation of the Command Pattern, which encapsulates a request or action as an object. This allows for parameterization of clients with different requests, queuing of requests, and providing log and undo functionality. In the context of our task management application, the Command interface standardizes the execution of various task operations, such as creating, updating, and deleting tasks.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-09-restful-service-using-dp-command/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of Command Interface (Command Pattern)
+Purpose of Command Interface:
+The Command interface serves as the foundation of the Command Pattern, which encapsulates a request or action as an object. This allows for parameterization of clients with different requests, queuing of requests, and providing log and undo functionality. In the context of our task management application, the Command interface standardizes the execution of various task operations, such as creating, updating, and deleting tasks.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 09 Restful Service Using Dp Command | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-09-restful-service-using-dp-command/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 09 Restful Service Using Dp Command</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>Command</code> Interface (Command Pattern)</strong></p>
+<hr>
+<p><strong>Purpose of <code>Command</code> Interface:</strong></p>
+<p>The <code>Command</code> interface serves as the foundation of the <strong>Command Pattern</strong>, which encapsulates a request or action as an object. This allows for parameterization of clients with different requests, queuing of requests, and providing log and undo functionality. In the context of our task management application, the <code>Command</code> interface standardizes the execution of various task operations, such as creating, updating, and deleting tasks.</p>
+<hr>
+<p><strong>Command Pattern Overview:</strong></p>
+<ul>
+<li><strong>Intent:</strong> Encapsulate a request as an object, thereby allowing clients to be parameterized with different requests.</li>
+<li><strong>Participants:</strong>
+<ul>
+<li><strong>Command:</strong> Declares an interface for executing an operation.</li>
+<li><strong>ConcreteCommand:</strong> Implements the <code>Command</code> interface and defines a binding between a Receiver and an action.</li>
+<li><strong>Receiver:</strong> Knows how to perform the operations associated with carrying out a request.</li>
+<li><strong>Invoker:</strong> Asks the command to carry out the request.</li>
+<li><strong>Client:</strong> Creates a ConcreteCommand object and sets its receiver.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>1. <code>Command</code> Interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Command</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Declares the <code>execute</code> method that all concrete command classes must implement.</li>
+<li>Provides a standard interface for executing commands.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>
+<p><strong>Encapsulation of Actions:</strong></p>
+<ul>
+<li>By defining an interface with an <code>execute</code> method, we encapsulate the action to be performed within a command object.</li>
+<li>This allows us to treat all commands uniformly, regardless of their specific operations.</li>
+</ul>
+</li>
+<li>
+<p><strong>Standardization:</strong></p>
+<ul>
+<li>The <code>Command</code> interface standardizes how commands are executed, making it easier to manage and invoke them within the application.</li>
+</ul>
+</li>
+<li>
+<p><strong>Extensibility:</strong></p>
+<ul>
+<li>New commands can be added by implementing the <code>Command</code> interface without modifying existing code.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Usage in the Application:</strong></p>
+<p>In our task management application, we can use the <code>Command</code> interface to encapsulate various task operations, such as:</p>
+<ul>
+<li><strong>CreateTaskCommand</strong></li>
+<li><strong>UpdateTaskCommand</strong></li>
+<li><strong>DeleteTaskCommand</strong></li>
+<li><strong>ChangeStateCommand</strong></li>
+<li><strong>AssignTaskCommand</strong></li>
+</ul>
+<p>Each of these commands will implement the <code>Command</code> interface and provide their specific implementation of the <code>execute</code> method.</p>
+<hr>
+<p><strong>Example Implementation:</strong></p>
+<p><strong><code>CreateTaskCommand</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CreateTaskCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task task;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CreateTaskCommand</span>(TaskManager taskManager, Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">createTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>taskManager</code>: The receiver that knows how to perform the actual operation.</li>
+<li><code>task</code>: The task to be created.</li>
+</ul>
+</li>
+<li><strong>Constructor:</strong>
+<ul>
+<li>Initializes the command with the receiver and the task.</li>
+</ul>
+</li>
+<li><strong><code>execute</code> Method:</strong>
+<ul>
+<li>Calls the <code>createTask</code> method on the <code>taskManager</code>, performing the action.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong><code>TaskManager</code> (Receiver):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DatabaseOperations dbAdapter;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskManager</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dbAdapter</span> <span style="color:#f92672">=</span> dbAdapter;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">saveTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Other task-related operations...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Acts as the receiver that knows how to carry out the requests.</li>
+<li>Provides methods for task operations such as creating, updating, and deleting tasks.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Invoker (Could be <code>TaskRequestHandler</code> or another class):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CommandInvoker</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">executeCommand</span>(Command command) {
+</span></span><span style="display:flex;"><span>        command.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Calls the <code>execute</code> method on the command.</li>
+<li>Decouples the invoker from the concrete command classes.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Client Code Example:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Client code in TaskRequestHandler</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> CommandInvoker invoker;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskRequestHandler</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(dbAdapter);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskManager(dbAdapter);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">invoker</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CommandInvoker();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Parse the request body and create a Task object</span>
+</span></span><span style="display:flex;"><span>            JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>            Task task <span style="color:#f92672">=</span> taskFactory.<span style="color:#a6e22e">createTask</span>(jsonBody);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Create the command</span>
+</span></span><span style="display:flex;"><span>            Command createCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CreateTaskCommand(taskManager, task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Execute the command via the invoker</span>
+</span></span><span style="display:flex;"><span>            invoker.<span style="color:#a6e22e">executeCommand</span>(createCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Prepare the response</span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(201);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li><strong>Client (TaskRequestHandler):</strong>
+<ul>
+<li>Creates a <code>CreateTaskCommand</code> with the necessary parameters.</li>
+<li>Uses the <code>CommandInvoker</code> to execute the command.</li>
+</ul>
+</li>
+<li><strong>Decoupling:</strong>
+<ul>
+<li>The handler does not need to know the details of how the task is created.</li>
+<li>The command encapsulates the action and its execution.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Advantages of Using the Command Pattern:</strong></p>
+<ol>
+<li><strong>Decoupling Invoker and Receiver:</strong></li>
+</ol>
+<ul>
+<li>The invoker (<code>CommandInvoker</code>) does not need to know the specifics of the action or the receiver (<code>TaskManager</code>).</li>
+<li>Promotes loose coupling in the application architecture.</li>
+</ul>
+<ol start="2">
+<li><strong>Extensibility:</strong></li>
+</ol>
+<ul>
+<li>New commands can be added without changing existing code.</li>
+<li>The system is open for extension but closed for modification.</li>
+</ul>
+<ol start="3">
+<li><strong>Support for Undo/Redo:</strong></li>
+</ol>
+<ul>
+<li>Commands can be stored and reversed, enabling undo/redo functionality.</li>
+<li>Each command can provide an <code>unexecute</code> method for undo operations.</li>
+</ul>
+<ol start="4">
+<li><strong>Queuing and Scheduling:</strong></li>
+</ol>
+<ul>
+<li>Commands can be queued, logged, or scheduled for execution.</li>
+<li>Facilitates asynchronous or delayed execution.</li>
+</ul>
+<hr>
+<p><strong>Extending the <code>Command</code> Interface for Undo Functionality:</strong></p>
+<p>If we need undo capabilities, we can extend the <code>Command</code> interface:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Command</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The <code>unexecute</code> method allows the command to reverse its action.</li>
+<li>Commands implementing this interface can provide the logic to undo the operation.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Implementing <code>UpdateTaskCommand</code> with Undo:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UpdateTaskCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task oldTask;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task newTask;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UpdateTaskCommand</span>(TaskManager taskManager, Task oldTask, Task newTask) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">oldTask</span> <span style="color:#f92672">=</span> oldTask.<span style="color:#a6e22e">clone</span>(); <span style="color:#75715e">// Save old state</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">newTask</span> <span style="color:#f92672">=</span> newTask;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">updateTask</span>(newTask);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">updateTask</span>(oldTask);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>oldTask</code>: The state of the task before the update.</li>
+<li><code>newTask</code>: The updated task data.</li>
+</ul>
+</li>
+<li><strong><code>execute</code> Method:</strong>
+<ul>
+<li>Updates the task with new data.</li>
+</ul>
+</li>
+<li><strong><code>unexecute</code> Method:</strong>
+<ul>
+<li>Restores the task to its previous state.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Command History and Undo Manager:</strong></p>
+<p>We can implement an <code>UndoManager</code> that keeps track of executed commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Stack;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UndoManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Stack<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> undoStack <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Stack<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> redoStack <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">executeCommand</span>(Command command) {
+</span></span><span style="display:flex;"><span>        command.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>        undoStack.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>        redoStack.<span style="color:#a6e22e">clear</span>(); <span style="color:#75715e">// Clear redo stack after new command</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">undo</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>undoStack.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            Command command <span style="color:#f92672">=</span> undoStack.<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (command <span style="color:#66d9ef">instanceof</span> UndoableCommand) {
+</span></span><span style="display:flex;"><span>                ((UndoableCommand) command).<span style="color:#a6e22e">unexecute</span>();
+</span></span><span style="display:flex;"><span>                redoStack.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Nothing to undo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">redo</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>redoStack.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            Command command <span style="color:#f92672">=</span> redoStack.<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            command.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>            undoStack.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Nothing to redo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li><strong>Stacks:</strong>
+<ul>
+<li><code>undoStack</code>: Stores commands that can be undone.</li>
+<li><code>redoStack</code>: Stores commands that can be redone.</li>
+</ul>
+</li>
+<li><strong>Methods:</strong>
+<ul>
+<li><code>executeCommand</code>: Executes a command and adds it to the undo stack.</li>
+<li><code>undo</code>: Unexecutes the last command.</li>
+<li><code>redo</code>: Re-executes the last undone command.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Implementing <code>UndoableCommand</code> Interface:</strong></p>
+<p>Alternatively, we can create a separate interface for commands that support undo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UndoableCommand</span> <span style="color:#66d9ef">extends</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Commands that can be undone implement <code>UndoableCommand</code>.</li>
+<li>Allows the <code>UndoManager</code> to check if a command supports undo functionality.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>By implementing the <code>Command</code> interface, we establish a standardized way to encapsulate task operations as objects. This design provides several benefits:</p>
+<ul>
+<li><strong>Standardization:</strong> All commands conform to a common interface, simplifying execution and management.</li>
+<li><strong>Decoupling:</strong> Separates the invoker from the receiver and the specifics of the command execution.</li>
+<li><strong>Extensibility:</strong> Easily add new commands without altering existing code.</li>
+<li><strong>Enhanced Functionality:</strong> Supports advanced features like undo/redo, command scheduling, and logging.</li>
+</ul>
+<p>This implementation of the <strong>Command Pattern</strong> enhances the modularity and flexibility of our task management application, allowing for scalable and maintainable code.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<p>Now that we have set the base for the <code>Command</code> interface and understand its role, we can proceed to:</p>
+<ol>
+<li><strong>Define Concrete Command Classes:</strong></li>
+</ol>
+<ul>
+<li>Implement specific commands for various task operations.</li>
+<li>Ensure each command encapsulates the necessary data and logic.</li>
+</ul>
+<ol start="2">
+<li><strong>Implement an Invoker:</strong></li>
+</ol>
+<ul>
+<li>Decide where commands will be executed (e.g., within the request handler, service layer, or a dedicated invoker).</li>
+<li>Manage command execution and history if needed.</li>
+</ul>
+<ol start="3">
+<li><strong>Integrate with the Application:</strong></li>
+</ol>
+<ul>
+<li>Modify existing code to use commands for task operations.</li>
+<li>Update the <code>TaskRequestHandler</code> to create and execute commands based on HTTP requests.</li>
+</ul>
+<ol start="4">
+<li><strong>Handle Undo/Redo (Optional):</strong></li>
+</ol>
+<ul>
+<li>Implement undo functionality if required by the application.</li>
+<li>Use the <code>UndoManager</code> or similar mechanism to manage command history.</li>
+</ul>
+<hr>
+<p><strong>Looking Forward:</strong></p>
+<p>By establishing the <code>Command</code> interface and understanding its application, we are well-prepared to implement the list of commands you will provide. Each command will:</p>
+<ul>
+<li>Encapsulate a specific task operation.</li>
+<li>Implement the <code>execute</code> method (and <code>unexecute</code> if undo functionality is needed).</li>
+<li>Interact with the <code>TaskManager</code> or appropriate receiver to perform the action.</li>
+</ul>
+<p>Feel free to provide the command list, and we can proceed with their implementation and integration into the application.</p>
+<hr>
+<p><strong>Implementation of <code>AddTaskCommand</code>, <code>DeleteTaskCommand</code>, <code>UpdateTaskCommand</code> (Command Implementations)</strong></p>
+<hr>
+<p><strong>Purpose:</strong></p>
+<p>The <code>AddTaskCommand</code>, <code>DeleteTaskCommand</code>, and <code>UpdateTaskCommand</code> classes are concrete implementations of the <code>Command</code> interface in the <strong>Command Pattern</strong>. These classes encapsulate specific task operations as objects, allowing for uniform execution, easier management, and potential support for undo/redo functionality.</p>
+<hr>
+<p><strong>1. <code>AddTaskCommand</code></strong></p>
+<p><strong>Implementation:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AddTaskCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task task;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AddTaskCommand</span>(TaskManager taskManager, Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">createTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">deleteTask</span>(task.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Explanation:</strong></p>
+<ul>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>taskManager</code>: The receiver responsible for performing task operations.</li>
+<li><code>task</code>: The <code>Task</code> object to be added.</li>
+</ul>
+</li>
+<li><strong>Constructor:</strong>
+<ul>
+<li>Initializes the command with the <code>taskManager</code> and the <code>task</code> to be added.</li>
+</ul>
+</li>
+<li><strong><code>execute()</code> Method:</strong>
+<ul>
+<li>Calls <code>createTask</code> on the <code>taskManager</code> to add the task to the system.</li>
+</ul>
+</li>
+<li><strong><code>unexecute()</code> Method:</strong>
+<ul>
+<li>Calls <code>deleteTask</code> on the <code>taskManager</code> to remove the task, effectively undoing the addition.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Usage Example:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Task newTask <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(<span style="color:#e6db74">&#34;New Task&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Description of the new task&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Command addTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AddTaskCommand(taskManager, newTask);
+</span></span><span style="display:flex;"><span>undoManager.<span style="color:#a6e22e">executeCommand</span>(addTaskCommand);
+</span></span></code></pre></div><hr>
+<p><strong>2. <code>DeleteTaskCommand</code></strong></p>
+<p><strong>Implementation:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DeleteTaskCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task task;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DeleteTaskCommand</span>(TaskManager taskManager, UUID taskId) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> taskManager.<span style="color:#a6e22e">getTask</span>(taskId).<span style="color:#a6e22e">clone</span>(); <span style="color:#75715e">// Save the current state</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">deleteTask</span>(task.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">createTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Explanation:</strong></p>
+<ul>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>taskManager</code>: The receiver responsible for task operations.</li>
+<li><code>task</code>: The <code>Task</code> object to be deleted, cloned to preserve its state.</li>
+</ul>
+</li>
+<li><strong>Constructor:</strong>
+<ul>
+<li>Initializes the command with the <code>taskManager</code> and the ID of the task to delete.</li>
+<li>Retrieves and clones the task to preserve its state for undo operations.</li>
+</ul>
+</li>
+<li><strong><code>execute()</code> Method:</strong>
+<ul>
+<li>Calls <code>deleteTask</code> on the <code>taskManager</code> to remove the task from the system.</li>
+</ul>
+</li>
+<li><strong><code>unexecute()</code> Method:</strong>
+<ul>
+<li>Calls <code>createTask</code> on the <code>taskManager</code> to restore the deleted task.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Usage Example:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>UUID taskIdToDelete <span style="color:#f92672">=</span> existingTask.<span style="color:#a6e22e">getId</span>();
+</span></span><span style="display:flex;"><span>Command deleteTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DeleteTaskCommand(taskManager, taskIdToDelete);
+</span></span><span style="display:flex;"><span>undoManager.<span style="color:#a6e22e">executeCommand</span>(deleteTaskCommand);
+</span></span></code></pre></div><hr>
+<p><strong>3. <code>UpdateTaskCommand</code></strong></p>
+<p><strong>Implementation:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UpdateTaskCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task oldTask;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task newTask;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UpdateTaskCommand</span>(TaskManager taskManager, Task newTask) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">newTask</span> <span style="color:#f92672">=</span> newTask;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">oldTask</span> <span style="color:#f92672">=</span> taskManager.<span style="color:#a6e22e">getTask</span>(newTask.<span style="color:#a6e22e">getId</span>()).<span style="color:#a6e22e">clone</span>(); <span style="color:#75715e">// Save old state</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">updateTask</span>(newTask);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">updateTask</span>(oldTask);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Explanation:</strong></p>
+<ul>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>taskManager</code>: The receiver responsible for task operations.</li>
+<li><code>newTask</code>: The <code>Task</code> object containing updated information.</li>
+<li><code>oldTask</code>: A clone of the existing task before the update, used for undo operations.</li>
+</ul>
+</li>
+<li><strong>Constructor:</strong>
+<ul>
+<li>Initializes the command with the <code>taskManager</code> and the updated <code>newTask</code>.</li>
+<li>Retrieves and clones the existing task to save its previous state.</li>
+</ul>
+</li>
+<li><strong><code>execute()</code> Method:</strong>
+<ul>
+<li>Calls <code>updateTask</code> on the <code>taskManager</code> to apply the updates.</li>
+</ul>
+</li>
+<li><strong><code>unexecute()</code> Method:</strong>
+<ul>
+<li>Calls <code>updateTask</code> on the <code>taskManager</code> to revert to the original task state.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Usage Example:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Task updatedTask <span style="color:#f92672">=</span> existingTask.<span style="color:#a6e22e">clone</span>();
+</span></span><span style="display:flex;"><span>updatedTask.<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Updated description&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Command updateTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UpdateTaskCommand(taskManager, updatedTask);
+</span></span><span style="display:flex;"><span>undoManager.<span style="color:#a6e22e">executeCommand</span>(updateTaskCommand);
+</span></span></code></pre></div><hr>
+<p><strong>Integration into the Application:</strong></p>
+<p><strong>1. <code>TaskManager</code> (Receiver):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DatabaseOperations dbAdapter;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskManager</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dbAdapter</span> <span style="color:#f92672">=</span> dbAdapter;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">saveTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">updateTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteTask</span>(UUID taskId) {
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">deleteTask</span>(taskId);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">getTask</span>(UUID taskId) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> dbAdapter.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Provides methods for task operations.</li>
+<li>Acts as the receiver in the Command Pattern, executing the actual business logic.</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. <code>UndoManager</code> (Invoker):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UndoManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Stack<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> undoStack <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Stack<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> redoStack <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">executeCommand</span>(Command command) {
+</span></span><span style="display:flex;"><span>        command.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>        undoStack.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>        redoStack.<span style="color:#a6e22e">clear</span>(); <span style="color:#75715e">// Clear redo stack after a new command</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">undo</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>undoStack.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            Command command <span style="color:#f92672">=</span> undoStack.<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            command.<span style="color:#a6e22e">unexecute</span>();
+</span></span><span style="display:flex;"><span>            redoStack.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Nothing to undo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">redo</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>redoStack.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            Command command <span style="color:#f92672">=</span> redoStack.<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            command.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>            undoStack.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Nothing to redo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Manages command execution and provides undo/redo functionality.</li>
+<li>Stores executed commands to enable reversal of actions.</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. Integration with <code>TaskRequestHandler</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskFactory taskFactory;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UndoManager undoManager;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskRequestHandler</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(dbAdapter);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskFactory</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcreteTaskFactory();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskManager(dbAdapter);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">undoManager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UndoManager();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle POST request to add a new task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>            Task task <span style="color:#f92672">=</span> taskFactory.<span style="color:#a6e22e">createTask</span>(jsonBody);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Command addTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AddTaskCommand(taskManager, task);
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">executeCommand</span>(addTaskCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(201);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle PUT request to update a task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePut</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            UUID taskId <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">fromString</span>(requestData.<span style="color:#a6e22e">getQueryParams</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;id&#34;</span>));
+</span></span><span style="display:flex;"><span>            Task existingTask <span style="color:#f92672">=</span> taskManager.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>            Task updatedTask <span style="color:#f92672">=</span> taskFactory.<span style="color:#a6e22e">createTask</span>(jsonBody);
+</span></span><span style="display:flex;"><span>            updatedTask.<span style="color:#a6e22e">setId</span>(taskId);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Command updateTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UpdateTaskCommand(taskManager, updatedTask);
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">executeCommand</span>(updateTaskCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(updatedTask.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle DELETE request to delete a task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleDelete</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            UUID taskId <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">fromString</span>(requestData.<span style="color:#a6e22e">getQueryParams</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;id&#34;</span>));
+</span></span><span style="display:flex;"><span>            Command deleteTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DeleteTaskCommand(taskManager, taskId);
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">executeCommand</span>(deleteTaskCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Task deleted successfully.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Methods to handle undo and redo actions</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleUndo</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">undo</span>();
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Undo successful.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(400);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Nothing to undo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleRedo</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">redo</span>();
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Redo successful.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(400);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Nothing to redo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li><strong>Adding a Task:</strong>
+<ul>
+<li>Parses the request, creates a <code>Task</code>, and wraps it in an <code>AddTaskCommand</code>.</li>
+<li>Executes the command via the <code>UndoManager</code>.</li>
+</ul>
+</li>
+<li><strong>Updating a Task:</strong>
+<ul>
+<li>Retrieves the existing task and updates it with new data.</li>
+<li>Creates an <code>UpdateTaskCommand</code> and executes it.</li>
+</ul>
+</li>
+<li><strong>Deleting a Task:</strong>
+<ul>
+<li>Creates a <code>DeleteTaskCommand</code> with the task ID and executes it.</li>
+</ul>
+</li>
+<li><strong>Undo/Redo Operations:</strong>
+<ul>
+<li>Provides endpoints to undo and redo actions using the <code>UndoManager</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Benefits of Using Command Implementations:</strong></p>
+<ol>
+<li><strong>Uniform Execution:</strong></li>
+</ol>
+<ul>
+<li>All commands implement the same interface, making it easy to execute and manage them uniformly.</li>
+</ul>
+<ol start="2">
+<li><strong>Decoupling:</strong></li>
+</ol>
+<ul>
+<li>Separates the object that invokes the operation (<code>TaskRequestHandler</code>) from the one that knows how to perform it (<code>TaskManager</code>).</li>
+</ul>
+<ol start="3">
+<li><strong>Undo/Redo Functionality:</strong></li>
+</ol>
+<ul>
+<li>Commands store the necessary state to undo and redo operations, enhancing the user experience.</li>
+</ul>
+<ol start="4">
+<li><strong>Extensibility:</strong></li>
+</ol>
+<ul>
+<li>New commands can be added without altering existing code, adhering to the Open/Closed Principle.</li>
+</ul>
+<ol start="5">
+<li><strong>Logging and Auditing:</strong></li>
+</ol>
+<ul>
+<li>Commands can be logged or stored for auditing purposes, providing a history of actions.</li>
+</ul>
+<hr>
+<p><strong>Considerations:</strong></p>
+<ol>
+<li><strong>State Preservation:</strong></li>
+</ol>
+<ul>
+<li>Cloning tasks before modifications ensures that the original state is preserved for undo operations.</li>
+</ul>
+<ol start="2">
+<li><strong>Memory Usage:</strong></li>
+</ol>
+<ul>
+<li>Storing clones of objects can increase memory usage. Implement strategies to manage memory effectively, such as limiting the undo stack size.</li>
+</ul>
+<ol start="3">
+<li><strong>Thread Safety:</strong></li>
+</ol>
+<ul>
+<li>If the application is multi-threaded, ensure that access to shared resources like the <code>UndoManager</code> and <code>TaskManager</code> is synchronized.</li>
+</ul>
+<ol start="4">
+<li><strong>Error Handling:</strong></li>
+</ol>
+<ul>
+<li>Commands should handle exceptions gracefully, ensuring that the system remains consistent in case of failures.</li>
+</ul>
+<ol start="5">
+<li><strong>Atomicity:</strong></li>
+</ol>
+<ul>
+<li>Operations should be atomic to prevent partial updates, especially important in undo/redo scenarios.</li>
+</ul>
+<hr>
+<p><strong>Extending Functionality:</strong></p>
+<ul>
+<li>
+<p><strong>Additional Commands:</strong></p>
+<ul>
+<li><strong>ChangeTaskStateCommand:</strong> To change the state of a task (e.g., from &ldquo;New&rdquo; to &ldquo;In Progress&rdquo;).</li>
+<li><strong>AssignTaskCommand:</strong> To assign a task to a user.</li>
+<li><strong>CompositeCommand:</strong> To execute multiple commands as a single operation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Macro Commands:</strong></p>
+<ul>
+<li>Implement commands that encapsulate a sequence of operations, useful for batch updates or complex actions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Command Logging:</strong></p>
+<ul>
+<li>Enhance commands to log actions for auditing or debugging purposes.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Example of a Composite Command (<code>CompositeCommand</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompositeCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> commands <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addCommand</span>(Command command) {
+</span></span><span style="display:flex;"><span>        commands.<span style="color:#a6e22e">add</span>(command);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (Command cmd : commands) {
+</span></span><span style="display:flex;"><span>            cmd.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        ListIterator<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> commands.<span style="color:#a6e22e">listIterator</span>(commands.<span style="color:#a6e22e">size</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> (iterator.<span style="color:#a6e22e">hasPrevious</span>()) {
+</span></span><span style="display:flex;"><span>            Command cmd <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">previous</span>();
+</span></span><span style="display:flex;"><span>            cmd.<span style="color:#a6e22e">unexecute</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Usage:</strong>
+<ul>
+<li>Allows grouping multiple commands into one, executing them together.</li>
+<li>Ensures that all commands can be undone in reverse order if needed.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>AddTaskCommand</code>, <code>DeleteTaskCommand</code>, and <code>UpdateTaskCommand</code> classes effectively implement the <strong>Command Pattern</strong> by encapsulating task operations as objects. This design provides a robust framework for executing actions, enabling features like undo/redo, and improving the maintainability and scalability of the application.</p>
+<p>By using these concrete commands, the application benefits from:</p>
+<ul>
+<li><strong>Modularity:</strong> Each command is responsible for a single operation.</li>
+<li><strong>Flexibility:</strong> Commands can be extended or modified without affecting other parts of the system.</li>
+<li><strong>Ease of Testing:</strong> Commands can be tested in isolation, improving code quality.</li>
+</ul>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ol>
+<li><strong>Implement Additional Commands:</strong></li>
+</ol>
+<ul>
+<li>Based on application requirements, implement other concrete commands to handle different operations.</li>
+</ul>
+<ol start="2">
+<li><strong>Enhance Error Handling:</strong></li>
+</ol>
+<ul>
+<li>Ensure that all commands properly handle exceptions and edge cases.</li>
+</ul>
+<ol start="3">
+<li><strong>Optimize Performance:</strong></li>
+</ol>
+<ul>
+<li>Review the command execution flow to identify and optimize any performance bottlenecks.</li>
+</ul>
+<ol start="4">
+<li><strong>User Interface Integration:</strong></li>
+</ol>
+<ul>
+<li>If applicable, update the client-side or front-end application to utilize the undo/redo functionality provided by the commands.</li>
+</ul>
+<ol start="5">
+<li><strong>Documentation:</strong></li>
+</ol>
+<ul>
+<li>Document the command implementations and how they should be used within the application.</li>
+</ul>
+<hr>
+<p>By completing the implementation and explanation of <code>AddTaskCommand</code>, <code>DeleteTaskCommand</code>, and <code>UpdateTaskCommand</code>, we have further advanced our simple Java web service application. This demonstrates how concrete implementations of the <strong>Command Pattern</strong> can be effectively utilized to encapsulate actions, provide advanced features like undo/redo, and enhance the overall architecture within a limited number of classes.</p>
+<hr>
+<hr>
+<p><strong>Implementation of <code>CommandInvoker</code> (Invoker in Command Pattern)</strong></p>
+<hr>
+<p><strong>Purpose of <code>CommandInvoker</code>:</strong></p>
+<p>The <code>CommandInvoker</code> class acts as the invoker in the <strong>Command Pattern</strong>. It is responsible for executing commands and can also maintain a history of executed commands for potential undo functionality. By centralizing command execution, the <code>CommandInvoker</code> decouples the command initiation (where the command is created) from the command execution (where the command is actually carried out), promoting loose coupling and flexibility in the application design.</p>
+<hr>
+<p><strong>Command Pattern Overview:</strong></p>
+<ul>
+<li><strong>Invoker:</strong> The object that knows how to execute a command but not how the command is implemented. It holds a command and at some point asks the command to carry out a request by calling its <code>execute()</code> method.</li>
+<li><strong>Command:</strong> Declares an interface for executing an operation.</li>
+<li><strong>ConcreteCommand:</strong> Implements the <code>Command</code> interface; binds a receiver object to an action.</li>
+<li><strong>Receiver:</strong> Knows how to perform the operations associated with carrying out a request.</li>
+</ul>
+<hr>
+<p><strong>Implementation Details:</strong></p>
+<p><strong>1. <code>CommandInvoker</code> Class:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayDeque;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Deque;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CommandInvoker</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Deque<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> commandHistory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayDeque<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Deque<span style="color:#f92672">&lt;</span>Command<span style="color:#f92672">&gt;</span> redoStack <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayDeque<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">executeCommand</span>(Command command) {
+</span></span><span style="display:flex;"><span>        command.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>        commandHistory.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>        redoStack.<span style="color:#a6e22e">clear</span>(); <span style="color:#75715e">// Clear redo stack after executing a new command</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">undo</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>commandHistory.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            Command command <span style="color:#f92672">=</span> commandHistory.<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (command <span style="color:#66d9ef">instanceof</span> UndoableCommand) {
+</span></span><span style="display:flex;"><span>                ((UndoableCommand) command).<span style="color:#a6e22e">unexecute</span>();
+</span></span><span style="display:flex;"><span>                redoStack.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// If the command is not undoable, handle it accordingly</span>
+</span></span><span style="display:flex;"><span>                System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Command cannot be undone.&#34;</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;No commands to undo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">redo</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>redoStack.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            Command command <span style="color:#f92672">=</span> redoStack.<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            command.<span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>            commandHistory.<span style="color:#a6e22e">push</span>(command);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;No commands to redo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<ol>
+<li><strong>Fields:</strong></li>
+</ol>
+<ul>
+<li><code>commandHistory</code>: A stack (using <code>Deque</code> for efficient push/pop operations) that stores executed commands for undo functionality.</li>
+<li><code>redoStack</code>: A stack that stores commands that have been undone, allowing them to be redone.</li>
+</ul>
+<ol start="2">
+<li><strong>Methods:</strong></li>
+</ol>
+<ul>
+<li><code>executeCommand(Command command)</code>: Executes the given command by calling its <code>execute()</code> method, then pushes it onto the <code>commandHistory</code> stack. Clears the <code>redoStack</code> because a new command execution invalidates the redo history.</li>
+<li><code>undo()</code>: Pops the last command from <code>commandHistory</code>, calls its <code>unexecute()</code> method if it&rsquo;s an <code>UndoableCommand</code>, and pushes it onto the <code>redoStack</code>. If the command is not undoable, it outputs a message.</li>
+<li><code>redo()</code>: Pops a command from the <code>redoStack</code>, re-executes it, and pushes it back onto the <code>commandHistory</code>.</li>
+</ul>
+<ol start="3">
+<li><strong>Type Checking:</strong></li>
+</ol>
+<ul>
+<li>Before calling <code>unexecute()</code>, the <code>undo()</code> method checks if the command implements <code>UndoableCommand</code>. This ensures that only commands that support undo functionality are undone.</li>
+</ul>
+<hr>
+<p><strong>Interfaces:</strong></p>
+<p><strong><code>Command</code> Interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Command</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong><code>UndoableCommand</code> Interface (Extends <code>Command</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UndoableCommand</span> <span style="color:#66d9ef">extends</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Commands that support undo functionality implement the <code>UndoableCommand</code> interface, which includes the <code>unexecute()</code> method.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Concrete Commands Implementing <code>UndoableCommand</code>:</strong></p>
+<p><strong><code>AddTaskCommand</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AddTaskCommand</span> <span style="color:#66d9ef">implements</span> UndoableCommand {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task task;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AddTaskCommand</span>(TaskManager taskManager, Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">createTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">deleteTask</span>(task.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong><code>DeleteTaskCommand</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DeleteTaskCommand</span> <span style="color:#66d9ef">implements</span> UndoableCommand {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task task;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DeleteTaskCommand</span>(TaskManager taskManager, UUID taskId) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> taskManager.<span style="color:#a6e22e">getTask</span>(taskId).<span style="color:#a6e22e">clone</span>(); <span style="color:#75715e">// Save current state</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">deleteTask</span>(task.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">createTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong><code>UpdateTaskCommand</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UpdateTaskCommand</span> <span style="color:#66d9ef">implements</span> UndoableCommand {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task oldTask;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task newTask;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UpdateTaskCommand</span>(TaskManager taskManager, Task newTask) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">newTask</span> <span style="color:#f92672">=</span> newTask;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">oldTask</span> <span style="color:#f92672">=</span> taskManager.<span style="color:#a6e22e">getTask</span>(newTask.<span style="color:#a6e22e">getId</span>()).<span style="color:#a6e22e">clone</span>(); <span style="color:#75715e">// Save old state</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">updateTask</span>(newTask);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unexecute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">updateTask</span>(oldTask);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Integration with the Application:</strong></p>
+<p><strong>1. Using <code>CommandInvoker</code> in <code>TaskRequestHandler</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskFactory taskFactory;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> CommandInvoker commandInvoker;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskRequestHandler</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(dbAdapter);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskFactory</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcreteTaskFactory();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskManager(dbAdapter);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">commandInvoker</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CommandInvoker();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle POST request to add a new task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>            Task task <span style="color:#f92672">=</span> taskFactory.<span style="color:#a6e22e">createTask</span>(jsonBody);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            UndoableCommand addTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AddTaskCommand(taskManager, task);
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">executeCommand</span>(addTaskCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(201);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle PUT request to update a task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePut</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            UUID taskId <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">fromString</span>(requestData.<span style="color:#a6e22e">getQueryParams</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;id&#34;</span>));
+</span></span><span style="display:flex;"><span>            Task existingTask <span style="color:#f92672">=</span> taskManager.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>            Task updatedTask <span style="color:#f92672">=</span> taskFactory.<span style="color:#a6e22e">createTask</span>(jsonBody);
+</span></span><span style="display:flex;"><span>            updatedTask.<span style="color:#a6e22e">setId</span>(taskId);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            UndoableCommand updateTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UpdateTaskCommand(taskManager, updatedTask);
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">executeCommand</span>(updateTaskCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(updatedTask.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle DELETE request to delete a task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleDelete</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            UUID taskId <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">fromString</span>(requestData.<span style="color:#a6e22e">getQueryParams</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;id&#34;</span>));
+</span></span><span style="display:flex;"><span>            UndoableCommand deleteTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DeleteTaskCommand(taskManager, taskId);
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">executeCommand</span>(deleteTaskCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Task deleted successfully.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Methods to handle undo and redo actions</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleUndo</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">undo</span>();
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Undo successful.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(400);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Nothing to undo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleRedo</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">redo</span>();
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Redo successful.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(400);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Nothing to redo.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Explanation:</strong></p>
+<ul>
+<li>The <code>TaskRequestHandler</code> uses the <code>CommandInvoker</code> to execute commands.</li>
+<li>The <code>commandInvoker</code> is responsible for executing commands and managing the history for undo/redo.</li>
+<li>When handling undo and redo requests, the handler calls <code>commandInvoker.undo()</code> or <code>commandInvoker.redo()</code>.</li>
+</ul>
+<hr>
+<p><strong>Role of <code>CommandInvoker</code>:</strong></p>
+<ol>
+<li><strong>Decouples Command Execution from Initiation:</strong></li>
+</ol>
+<ul>
+<li>Command creation happens in the <code>TaskRequestHandler</code>.</li>
+<li>Execution is delegated to the <code>CommandInvoker</code>, which manages the execution and history.</li>
+</ul>
+<ol start="2">
+<li><strong>Stores Commands for Undo/Redo Functionality:</strong></li>
+</ol>
+<ul>
+<li>Maintains a history (<code>commandHistory</code>) of executed commands.</li>
+<li>Provides <code>undo()</code> and <code>redo()</code> methods to reverse or reapply actions.</li>
+</ul>
+<ol start="3">
+<li><strong>Centralizes Command Execution:</strong></li>
+</ol>
+<ul>
+<li>All command executions go through the <code>CommandInvoker</code>, providing a single point of control.</li>
+<li>Facilitates logging, auditing, or additional processing when commands are executed.</li>
+</ul>
+<hr>
+<p><strong>Advantages of Using <code>CommandInvoker</code>:</strong></p>
+<ol>
+<li><strong>Loose Coupling:</strong></li>
+</ol>
+<ul>
+<li>Separates command creation from execution, promoting modular design.</li>
+</ul>
+<ol start="2">
+<li><strong>Flexibility:</strong></li>
+</ol>
+<ul>
+<li>Commands can be queued, scheduled, or executed in different contexts.</li>
+</ul>
+<ol start="3">
+<li><strong>Undo/Redo Support:</strong></li>
+</ol>
+<ul>
+<li>By storing commands, the invoker provides undo/redo functionality.</li>
+</ul>
+<ol start="4">
+<li><strong>Extensibility:</strong></li>
+</ol>
+<ul>
+<li>New commands can be added without changing the invoker.</li>
+</ul>
+<hr>
+<p><strong>Considerations:</strong></p>
+<ol>
+<li><strong>Thread Safety:</strong></li>
+</ol>
+<ul>
+<li>Synchronize access to <code>commandHistory</code> and <code>redoStack</code> in multi-threaded environments.</li>
+</ul>
+<ol start="2">
+<li><strong>Memory Management:</strong></li>
+</ol>
+<ul>
+<li>Implement policies to limit history size if necessary.</li>
+</ul>
+<ol start="3">
+<li><strong>Error Handling:</strong></li>
+</ol>
+<ul>
+<li>Handle exceptions during command execution and undo/redo operations.</li>
+</ul>
+<ol start="4">
+<li><strong>Command Granularity:</strong></li>
+</ol>
+<ul>
+<li>Decide the appropriate level of granularity for commands.</li>
+</ul>
+<hr>
+<p><strong>Alternative Implementation:</strong></p>
+<ul>
+<li>
+<p><strong>Asynchronous Execution:</strong></p>
+<ul>
+<li>Modify <code>CommandInvoker</code> to execute commands asynchronously using threads or executors.</li>
+</ul>
+</li>
+<li>
+<p><strong>Command Scheduling:</strong></p>
+<ul>
+<li>Schedule commands for future execution.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Extending <code>CommandInvoker</code>:</strong></p>
+<ol>
+<li><strong>Command Logging:</strong></li>
+</ol>
+<ul>
+<li>Log executed commands for auditing or debugging.</li>
+</ul>
+<ol start="2">
+<li><strong>Macro Commands:</strong></li>
+</ol>
+<ul>
+<li>Support composite commands that consist of multiple commands.</li>
+</ul>
+<ol start="3">
+<li><strong>Transaction Management:</strong></li>
+</ol>
+<ul>
+<li>Implement transaction-like behavior for groups of commands.</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>CommandInvoker</code> class serves as the invoker in the <strong>Command Pattern</strong>, responsible for executing commands and managing their history for undo/redo functionality. By decoupling command execution from initiation, it promotes loose coupling, enhances flexibility, and centralizes control over command processing.</p>
+<p>Key benefits include:</p>
+<ul>
+<li><strong>Decoupling:</strong> Separates command creation from execution.</li>
+<li><strong>Undo/Redo Support:</strong> Maintains command history.</li>
+<li><strong>Extensibility:</strong> Integrates new commands seamlessly.</li>
+<li><strong>Centralized Control:</strong> Manages command execution in one place.</li>
+</ul>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ol>
+<li><strong>Testing:</strong></li>
+</ol>
+<ul>
+<li>Write unit tests for <code>CommandInvoker</code>.</li>
+</ul>
+<ol start="2">
+<li><strong>Performance Optimization:</strong></li>
+</ol>
+<ul>
+<li>Optimize data structures if necessary.</li>
+</ul>
+<ol start="3">
+<li><strong>Error Handling Enhancements:</strong></li>
+</ol>
+<ul>
+<li>Improve exception handling.</li>
+</ul>
+<ol start="4">
+<li><strong>User Interface Integration:</strong></li>
+</ol>
+<ul>
+<li>Update client applications to support undo/redo actions.</li>
+</ul>
+<hr>
+<p>By implementing and explaining the <code>CommandInvoker</code>, we have advanced our Java web service application, demonstrating how the invoker in the <strong>Command Pattern</strong> decouples command execution from initiation, provides undo/redo functionality, and enhances the application&rsquo;s architecture within approximately 20 classes.</p>
+<hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,27 +8,6 @@
     <language>en-us</language>
     <atom:link href="http://localhost:1313/docs/coding-principles/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Coding Principles in Go</title>
-      <link>http://localhost:1313/docs/coding-principles/go/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/coding-principles/go/</guid>
-      <description>&lt;h1 id=&#34;coding-principles-in-go&#34;&gt;&#xA;  Coding Principles in Go&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#coding-principles-in-go&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;Go (Golang) is known for its simplicity, efficiency, and focus on readability. Applying coding principles in Go is straightforward but requires understanding Go’s unique approach to programming. In this article, we’ll explore core coding principles—like DRY, KISS, and SOLID—and how they apply to Go, along with some Go-specific best practices.&lt;/p&gt;&#xA;&lt;h2 id=&#34;dry-dont-repeat-yourself&#34;&gt;&#xA;  DRY (Don’t Repeat Yourself)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#dry-dont-repeat-yourself&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;The DRY principle aims to reduce code duplication. Go emphasizes small, reusable functions and packages, making it easy to centralize logic and avoid repeating code.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Coding Principles in JavaScript</title>
-      <link>http://localhost:1313/docs/coding-principles/javascript/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/coding-principles/javascript/</guid>
-      <description>&lt;h1 id=&#34;coding-principles-in-javascript&#34;&gt;&#xA;  Coding Principles in JavaScript&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#coding-principles-in-javascript&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;JavaScript is one of the most widely-used programming languages, both in the browser and on the server with Node.js. Applying coding principles to JavaScript ensures your code is clean, efficient, and maintainable. In this article, we’ll cover foundational principles like DRY, KISS, and SOLID, as well as JavaScript-specific best practices.&lt;/p&gt;&#xA;&lt;h2 id=&#34;dry-dont-repeat-yourself&#34;&gt;&#xA;  DRY (Don’t Repeat Yourself)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#dry-dont-repeat-yourself&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;In JavaScript, the DRY principle applies to both function and class structures. By avoiding duplicate code, you can keep logic centralized, making updates easier and reducing errors.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Coding Principles in TypeScript</title>
-      <link>http://localhost:1313/docs/coding-principles/typescript/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/coding-principles/typescript/</guid>
-      <description>&lt;h1 id=&#34;coding-principles-in-typescript&#34;&gt;&#xA;  Coding Principles in TypeScript&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#coding-principles-in-typescript&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;TypeScript brings static typing and powerful tooling to JavaScript, helping developers catch errors early and write more structured code. By following core coding principles—like DRY, KISS, and SOLID—you can ensure that your TypeScript code is clean, efficient, and maintainable. This article explores these principles with TypeScript-specific examples and best practices.&lt;/p&gt;&#xA;&lt;h2 id=&#34;dry-dont-repeat-yourself&#34;&gt;&#xA;  DRY (Don’t Repeat Yourself)&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#dry-dont-repeat-yourself&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;The DRY principle helps you avoid code duplication. TypeScript’s interfaces, types, and generics make it easier to encapsulate repetitive logic in a reusable way.&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>Dependency Inversion Principle (DIP)</title>
       <link>http://localhost:1313/docs/coding-principles/solid/dependency-inversion/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Design Patterns in Go
+  #
+
+Go (Golang) is a language that promotes simplicity and favors composition over inheritance. This approach influences how design patterns are implemented, making some patterns more suitable and others less relevant. In this article, we’ll explore the three main categories of design patterns—Creational, Structural, and Behavioral—and how they apply in Go. We&rsquo;ll also cover Go-specific design patterns and provide links to further resources.
+
+  Why Design Patterns Matter in Go
+  #
+
+Design patterns offer reusable solutions to common problems in software design. They help make your code more modular, scalable, and maintainable. Go’s idiomatic approach to design patterns is minimalistic, focusing on clear, simple, and efficient solutions.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/go/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Design Patterns in Go">
+  <meta property="og:description" content="Design Patterns in Go # Go (Golang) is a language that promotes simplicity and favors composition over inheritance. This approach influences how design patterns are implemented, making some patterns more suitable and others less relevant. In this article, we’ll explore the three main categories of design patterns—Creational, Structural, and Behavioral—and how they apply in Go. We’ll also cover Go-specific design patterns and provide links to further resources.
+Why Design Patterns Matter in Go # Design patterns offer reusable solutions to common problems in software design. They help make your code more modular, scalable, and maintainable. Go’s idiomatic approach to design patterns is minimalistic, focusing on clear, simple, and efficient solutions.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Design Patterns in Go | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/go/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Design Patterns in Go</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-design-patterns-matter-in-go">Why Design Patterns Matter in Go</a></li>
+    <li><a href="#creational-patterns">Creational Patterns</a>
+      <ul>
+        <li><a href="#builder">Builder</a></li>
+        <li><a href="#factory-method">Factory Method</a></li>
+        <li><a href="#singleton">Singleton</a></li>
+      </ul>
+    </li>
+    <li><a href="#structural-patterns">Structural Patterns</a>
+      <ul>
+        <li><a href="#adapter">Adapter</a></li>
+        <li><a href="#decorator">Decorator</a></li>
+        <li><a href="#proxy">Proxy</a></li>
+      </ul>
+    </li>
+    <li><a href="#behavioral-patterns">Behavioral Patterns</a>
+      <ul>
+        <li><a href="#command">Command</a></li>
+        <li><a href="#observer">Observer</a></li>
+        <li><a href="#strategy">Strategy</a></li>
+      </ul>
+    </li>
+    <li><a href="#go-specific-patterns">Go-Specific Patterns</a>
+      <ul>
+        <li><a href="#interface-based-programming">Interface-Based Programming</a></li>
+        <li><a href="#channel-based-concurrency">Channel-Based Concurrency</a></li>
+        <li><a href="#pipeline-pattern">Pipeline Pattern</a></li>
+      </ul>
+    </li>
+    <li><a href="#external-references">External References</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="design-patterns-in-go">
+  Design Patterns in Go
+  <a class="anchor" href="#design-patterns-in-go">#</a>
+</h1>
+<p>Go (Golang) is a language that promotes simplicity and favors composition over inheritance. This approach influences how design patterns are implemented, making some patterns more suitable and others less relevant. In this article, we’ll explore the three main categories of design patterns—<strong>Creational</strong>, <strong>Structural</strong>, and <strong>Behavioral</strong>—and how they apply in Go. We&rsquo;ll also cover Go-specific design patterns and provide links to further resources.</p>
+<h2 id="why-design-patterns-matter-in-go">
+  Why Design Patterns Matter in Go
+  <a class="anchor" href="#why-design-patterns-matter-in-go">#</a>
+</h2>
+<p>Design patterns offer reusable solutions to common problems in software design. They help make your code more modular, scalable, and maintainable. Go’s idiomatic approach to design patterns is minimalistic, focusing on clear, simple, and efficient solutions.</p>
+<h2 id="creational-patterns">
+  Creational Patterns
+  <a class="anchor" href="#creational-patterns">#</a>
+</h2>
+<p>Creational patterns help control object creation, making it more flexible and modular. In Go, we often use functions rather than complex class hierarchies, as Go does not have classes or inheritance.</p>
+<h3 id="builder">
+  Builder
+  <a class="anchor" href="#builder">#</a>
+</h3>
+<p>The Builder pattern constructs complex objects step by step. Go doesn’t use a Builder pattern as frequently due to its simplicity, but it can be achieved using structs with chainable methods.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">builder</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Car</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Color</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Wheels</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">EngineType</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CarBuilder</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">car</span> <span style="color:#a6e22e">Car</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CarBuilder</span>) <span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">color</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">CarBuilder</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cb</span>.<span style="color:#a6e22e">car</span>.<span style="color:#a6e22e">Color</span> = <span style="color:#a6e22e">color</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cb</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CarBuilder</span>) <span style="color:#a6e22e">Wheels</span>(<span style="color:#a6e22e">wheels</span> <span style="color:#66d9ef">int</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">CarBuilder</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cb</span>.<span style="color:#a6e22e">car</span>.<span style="color:#a6e22e">Wheels</span> = <span style="color:#a6e22e">wheels</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cb</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CarBuilder</span>) <span style="color:#a6e22e">Build</span>() <span style="color:#a6e22e">Car</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cb</span>.<span style="color:#a6e22e">car</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="factory-method">
+  Factory Method
+  <a class="anchor" href="#factory-method">#</a>
+</h3>
+<p>The Factory Method pattern creates objects without specifying the exact type. In Go, we use factory functions to initialize objects.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">factory</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Product</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Use</span>() <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ProductA</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#a6e22e">ProductA</span>) <span style="color:#a6e22e">Use</span>() <span style="color:#66d9ef">string</span> { <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Using Product A&#34;</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ProductB</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#a6e22e">ProductB</span>) <span style="color:#a6e22e">Use</span>() <span style="color:#66d9ef">string</span> { <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Using Product B&#34;</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewProduct</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">Product</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;A&#34;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ProductA</span>{}
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;B&#34;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ProductB</span>{}
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="singleton">
+  Singleton
+  <a class="anchor" href="#singleton">#</a>
+</h3>
+<p>The Singleton pattern ensures a type has only one instance and provides a global point of access. In Go, this is commonly implemented using <code>sync.Once</code> to guarantee thread-safe initialization.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">singleton</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;sync&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Singleton</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">instance</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Singleton</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">once</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Once</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetInstance</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">Singleton</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">once</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#66d9ef">func</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">instance</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Singleton</span>{}
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">instance</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="structural-patterns">
+  Structural Patterns
+  <a class="anchor" href="#structural-patterns">#</a>
+</h2>
+<p>Structural patterns deal with relationships between entities, making code more modular and extensible.</p>
+<h3 id="adapter">
+  Adapter
+  <a class="anchor" href="#adapter">#</a>
+</h3>
+<p>The Adapter pattern makes two incompatible interfaces work together. In Go, interfaces and structs simplify adapter creation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">adapter</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">LegacyPrinter</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">PrintLegacy</span>() <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ModernPrinter</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mp</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ModernPrinter</span>) <span style="color:#a6e22e">Print</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Printing with Modern Printer&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PrinterAdapter</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ModernPrinter</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pa</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">PrinterAdapter</span>) <span style="color:#a6e22e">PrintLegacy</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">pa</span>.<span style="color:#a6e22e">printer</span>.<span style="color:#a6e22e">Print</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="decorator">
+  Decorator
+  <a class="anchor" href="#decorator">#</a>
+</h3>
+<p>The Decorator pattern dynamically adds behavior to an object. Go achieves this through composition rather than inheritance.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">decorator</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Notifier</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Send</span>(<span style="color:#a6e22e">message</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">EmailNotifier</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">EmailNotifier</span>) <span style="color:#a6e22e">Send</span>(<span style="color:#a6e22e">message</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Sending Email: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">message</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SMSDecorator</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Notifier</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SMSDecorator</span>) <span style="color:#a6e22e">Send</span>(<span style="color:#a6e22e">message</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Notifier</span>.<span style="color:#a6e22e">Send</span>(<span style="color:#a6e22e">message</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; and SMS: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">message</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="proxy">
+  Proxy
+  <a class="anchor" href="#proxy">#</a>
+</h3>
+<p>The Proxy pattern controls access to another object. In Go, this is often used to add security or lazy-loading features.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">proxy</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">FetchData</span>() <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">RealServer</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rs</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RealServer</span>) <span style="color:#a6e22e">FetchData</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Data from Real Server&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ProxyServer</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">realServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RealServer</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ps</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ProxyServer</span>) <span style="color:#a6e22e">FetchData</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ps</span>.<span style="color:#a6e22e">realServer</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ps</span>.<span style="color:#a6e22e">realServer</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">RealServer</span>{}
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ps</span>.<span style="color:#a6e22e">realServer</span>.<span style="color:#a6e22e">FetchData</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="behavioral-patterns">
+  Behavioral Patterns
+  <a class="anchor" href="#behavioral-patterns">#</a>
+</h2>
+<p>Behavioral patterns focus on communication between objects, defining the responsibilities and behavior of objects.</p>
+<h3 id="command">
+  Command
+  <a class="anchor" href="#command">#</a>
+</h3>
+<p>The Command pattern encapsulates requests as objects, allowing them to be executed or stored. In Go, closures are often used instead of a formal Command pattern.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">command</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Command</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Execute</span>() <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PrintCommand</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Message</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">PrintCommand</span>) <span style="color:#a6e22e">Execute</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">Message</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="observer">
+  Observer
+  <a class="anchor" href="#observer">#</a>
+</h3>
+<p>The Observer pattern establishes a one-to-many relationship between objects. In Go, observers can be implemented with slices of function references or structs.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">observer</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Observer</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">data</span> <span style="color:#66d9ef">string</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Subject</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">observers</span> []<span style="color:#a6e22e">Observer</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Subject</span>) <span style="color:#a6e22e">Register</span>(<span style="color:#a6e22e">o</span> <span style="color:#a6e22e">Observer</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">observers</span> = append(<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">observers</span>, <span style="color:#a6e22e">o</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Subject</span>) <span style="color:#a6e22e">Notify</span>(<span style="color:#a6e22e">data</span> <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">o</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">observers</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">o</span>.<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">data</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="strategy">
+  Strategy
+  <a class="anchor" href="#strategy">#</a>
+</h3>
+<p>The Strategy pattern defines a family of algorithms, encapsulating each one and making them interchangeable. In Go, we use interfaces to represent strategies.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">strategy</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Strategy</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">AddStrategy</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">AddStrategy</span>) <span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SubtractStrategy</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">SubtractStrategy</span>) <span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">b</span> }
+</span></span></code></pre></div><h2 id="go-specific-patterns">
+  Go-Specific Patterns
+  <a class="anchor" href="#go-specific-patterns">#</a>
+</h2>
+<p>In addition to traditional design patterns, Go has several unique patterns and idioms:</p>
+<h3 id="interface-based-programming">
+  Interface-Based Programming
+  <a class="anchor" href="#interface-based-programming">#</a>
+</h3>
+<p>Go encourages small, focused interfaces, making it easy to substitute components and achieve flexibility. This approach is sometimes referred to as &ldquo;interface-based programming&rdquo; and is a core principle in Go.</p>
+<h3 id="channel-based-concurrency">
+  Channel-Based Concurrency
+  <a class="anchor" href="#channel-based-concurrency">#</a>
+</h3>
+<p>Go’s concurrency model uses goroutines and channels, enabling powerful patterns for concurrent execution, such as the worker pool, fan-in, and fan-out patterns.</p>
+<h3 id="pipeline-pattern">
+  Pipeline Pattern
+  <a class="anchor" href="#pipeline-pattern">#</a>
+</h3>
+<p>The Pipeline pattern in Go chains goroutines to pass data from one to another using channels, allowing for efficient data processing.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">gen</span>(<span style="color:#a6e22e">nums</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">int</span>) <span style="color:#f92672">&lt;-</span><span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">out</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">n</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        close(<span style="color:#a6e22e">out</span>)
+</span></span><span style="display:flex;"><span>    }()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">out</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">sq</span>(<span style="color:#a6e22e">in</span> <span style="color:#f92672">&lt;-</span><span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>) <span style="color:#f92672">&lt;-</span><span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">in</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">out</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">n</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        close(<span style="color:#a6e22e">out</span>)
+</span></span><span style="display:flex;"><span>    }()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">out</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">sq</span>(<span style="color:#a6e22e">gen</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">n</span>) <span style="color:#75715e">// Output: 4, 9, 16
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="external-references">
+  External References
+  <a class="anchor" href="#external-references">#</a>
+</h2>
+<ul>
+<li><a href="https://golangbyexample.com/singleton-design-pattern-go/">Singleton Pattern in Go</a></li>
+<li><a href="https://golangbyexample.com/factory-design-pattern-go/">Factory Pattern in Go</a></li>
+<li><a href="https://golangbyexample.com/builder-design-pattern-go/">Go Builder Pattern</a></li>
+<li><a href="https://golangbyexample.com/adapter-design-pattern-go/">Adapter Pattern in Go</a></li>
+<li><a href="https://golangbyexample.com/decorator-design-pattern-go/">Decorator Pattern in Go</a></li>
+<li><a href="https://golangbyexample.com/proxy-design-pattern-go/">Proxy Pattern in Go</a></li>
+<li><a href="https://golangbyexample.com/strategy-design-pattern-go/">Strategy Pattern in Go</a></li>
+<li><a href="https://golangbyexample.com/observer-design-pattern-go/">Observer Pattern in Go</a></li>
+<li><a href="https://golangbyexample.com/command-design-pattern-go/">Command Pattern in Go</a></li>
+<li><a href="https://golang.org/doc/effective_go.html#interfaces">Interface Patterns in Go</a></li>
+<li><a href="https://gobyexample.com/channels">Concurrency Patterns in Go</a></li>
+<li><a href="https://blog.golang.org/pipelines">Pipelines in Go</a></li>
+</ul>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>Design patterns in Go are adapted to leverage the language’s strengths, focusing on simplicity and efficiency. Traditional design patterns often translate well with Go&rsquo;s focus on composition, interfaces, and concurrency. Understanding these patterns can help you write robust, idiomatic, and maintainable Go code.</p>
+<p>For further exploration, here are additional resources:</p>
+<ul>
+<li><a href="https://www.oreilly.com/library/view/go-design-patterns/9781786466204/">Go Design Patterns Book</a></li>
+<li><a href="https://golang.org/doc/effective_go.html">Effective Go</a></li>
+<li><a href="https://gobyexample.com/">Go by Example - Patterns</a></li>
+</ul>
+<p>These resources will deepen your understanding of design patterns in Go and how to apply them in real-world scenarios.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-design-patterns-matter-in-go">Why Design Patterns Matter in Go</a></li>
+    <li><a href="#creational-patterns">Creational Patterns</a>
+      <ul>
+        <li><a href="#builder">Builder</a></li>
+        <li><a href="#factory-method">Factory Method</a></li>
+        <li><a href="#singleton">Singleton</a></li>
+      </ul>
+    </li>
+    <li><a href="#structural-patterns">Structural Patterns</a>
+      <ul>
+        <li><a href="#adapter">Adapter</a></li>
+        <li><a href="#decorator">Decorator</a></li>
+        <li><a href="#proxy">Proxy</a></li>
+      </ul>
+    </li>
+    <li><a href="#behavioral-patterns">Behavioral Patterns</a>
+      <ul>
+        <li><a href="#command">Command</a></li>
+        <li><a href="#observer">Observer</a></li>
+        <li><a href="#strategy">Strategy</a></li>
+      </ul>
+    </li>
+    <li><a href="#go-specific-patterns">Go-Specific Patterns</a>
+      <ul>
+        <li><a href="#interface-based-programming">Interface-Based Programming</a></li>
+        <li><a href="#channel-based-concurrency">Channel-Based Concurrency</a></li>
+        <li><a href="#pipeline-pattern">Pipeline Pattern</a></li>
+      </ul>
+    </li>
+    <li><a href="#external-references">External References</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+      <div class="book-toc-languages">
+        
+<h4>Coding Principles in ...</h4>
+<nav>
+  <div class="book-search">
+    <input type="text" id="book-search-language-input" placeholder="Search Language" aria-label="Search Language" maxlength="64" data-hotkeys="s/">
+  </div>
+  <ul id="languages"></ul>
+  <script>
+    const languages = [{ title: "Go", href: "\/docs\/design-patterns\/go\/" }, { title: "Java", href: "\/docs\/design-patterns\/java\/" }, { title: "JavaScript", href: "\/docs\/design-patterns\/javascript\/" }, ];
+    const languageLinks = document.getElementById('languages');
+    const searchInput = document.getElementById('book-search-language-input');
+    const maxLanguages = 15
+
+    const listLanguages = (filter = '') => {
+      languageLinks.innerHTML = ''
+      const filtered = languages
+        .filter(item => item.title.toLowerCase().includes(filter.toLowerCase()))
+      filtered.slice(0, filtered.length > maxLanguages ? maxLanguages : filtered.length)
+        .forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.title;
+          const li = document.createElement('li');
+          li.appendChild(link);
+          languageLinks.appendChild(li);
+        })
+      if (filtered.length > maxLanguages) {
+        const li = document.createElement('li');
+        li.textContent = '...';
+        languageLinks.appendChild(li);
+      }
+    }
+
+    listLanguages('')
+    searchInput.onkeyup = () => { listLanguages(searchInput.value) }
+  </script>
+</nav>
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

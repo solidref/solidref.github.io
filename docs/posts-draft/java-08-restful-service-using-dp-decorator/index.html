@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of CompressionDecorator (Decorator Pattern)
+
+Purpose of CompressionDecorator:
+The CompressionDecorator class adds compression functionality to the output of existing serializers by applying the Decorator Pattern. This pattern allows behavior to be added to individual objects dynamically without affecting the behavior of other objects from the same class. In this context, CompressionDecorator wraps around a Serializer object and compresses its output, enhancing serialization without modifying the existing serializer implementations.
+
+Decorator Pattern Implementation:">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-08-restful-service-using-dp-decorator/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of CompressionDecorator (Decorator Pattern)
+Purpose of CompressionDecorator:
+The CompressionDecorator class adds compression functionality to the output of existing serializers by applying the Decorator Pattern. This pattern allows behavior to be added to individual objects dynamically without affecting the behavior of other objects from the same class. In this context, CompressionDecorator wraps around a Serializer object and compresses its output, enhancing serialization without modifying the existing serializer implementations.
+Decorator Pattern Implementation:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 08 Restful Service Using Dp Decorator | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-08-restful-service-using-dp-decorator/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 08 Restful Service Using Dp Decorator</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>CompressionDecorator</code> (Decorator Pattern)</strong></p>
+<hr>
+<p><strong>Purpose of <code>CompressionDecorator</code>:</strong></p>
+<p>The <code>CompressionDecorator</code> class adds compression functionality to the output of existing serializers by applying the <strong>Decorator Pattern</strong>. This pattern allows behavior to be added to individual objects dynamically without affecting the behavior of other objects from the same class. In this context, <code>CompressionDecorator</code> wraps around a <code>Serializer</code> object and compresses its output, enhancing serialization without modifying the existing serializer implementations.</p>
+<hr>
+<p><strong>Decorator Pattern Implementation:</strong></p>
+<ol>
+<li><strong>Component Interface (<code>Serializer</code>):</strong></li>
+</ol>
+<ul>
+<li>Defines the interface for objects that can have responsibilities added to them dynamically.</li>
+<li>Contains the method <code>serialize(Object data)</code>.</li>
+</ul>
+<ol start="2">
+<li><strong>Concrete Components (<code>JSONSerializer</code>, <code>YAMLSerializer</code>, etc.):</strong></li>
+</ol>
+<ul>
+<li>Implement the <code>Serializer</code> interface.</li>
+<li>Provide the basic serialization functionality.</li>
+</ul>
+<ol start="3">
+<li><strong>Decorator Class (<code>SerializerDecorator</code>):</strong></li>
+</ol>
+<ul>
+<li>Implements the <code>Serializer</code> interface.</li>
+<li>Contains a reference to a <code>Serializer</code> object.</li>
+<li>Delegates calls to the wrapped <code>Serializer</code> object.</li>
+</ul>
+<ol start="4">
+<li><strong>Concrete Decorator (<code>CompressionDecorator</code>):</strong></li>
+</ol>
+<ul>
+<li>Extends <code>SerializerDecorator</code>.</li>
+<li>Adds additional behavior (compression) to the <code>serialize</code> method.</li>
+</ul>
+<hr>
+<p><strong>Implementation Details:</strong></p>
+<p><strong>1. <code>Serializer</code> Interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Serializer</span> {
+</span></span><span style="display:flex;"><span>    String <span style="color:#a6e22e">serialize</span>(Object data);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Declares the <code>serialize</code> method used by all serializers.</li>
+<li>Acts as the base component interface in the Decorator Pattern.</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Concrete Components:</strong></p>
+<ul>
+<li><strong><code>JSONSerializer</code> and <code>YAMLSerializer</code>:</strong>
+<ul>
+<li>Implement the <code>Serializer</code> interface.</li>
+<li>Provide specific serialization logic.</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. Decorator Class (<code>SerializerDecorator</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SerializerDecorator</span> <span style="color:#66d9ef">implements</span> Serializer {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> Serializer wrappedSerializer;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SerializerDecorator</span>(Serializer serializer) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">wrappedSerializer</span> <span style="color:#f92672">=</span> serializer;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">serialize</span>(Object data) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> wrappedSerializer.<span style="color:#a6e22e">serialize</span>(data);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Serves as the base decorator class.</li>
+<li>Holds a reference to a <code>Serializer</code> object.</li>
+<li>Delegates serialization to the wrapped serializer.</li>
+</ul>
+</li>
+</ul>
+<p><strong>4. Concrete Decorator (<code>CompressionDecorator</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.ByteArrayOutputStream;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Base64;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.zip.GZIPOutputStream;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompressionDecorator</span> <span style="color:#66d9ef">extends</span> SerializerDecorator {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CompressionDecorator</span>(Serializer serializer) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(serializer);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">serialize</span>(Object data) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// First, serialize the data using the wrapped serializer</span>
+</span></span><span style="display:flex;"><span>        String serializedData <span style="color:#f92672">=</span> wrappedSerializer.<span style="color:#a6e22e">serialize</span>(data);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Compress the serialized data</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> compressedData <span style="color:#f92672">=</span> compress(serializedData);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Encode the compressed data in Base64 for safe text transmission</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Base64.<span style="color:#a6e22e">getEncoder</span>().<span style="color:#a6e22e">encodeToString</span>(compressedData);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException(<span style="color:#e6db74">&#34;Compression failed&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> <span style="color:#a6e22e">compress</span>(String data) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        ByteArrayOutputStream byteStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ByteArrayOutputStream();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> (GZIPOutputStream gzipStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GZIPOutputStream(byteStream)) {
+</span></span><span style="display:flex;"><span>            gzipStream.<span style="color:#a6e22e">write</span>(data.<span style="color:#a6e22e">getBytes</span>(<span style="color:#e6db74">&#34;UTF-8&#34;</span>));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> byteStream.<span style="color:#a6e22e">toByteArray</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Extends <code>SerializerDecorator</code> to add compression functionality.</li>
+<li>Overrides the <code>serialize</code> method to compress the serialized data.</li>
+</ul>
+</li>
+<li><strong>Implementation:</strong>
+<ul>
+<li>Uses GZIP compression to compress the serialized data.</li>
+<li>Encodes the compressed data using Base64 to ensure it&rsquo;s safe for text transmission.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Decorator Pattern Components:</strong></p>
+<ol>
+<li><strong>Component Interface (<code>Serializer</code>):</strong></li>
+</ol>
+<ul>
+<li>The base interface that defines the serialization method.</li>
+<li>Allows different serializers to be used interchangeably.</li>
+</ul>
+<ol start="2">
+<li><strong>Concrete Components:</strong></li>
+</ol>
+<ul>
+<li><code>JSONSerializer</code>, <code>YAMLSerializer</code>, etc., implement the <code>Serializer</code> interface.</li>
+<li>Provide specific implementations for serializing data into different formats.</li>
+</ul>
+<ol start="3">
+<li><strong>Decorator (<code>SerializerDecorator</code>):</strong></li>
+</ol>
+<ul>
+<li>Holds a reference to a <code>Serializer</code> object.</li>
+<li>Implements the <code>Serializer</code> interface.</li>
+<li>Delegates serialization calls to the wrapped serializer.</li>
+</ul>
+<ol start="4">
+<li><strong>Concrete Decorator (<code>CompressionDecorator</code>):</strong></li>
+</ol>
+<ul>
+<li>Adds compression functionality to the output of the wrapped serializer.</li>
+<li>Overrides the <code>serialize</code> method to include compression logic.</li>
+</ul>
+<p><strong>How <code>CompressionDecorator</code> Works:</strong></p>
+<ol>
+<li><strong>Serialization Delegation:</strong></li>
+</ol>
+<ul>
+<li>Calls <code>serialize</code> on the wrapped serializer to get the serialized data.</li>
+</ul>
+<ol start="2">
+<li><strong>Data Compression:</strong></li>
+</ol>
+<ul>
+<li>Compresses the serialized data using GZIP.</li>
+<li>Uses <code>ByteArrayOutputStream</code> and <code>GZIPOutputStream</code> to perform compression.</li>
+</ul>
+<ol start="3">
+<li><strong>Encoding for Transmission:</strong></li>
+</ol>
+<ul>
+<li>Encodes the compressed byte array into a Base64 string.</li>
+<li>Base64 encoding ensures that the compressed data can be transmitted as text.</li>
+</ul>
+<ol start="4">
+<li><strong>Returning the Compressed Data:</strong></li>
+</ol>
+<ul>
+<li>Returns the Base64-encoded compressed data as the result of the <code>serialize</code> method.</li>
+</ul>
+<hr>
+<p><strong>Usage Example:</strong></p>
+<p><strong>1. Without Compression:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Serializer jsonSerializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONSerializer();
+</span></span><span style="display:flex;"><span>String output <span style="color:#f92672">=</span> jsonSerializer.<span style="color:#a6e22e">serialize</span>(task);
+</span></span><span style="display:flex;"><span>System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Serialized Output: &#34;</span> <span style="color:#f92672">+</span> output);
+</span></span></code></pre></div><ul>
+<li><strong>Output:</strong>
+<ul>
+<li>The plain JSON representation of the <code>Task</code> object.</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. With Compression:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Serializer jsonSerializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONSerializer();
+</span></span><span style="display:flex;"><span>Serializer compressedSerializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CompressionDecorator(jsonSerializer);
+</span></span><span style="display:flex;"><span>String compressedOutput <span style="color:#f92672">=</span> compressedSerializer.<span style="color:#a6e22e">serialize</span>(task);
+</span></span><span style="display:flex;"><span>System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Compressed Output: &#34;</span> <span style="color:#f92672">+</span> compressedOutput);
+</span></span></code></pre></div><ul>
+<li><strong>Output:</strong>
+<ul>
+<li>A Base64-encoded string representing the compressed JSON data.</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. Decompressing the Data (On the Client Side):</strong></p>
+<ul>
+<li><strong>Client would:</strong>
+<ul>
+<li>Decode the Base64 string.</li>
+<li>Decompress the data using GZIP.</li>
+<li>Parse the resulting JSON string.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Integration with <code>TaskRequestHandler</code>:</strong></p>
+<p><strong>Modifying <code>TaskRequestHandler</code> to Use <code>CompressionDecorator</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Serializer serializer;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskRequestHandler</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(dbAdapter);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> ResponseData <span style="color:#a6e22e">processRequest</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Determine the preferred response format</span>
+</span></span><span style="display:flex;"><span>        String acceptHeader <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getHeaders</span>().<span style="color:#a6e22e">getOrDefault</span>(<span style="color:#e6db74">&#34;Accept&#34;</span>, <span style="color:#e6db74">&#34;application/json&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">boolean</span> acceptCompression <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getHeaders</span>().<span style="color:#a6e22e">getOrDefault</span>(<span style="color:#e6db74">&#34;Accept-Encoding&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>).<span style="color:#a6e22e">contains</span>(<span style="color:#e6db74">&#34;gzip&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Choose the appropriate serializer</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (acceptHeader.<span style="color:#a6e22e">contains</span>(<span style="color:#e6db74">&#34;application/json&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONSerializer();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (acceptHeader.<span style="color:#a6e22e">contains</span>(<span style="color:#e6db74">&#34;application/x-yaml&#34;</span>) <span style="color:#f92672">||</span> acceptHeader.<span style="color:#a6e22e">contains</span>(<span style="color:#e6db74">&#34;text/yaml&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> YAMLSerializer();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Default to JSON</span>
+</span></span><span style="display:flex;"><span>            serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONSerializer();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Wrap the serializer with CompressionDecorator if compression is accepted</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (acceptCompression) {
+</span></span><span style="display:flex;"><span>            serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CompressionDecorator(serializer);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Continue processing the request...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">formatResponse</span>(ResponseData responseData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> serializer.<span style="color:#a6e22e">serialize</span>(responseData.<span style="color:#a6e22e">getData</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Return an error message or handle the exception appropriately</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;{\&#34;error\&#34;:\&#34;Serialization failed\&#34;}&#34;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendResponse</span>(HttpExchange exchange, String response, <span style="color:#66d9ef">int</span> statusCode) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        Headers headers <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getResponseHeaders</span>();
+</span></span><span style="display:flex;"><span>        String contentType <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;application/json; charset=UTF-8&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (serializer <span style="color:#66d9ef">instanceof</span> YAMLSerializer) {
+</span></span><span style="display:flex;"><span>            contentType <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;application/x-yaml; charset=UTF-8&#34;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        headers.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, contentType);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (serializer <span style="color:#66d9ef">instanceof</span> CompressionDecorator) {
+</span></span><span style="display:flex;"><span>            headers.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Content-Encoding&#34;</span>, <span style="color:#e6db74">&#34;gzip&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        exchange.<span style="color:#a6e22e">sendResponseHeaders</span>(statusCode, response.<span style="color:#a6e22e">getBytes</span>(<span style="color:#e6db74">&#34;UTF-8&#34;</span>).<span style="color:#a6e22e">length</span>);
+</span></span><span style="display:flex;"><span>        OutputStream os <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getResponseBody</span>();
+</span></span><span style="display:flex;"><span>        os.<span style="color:#a6e22e">write</span>(response.<span style="color:#a6e22e">getBytes</span>(<span style="color:#e6db74">&#34;UTF-8&#34;</span>));
+</span></span><span style="display:flex;"><span>        os.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Checks the <code>Accept-Encoding</code> header to see if the client accepts compressed responses.</li>
+<li>If compression is accepted, wraps the chosen serializer with <code>CompressionDecorator</code>.</li>
+<li>Adds the <code>Content-Encoding: gzip</code> header to the response if compression is applied.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Advantages of Using the Decorator Pattern:</strong></p>
+<ol>
+<li><strong>Flexible Extension of Functionality:</strong></li>
+</ol>
+<ul>
+<li>Allows adding new responsibilities (compression) to objects dynamically.</li>
+<li>Avoids subclassing, which can lead to an explosion of classes.</li>
+</ul>
+<ol start="2">
+<li><strong>Open/Closed Principle:</strong></li>
+</ol>
+<ul>
+<li>Classes are open for extension but closed for modification.</li>
+<li>Existing serializers do not need to be modified to add compression.</li>
+</ul>
+<ol start="3">
+<li><strong>Runtime Behavior Changes:</strong></li>
+</ol>
+<ul>
+<li>Behaviors can be added or removed at runtime based on conditions (e.g., client accepts compression).</li>
+</ul>
+<ol start="4">
+<li><strong>Combining Multiple Decorators:</strong></li>
+</ol>
+<ul>
+<li>Multiple decorators can be stacked to add various functionalities.</li>
+</ul>
+<hr>
+<p><strong>Considerations:</strong></p>
+<ol>
+<li><strong>Client Support:</strong></li>
+</ol>
+<ul>
+<li>Ensure that clients can handle compressed responses.</li>
+<li>Clients must decompress the data after receiving it.</li>
+</ul>
+<ol start="2">
+<li><strong>Performance Overhead:</strong></li>
+</ol>
+<ul>
+<li>Compression and decompression add computational overhead.</li>
+<li>Evaluate the trade-off between reduced data size and processing time.</li>
+</ul>
+<ol start="3">
+<li><strong>Error Handling:</strong></li>
+</ol>
+<ul>
+<li>Handle compression exceptions appropriately.</li>
+<li>Ensure that failures in compression do not crash the application.</li>
+</ul>
+<ol start="4">
+<li><strong>Security:</strong></li>
+</ol>
+<ul>
+<li>Be cautious of compression-related vulnerabilities like CRIME or BREACH attacks in web applications.</li>
+<li>Validate data and use secure configurations.</li>
+</ul>
+<hr>
+<p><strong>Alternative Implementations:</strong></p>
+<ul>
+<li>
+<p><strong>Other Decorators:</strong></p>
+<ul>
+<li>Implement additional decorators for encryption, caching, or logging.</li>
+</ul>
+</li>
+<li>
+<p><strong>Decorator Chain:</strong></p>
+<ul>
+<li>Combine multiple decorators to add several layers of functionality.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Serializer serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONSerializer();
+</span></span><span style="display:flex;"><span>serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EncryptionDecorator(serializer);
+</span></span><span style="display:flex;"><span>serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CompressionDecorator(serializer);
+</span></span></code></pre></div><ul>
+<li>
+<p><strong>Parameterizing Decorators:</strong></p>
+<ul>
+<li>Allow configuration of the compression level or algorithm.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Example of Compression and Decompression:</strong></p>
+<p><strong>Compression (Server Side):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Serializer serializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONSerializer();
+</span></span><span style="display:flex;"><span>Serializer compressedSerializer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CompressionDecorator(serializer);
+</span></span><span style="display:flex;"><span>String compressedData <span style="color:#f92672">=</span> compressedSerializer.<span style="color:#a6e22e">serialize</span>(task);
+</span></span></code></pre></div><p><strong>Decompression (Client Side):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Decode Base64</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> compressedData <span style="color:#f92672">=</span> Base64.<span style="color:#a6e22e">getDecoder</span>().<span style="color:#a6e22e">decode</span>(compressedDataString);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Decompress GZIP</span>
+</span></span><span style="display:flex;"><span>ByteArrayInputStream byteStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ByteArrayInputStream(compressedData);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span> (GZIPInputStream gzipStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GZIPInputStream(byteStream)) {
+</span></span><span style="display:flex;"><span>    InputStreamReader reader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InputStreamReader(gzipStream, <span style="color:#e6db74">&#34;UTF-8&#34;</span>);
+</span></span><span style="display:flex;"><span>    BufferedReader in <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BufferedReader(reader);
+</span></span><span style="display:flex;"><span>    StringBuilder decompressedData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder();
+</span></span><span style="display:flex;"><span>    String line;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> ((line <span style="color:#f92672">=</span> in.<span style="color:#a6e22e">readLine</span>()) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        decompressedData.<span style="color:#a6e22e">append</span>(line);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    String jsonData <span style="color:#f92672">=</span> decompressedData.<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Parse JSON data as needed</span>
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>    e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>CompressionDecorator</code> class effectively implements the <strong>Decorator Pattern</strong> by adding compression functionality to serializers without modifying their existing code. By wrapping a <code>Serializer</code> object, it allows:</p>
+<ul>
+<li>
+<p><strong>Dynamic Enhancement:</strong></p>
+<ul>
+<li>Add compression at runtime based on client capabilities or configuration.</li>
+</ul>
+</li>
+<li>
+<p><strong>Separation of Concerns:</strong></p>
+<ul>
+<li>Keep serialization logic separate from compression logic.</li>
+</ul>
+</li>
+<li>
+<p><strong>Maintainability:</strong></p>
+<ul>
+<li>Avoid modifying existing serializer classes, adhering to the Open/Closed Principle.</li>
+</ul>
+</li>
+</ul>
+<p>This implementation enhances the flexibility and scalability of the application, allowing it to efficiently handle varying client requirements and optimize data transmission.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ol>
+<li><strong>Testing:</strong></li>
+</ol>
+<ul>
+<li>Write unit tests to ensure that <code>CompressionDecorator</code> compresses and decompresses data correctly.</li>
+<li>Test with different serializers and data types.</li>
+</ul>
+<ol start="2">
+<li><strong>Integration:</strong></li>
+</ol>
+<ul>
+<li>Ensure that clients can handle compressed responses.</li>
+<li>Update API documentation to inform clients about compression support.</li>
+</ul>
+<ol start="3">
+<li><strong>Performance Evaluation:</strong></li>
+</ol>
+<ul>
+<li>Benchmark the performance impact of compression.</li>
+<li>Optimize compression settings if necessary.</li>
+</ul>
+<ol start="4">
+<li><strong>Security Review:</strong></li>
+</ol>
+<ul>
+<li>Assess any potential security risks introduced by compression.</li>
+<li>Implement necessary safeguards.</li>
+</ul>
+<hr>
+<p>By implementing and explaining <code>CompressionDecorator</code>, we have further enhanced our simple Java web service application, demonstrating how the <strong>Decorator Pattern</strong> can be effectively utilized to add new functionalities dynamically while keeping the system modular and maintainable.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

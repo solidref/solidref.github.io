@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Coding Principles in Java
+  #
+
+Java is a versatile and widely-used programming language known for its object-oriented features and platform independence. Applying coding principles in Java helps ensure that code is clean, efficient, and maintainable. This article explores core coding principles—like DRY, KISS, and SOLID—and how they apply to Java, along with Java-specific best practices, particularly in memory management and garbage collection.
+
+  DRY (Don’t Repeat Yourself)
+  #
+
+The DRY principle encourages avoiding code duplication. In Java, you can achieve this by using methods, classes, and interfaces to encapsulate reusable logic.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/coding-principles/java/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Coding Principles in Java">
+  <meta property="og:description" content="Coding Principles in Java # Java is a versatile and widely-used programming language known for its object-oriented features and platform independence. Applying coding principles in Java helps ensure that code is clean, efficient, and maintainable. This article explores core coding principles—like DRY, KISS, and SOLID—and how they apply to Java, along with Java-specific best practices, particularly in memory management and garbage collection.
+DRY (Don’t Repeat Yourself) # The DRY principle encourages avoiding code duplication. In Java, you can achieve this by using methods, classes, and interfaces to encapsulate reusable logic.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Coding Principles in Java | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/coding-principles/java/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Coding Principles in Java</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#dry-dont-repeat-yourself">DRY (Don’t Repeat Yourself)</a></li>
+    <li><a href="#kiss-keep-it-simple-stupid">KISS (Keep It Simple, Stupid)</a></li>
+    <li><a href="#yagni-you-arent-gonna-need-it">YAGNI (You Aren’t Gonna Need It)</a></li>
+    <li><a href="#solid-principles-in-java">SOLID Principles in Java</a>
+      <ul>
+        <li><a href="#single-responsibility-principle-srp">Single Responsibility Principle (SRP)</a></li>
+        <li><a href="#openclosed-principle-ocp">Open/Closed Principle (OCP)</a></li>
+        <li><a href="#liskov-substitution-principle-lsp">Liskov Substitution Principle (LSP)</a></li>
+        <li><a href="#interface-segregation-principle-isp">Interface Segregation Principle (ISP)</a></li>
+        <li><a href="#dependency-inversion-principle-dip">Dependency Inversion Principle (DIP)</a></li>
+      </ul>
+    </li>
+    <li><a href="#encapsulation">Encapsulation</a></li>
+    <li><a href="#separation-of-concerns">Separation of Concerns</a></li>
+    <li><a href="#law-of-demeter">Law of Demeter</a></li>
+    <li><a href="#composition-over-inheritance">Composition Over Inheritance</a></li>
+    <li><a href="#fail-fast">Fail Fast</a></li>
+    <li><a href="#coding-for-readability">Coding for Readability</a></li>
+    <li><a href="#java-specific-principles">Java Specific Principles</a>
+      <ul>
+        <li><a href="#memory-management-and-garbage-collection">Memory Management and Garbage Collection</a></li>
+        <li><a href="#exception-handling">Exception Handling</a></li>
+        <li><a href="#use-of-streams-and-lambdas">Use of Streams and Lambdas</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="coding-principles-in-java">
+  Coding Principles in Java
+  <a class="anchor" href="#coding-principles-in-java">#</a>
+</h1>
+<p>Java is a versatile and widely-used programming language known for its object-oriented features and platform independence. Applying coding principles in Java helps ensure that code is clean, efficient, and maintainable. This article explores core coding principles—like DRY, KISS, and SOLID—and how they apply to Java, along with Java-specific best practices, particularly in memory management and garbage collection.</p>
+<h2 id="dry-dont-repeat-yourself">
+  DRY (Don’t Repeat Yourself)
+  <a class="anchor" href="#dry-dont-repeat-yourself">#</a>
+</h2>
+<p>The DRY principle encourages avoiding code duplication. In Java, you can achieve this by using methods, classes, and interfaces to encapsulate reusable logic.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Bad</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculateDiscount</span>(<span style="color:#66d9ef">double</span> price) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> price <span style="color:#f92672">*</span> 0.<span style="color:#a6e22e">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">applyDiscount</span>(<span style="color:#66d9ef">double</span> price) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> price <span style="color:#f92672">-</span> (price <span style="color:#f92672">*</span> 0.<span style="color:#a6e22e">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Good</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculateDiscount</span>(<span style="color:#66d9ef">double</span> price, <span style="color:#66d9ef">double</span> discountRate) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> price <span style="color:#f92672">*</span> discountRate;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">applyDiscount</span>(<span style="color:#66d9ef">double</span> price) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> price <span style="color:#f92672">-</span> calculateDiscount(price, 0.<span style="color:#a6e22e">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="kiss-keep-it-simple-stupid">
+  KISS (Keep It Simple, Stupid)
+  <a class="anchor" href="#kiss-keep-it-simple-stupid">#</a>
+</h2>
+<p>The KISS principle advocates for simplicity. Java&rsquo;s strong typing and object-oriented features help maintain simplicity by encouraging clear and straightforward code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Bad</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getUserCount</span>(List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> users) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (users <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>users.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> users.<span style="color:#a6e22e">size</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> 0;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Good</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getUserCount</span>(List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> users) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> users <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> 0 : users.<span style="color:#a6e22e">size</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="yagni-you-arent-gonna-need-it">
+  YAGNI (You Aren’t Gonna Need It)
+  <a class="anchor" href="#yagni-you-arent-gonna-need-it">#</a>
+</h2>
+<p>The YAGNI principle advises against implementing features until they are necessary. Java&rsquo;s modular design supports this principle by allowing developers to add features incrementally.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Bad</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String email;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String address; <span style="color:#75715e">// Not needed now, but might be needed later</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Good</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String email;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="solid-principles-in-java">
+  SOLID Principles in Java
+  <a class="anchor" href="#solid-principles-in-java">#</a>
+</h2>
+<p>Java&rsquo;s object-oriented nature makes it a perfect fit for SOLID principles, which promote robust and maintainable code.</p>
+<h3 id="single-responsibility-principle-srp">
+  Single Responsibility Principle (SRP)
+  <a class="anchor" href="#single-responsibility-principle-srp">#</a>
+</h3>
+<p>A class should have one reason to change. Java&rsquo;s class structure supports SRP by allowing focused, single-purpose classes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Bad</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String email;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveToDatabase</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Save user to database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Good</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String email;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">save</span>(User user) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Save user to database</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="openclosed-principle-ocp">
+  Open/Closed Principle (OCP)
+  <a class="anchor" href="#openclosed-principle-ocp">#</a>
+</h3>
+<p>Java supports OCP through inheritance and interfaces, allowing classes to be extended without modifying existing code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Logger</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span>(String message);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConsoleLogger</span> <span style="color:#66d9ef">implements</span> Logger {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span>(String message) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(message);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimestampLogger</span> <span style="color:#66d9ef">implements</span> Logger {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Logger logger;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TimestampLogger</span>(Logger logger) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">logger</span> <span style="color:#f92672">=</span> logger;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span>(String message) {
+</span></span><span style="display:flex;"><span>        logger.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;[&#34;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">new</span> Date() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;] &#34;</span> <span style="color:#f92672">+</span> message);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="liskov-substitution-principle-lsp">
+  Liskov Substitution Principle (LSP)
+  <a class="anchor" href="#liskov-substitution-principle-lsp">#</a>
+</h3>
+<p>Java enforces LSP by ensuring that subclasses can be used interchangeably with their parent classes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Shape</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">area</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Rectangle</span> <span style="color:#66d9ef">implements</span> Shape {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> width, height;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">area</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> width <span style="color:#f92672">*</span> height;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Square</span> <span style="color:#66d9ef">implements</span> Shape {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> side;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">area</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> side <span style="color:#f92672">*</span> side;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="interface-segregation-principle-isp">
+  Interface Segregation Principle (ISP)
+  <a class="anchor" href="#interface-segregation-principle-isp">#</a>
+</h3>
+<p>Java encourages small, specific interfaces, allowing classes to implement only the methods they need.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Printer</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Scanner</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">scan</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MultiFunctionDevice</span> <span style="color:#66d9ef">implements</span> Printer, Scanner {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Printing...&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">scan</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Scanning...&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="dependency-inversion-principle-dip">
+  Dependency Inversion Principle (DIP)
+  <a class="anchor" href="#dependency-inversion-principle-dip">#</a>
+</h3>
+<p>Java supports DIP through dependency injection frameworks like Spring, allowing classes to depend on abstractions rather than concrete implementations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">save</span>(String data);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Database db;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UserRepository</span>(Database db) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">db</span> <span style="color:#f92672">=</span> db;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveUser</span>(String user) {
+</span></span><span style="display:flex;"><span>        db.<span style="color:#a6e22e">save</span>(user);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="encapsulation">
+  Encapsulation
+  <a class="anchor" href="#encapsulation">#</a>
+</h2>
+<p>Java uses access modifiers to achieve encapsulation, protecting the internal state of objects.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BankAccount</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> balance;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deposit</span>(<span style="color:#66d9ef">double</span> amount) {
+</span></span><span style="display:flex;"><span>        balance <span style="color:#f92672">+=</span> amount;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getBalance</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> balance;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="separation-of-concerns">
+  Separation of Concerns
+  <a class="anchor" href="#separation-of-concerns">#</a>
+</h2>
+<p>Java promotes separation of concerns through packages and layers, such as separating business logic from data access.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// UserService.java (business logic)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> User <span style="color:#a6e22e">findUser</span>(<span style="color:#66d9ef">int</span> id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Logic for finding a user</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UserController.java (HTTP handling)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserController</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UserService userService;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UserController</span>(UserService userService) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">userService</span> <span style="color:#f92672">=</span> userService;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> User <span style="color:#a6e22e">getUser</span>(<span style="color:#66d9ef">int</span> id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> userService.<span style="color:#a6e22e">findUser</span>(id);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="law-of-demeter">
+  Law of Demeter
+  <a class="anchor" href="#law-of-demeter">#</a>
+</h2>
+<p>The Law of Demeter advises against chaining calls, which creates tight coupling. Java supports this by encouraging encapsulation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Bad</span>
+</span></span><span style="display:flex;"><span>System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(order.<span style="color:#a6e22e">getCustomer</span>().<span style="color:#a6e22e">getAddress</span>().<span style="color:#a6e22e">getCity</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Good</span>
+</span></span><span style="display:flex;"><span>System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(order.<span style="color:#a6e22e">getCustomerCity</span>());
+</span></span></code></pre></div><h2 id="composition-over-inheritance">
+  Composition Over Inheritance
+  <a class="anchor" href="#composition-over-inheritance">#</a>
+</h2>
+<p>Java supports composition over inheritance, allowing flexible code reuse through interfaces and composition.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Engine</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Engine started&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Car</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Engine engine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Car</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">engine</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Engine();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span>() {
+</span></span><span style="display:flex;"><span>        engine.<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="fail-fast">
+  Fail Fast
+  <a class="anchor" href="#fail-fast">#</a>
+</h2>
+<p>Java encourages fail-fast principles by using exceptions to handle errors as soon as they occur.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">divide</span>(<span style="color:#66d9ef">double</span> a, <span style="color:#66d9ef">double</span> b) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (b <span style="color:#f92672">==</span> 0) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Division by zero&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">/</span> b;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="coding-for-readability">
+  Coding for Readability
+  <a class="anchor" href="#coding-for-readability">#</a>
+</h2>
+<p>Readable code is essential in Java. Follow Java conventions for naming, formatting, and method simplicity to make your code easy to understand.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Bad</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> 10, b <span style="color:#f92672">=</span> 5, c <span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> b;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Good</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> firstNumber <span style="color:#f92672">=</span> 10;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> secondNumber <span style="color:#f92672">=</span> 5;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> firstNumber <span style="color:#f92672">+</span> secondNumber;
+</span></span></code></pre></div><h2 id="java-specific-principles">
+  Java Specific Principles
+  <a class="anchor" href="#java-specific-principles">#</a>
+</h2>
+<h3 id="memory-management-and-garbage-collection">
+  Memory Management and Garbage Collection
+  <a class="anchor" href="#memory-management-and-garbage-collection">#</a>
+</h3>
+<p>Java&rsquo;s automatic garbage collection helps manage memory, but developers should be aware of best practices to optimize performance.</p>
+<ul>
+<li><strong>Avoid Memory Leaks</strong>: Ensure that objects are dereferenced when no longer needed.</li>
+<li><strong>Use Weak References</strong>: For objects that should be garbage collected when no longer in use.</li>
+<li><strong>Optimize Object Creation</strong>: Reuse objects where possible to reduce the overhead of garbage collection.</li>
+</ul>
+<h3 id="exception-handling">
+  Exception Handling
+  <a class="anchor" href="#exception-handling">#</a>
+</h3>
+<p>Java&rsquo;s exception handling mechanism should be used to manage errors gracefully.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Code that might throw an exception</span>
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>    e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="use-of-streams-and-lambdas">
+  Use of Streams and Lambdas
+  <a class="anchor" href="#use-of-streams-and-lambdas">#</a>
+</h3>
+<p>Java 8 introduced streams and lambdas, which can simplify code and improve readability.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> names <span style="color:#f92672">=</span> Arrays.<span style="color:#a6e22e">asList</span>(<span style="color:#e6db74">&#34;Alice&#34;</span>, <span style="color:#e6db74">&#34;Bob&#34;</span>, <span style="color:#e6db74">&#34;Charlie&#34;</span>);
+</span></span><span style="display:flex;"><span>names.<span style="color:#a6e22e">stream</span>()
+</span></span><span style="display:flex;"><span>     .<span style="color:#a6e22e">filter</span>(name <span style="color:#f92672">-&gt;</span> name.<span style="color:#a6e22e">startsWith</span>(<span style="color:#e6db74">&#34;A&#34;</span>))
+</span></span><span style="display:flex;"><span>     .<span style="color:#a6e22e">forEach</span>(System.<span style="color:#a6e22e">out</span>::println);
+</span></span></code></pre></div><p>By following these principles and best practices, Java developers can write code that is efficient, maintainable, and robust.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#dry-dont-repeat-yourself">DRY (Don’t Repeat Yourself)</a></li>
+    <li><a href="#kiss-keep-it-simple-stupid">KISS (Keep It Simple, Stupid)</a></li>
+    <li><a href="#yagni-you-arent-gonna-need-it">YAGNI (You Aren’t Gonna Need It)</a></li>
+    <li><a href="#solid-principles-in-java">SOLID Principles in Java</a>
+      <ul>
+        <li><a href="#single-responsibility-principle-srp">Single Responsibility Principle (SRP)</a></li>
+        <li><a href="#openclosed-principle-ocp">Open/Closed Principle (OCP)</a></li>
+        <li><a href="#liskov-substitution-principle-lsp">Liskov Substitution Principle (LSP)</a></li>
+        <li><a href="#interface-segregation-principle-isp">Interface Segregation Principle (ISP)</a></li>
+        <li><a href="#dependency-inversion-principle-dip">Dependency Inversion Principle (DIP)</a></li>
+      </ul>
+    </li>
+    <li><a href="#encapsulation">Encapsulation</a></li>
+    <li><a href="#separation-of-concerns">Separation of Concerns</a></li>
+    <li><a href="#law-of-demeter">Law of Demeter</a></li>
+    <li><a href="#composition-over-inheritance">Composition Over Inheritance</a></li>
+    <li><a href="#fail-fast">Fail Fast</a></li>
+    <li><a href="#coding-for-readability">Coding for Readability</a></li>
+    <li><a href="#java-specific-principles">Java Specific Principles</a>
+      <ul>
+        <li><a href="#memory-management-and-garbage-collection">Memory Management and Garbage Collection</a></li>
+        <li><a href="#exception-handling">Exception Handling</a></li>
+        <li><a href="#use-of-streams-and-lambdas">Use of Streams and Lambdas</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+      <div class="book-toc-languages">
+        
+<h4>Coding Principles in ...</h4>
+<nav>
+  <div class="book-search">
+    <input type="text" id="book-search-language-input" placeholder="Search Language" aria-label="Search Language" maxlength="64" data-hotkeys="s/">
+  </div>
+  <ul id="languages"></ul>
+  <script>
+    const languages = [{ title: "C\u002b\u002b", href: "\/docs\/coding-principles\/cpp\/" }, { title: "Go", href: "\/docs\/coding-principles\/go\/" }, { title: "Java", href: "\/docs\/coding-principles\/java\/" }, { title: "JavaScript", href: "\/docs\/coding-principles\/javascript\/" }, { title: "TypeScript", href: "\/docs\/coding-principles\/typescript\/" }, ];
+    const languageLinks = document.getElementById('languages');
+    const searchInput = document.getElementById('book-search-language-input');
+    const maxLanguages = 15
+
+    const listLanguages = (filter = '') => {
+      languageLinks.innerHTML = ''
+      const filtered = languages
+        .filter(item => item.title.toLowerCase().includes(filter.toLowerCase()))
+      filtered.slice(0, filtered.length > maxLanguages ? maxLanguages : filtered.length)
+        .forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.title;
+          const li = document.createElement('li');
+          li.appendChild(link);
+          languageLinks.appendChild(li);
+        })
+      if (filtered.length > maxLanguages) {
+        const li = document.createElement('li');
+        li.textContent = '...';
+        languageLinks.appendChild(li);
+      }
+    }
+
+    listLanguages('')
+    searchInput.onkeyup = () => { listLanguages(searchInput.value) }
+  </script>
+</nav>
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

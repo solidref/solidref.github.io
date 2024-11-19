@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of RequestHandler (Template Method Pattern)
+
+RequestHandler.java
+import java.io.IOException;
+import java.io.OutputStream;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+public abstract class RequestHandler implements HttpHandler {
+    // Template method
+    @Override
+    public final void handle(HttpExchange exchange) throws IOException {
+        try {
+            // Step 1: Parse the request
+            RequestData requestData = parseRequest(exchange);
+
+            // Step 2: Process the request
+            ResponseData responseData = processRequest(requestData);
+
+            // Step 3: Format the response
+            String response = formatResponse(responseData);
+
+            // Send the response
+            sendResponse(exchange, response, responseData.getStatusCode());
+        } catch (Exception e) {
+            // Handle exceptions and send error response
+            String errorResponse = &#34;Internal Server Error&#34;;
+            sendResponse(exchange, errorResponse, 500);
+            e.printStackTrace();
+        }
+    }
+
+    // Abstract methods to be implemented by subclasses
+    protected abstract RequestData parseRequest(HttpExchange exchange) throws IOException;
+
+    protected abstract ResponseData processRequest(RequestData requestData);
+
+    protected abstract String formatResponse(ResponseData responseData);
+
+    // Concrete method shared by all subclasses
+    private void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
+        exchange.getResponseHeaders().add(&#34;Content-Type&#34;, &#34;application/json; charset=UTF-8&#34;);
+        exchange.sendResponseHeaders(statusCode, response.getBytes(&#34;UTF-8&#34;).length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes(&#34;UTF-8&#34;));
+        os.close();
+    }
+}
+
+Explanation:">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-03-restful-service-using-dp-template-method/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of RequestHandler (Template Method Pattern)
+RequestHandler.java
+import java.io.IOException; import java.io.OutputStream; import com.sun.net.httpserver.HttpExchange; import com.sun.net.httpserver.HttpHandler; public abstract class RequestHandler implements HttpHandler { // Template method @Override public final void handle(HttpExchange exchange) throws IOException { try { // Step 1: Parse the request RequestData requestData = parseRequest(exchange); // Step 2: Process the request ResponseData responseData = processRequest(requestData); // Step 3: Format the response String response = formatResponse(responseData); // Send the response sendResponse(exchange, response, responseData.getStatusCode()); } catch (Exception e) { // Handle exceptions and send error response String errorResponse = &#34;Internal Server Error&#34;; sendResponse(exchange, errorResponse, 500); e.printStackTrace(); } } // Abstract methods to be implemented by subclasses protected abstract RequestData parseRequest(HttpExchange exchange) throws IOException; protected abstract ResponseData processRequest(RequestData requestData); protected abstract String formatResponse(ResponseData responseData); // Concrete method shared by all subclasses private void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException { exchange.getResponseHeaders().add(&#34;Content-Type&#34;, &#34;application/json; charset=UTF-8&#34;); exchange.sendResponseHeaders(statusCode, response.getBytes(&#34;UTF-8&#34;).length); OutputStream os = exchange.getResponseBody(); os.write(response.getBytes(&#34;UTF-8&#34;)); os.close(); } } Explanation:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 03 Restful Service Using Dp Template Method | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-03-restful-service-using-dp-template-method/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 03 Restful Service Using Dp Template Method</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>RequestHandler</code> (Template Method Pattern)</strong></p>
+<hr>
+<p><strong>RequestHandler.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.OutputStream;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.sun.net.httpserver.HttpExchange;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.sun.net.httpserver.HttpHandler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestHandler</span> <span style="color:#66d9ef">implements</span> HttpHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Template method</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Step 1: Parse the request</span>
+</span></span><span style="display:flex;"><span>            RequestData requestData <span style="color:#f92672">=</span> parseRequest(exchange);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Step 2: Process the request</span>
+</span></span><span style="display:flex;"><span>            ResponseData responseData <span style="color:#f92672">=</span> processRequest(requestData);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Step 3: Format the response</span>
+</span></span><span style="display:flex;"><span>            String response <span style="color:#f92672">=</span> formatResponse(responseData);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Send the response</span>
+</span></span><span style="display:flex;"><span>            sendResponse(exchange, response, responseData.<span style="color:#a6e22e">getStatusCode</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions and send error response</span>
+</span></span><span style="display:flex;"><span>            String errorResponse <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Internal Server Error&#34;</span>;
+</span></span><span style="display:flex;"><span>            sendResponse(exchange, errorResponse, 500);
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Abstract methods to be implemented by subclasses</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">abstract</span> RequestData <span style="color:#a6e22e">parseRequest</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">abstract</span> ResponseData <span style="color:#a6e22e">processRequest</span>(RequestData requestData);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">abstract</span> String <span style="color:#a6e22e">formatResponse</span>(ResponseData responseData);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Concrete method shared by all subclasses</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendResponse</span>(HttpExchange exchange, String response, <span style="color:#66d9ef">int</span> statusCode) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        exchange.<span style="color:#a6e22e">getResponseHeaders</span>().<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/json; charset=UTF-8&#34;</span>);
+</span></span><span style="display:flex;"><span>        exchange.<span style="color:#a6e22e">sendResponseHeaders</span>(statusCode, response.<span style="color:#a6e22e">getBytes</span>(<span style="color:#e6db74">&#34;UTF-8&#34;</span>).<span style="color:#a6e22e">length</span>);
+</span></span><span style="display:flex;"><span>        OutputStream os <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getResponseBody</span>();
+</span></span><span style="display:flex;"><span>        os.<span style="color:#a6e22e">write</span>(response.<span style="color:#a6e22e">getBytes</span>(<span style="color:#e6db74">&#34;UTF-8&#34;</span>));
+</span></span><span style="display:flex;"><span>        os.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Purpose of <code>RequestHandler</code>:</strong></p>
+<p>The <code>RequestHandler</code> class serves as an abstract base class for handling HTTP requests in the application. It implements the <strong>Template Method</strong> design pattern to define the skeleton of the request handling algorithm, allowing subclasses to provide specific implementations for certain steps.</p>
+<hr>
+<p><strong>Template Method Pattern Implementation:</strong></p>
+<ol>
+<li>
+<p><strong>Final <code>handle</code> Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>The <code>handle</code> method is the <strong>template method</strong>.</li>
+<li>Declared <code>final</code> to prevent subclasses from overriding it.</li>
+<li>Defines the fixed sequence of steps for handling a request.</li>
+</ul>
+<ol start="2">
+<li>
+<p><strong>Algorithm Steps:</strong></p>
+<p>The <code>handle</code> method orchestrates the following steps:</p>
+</li>
+</ol>
+<ul>
+<li>
+<p><strong>Step 1: Parse the Request</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>RequestData requestData <span style="color:#f92672">=</span> parseRequest(exchange);
+</span></span></code></pre></div><ul>
+<li>Calls the <code>parseRequest</code> method to extract request details.</li>
+<li><code>parseRequest</code> is an <strong>abstract method</strong> that must be implemented by subclasses.</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 2: Process the Request</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ResponseData responseData <span style="color:#f92672">=</span> processRequest(requestData);
+</span></span></code></pre></div><ul>
+<li>Calls the <code>processRequest</code> method to perform the main logic.</li>
+<li><code>processRequest</code> is an <strong>abstract method</strong> to be implemented by subclasses.</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 3: Format the Response</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String response <span style="color:#f92672">=</span> formatResponse(responseData);
+</span></span></code></pre></div><ul>
+<li>Calls the <code>formatResponse</code> method to prepare the response.</li>
+<li><code>formatResponse</code> is an <strong>abstract method</strong> for subclasses to implement.</li>
+</ul>
+</li>
+<li>
+<p><strong>Send the Response</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>sendResponse(exchange, response, responseData.<span style="color:#a6e22e">getStatusCode</span>());
+</span></span></code></pre></div><ul>
+<li>Calls the <code>sendResponse</code> method to send the HTTP response back to the client.</li>
+<li><code>sendResponse</code> is a <strong>concrete method</strong> provided in the base class.</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>Abstract Methods:</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong><code>parseRequest</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">abstract</span> RequestData <span style="color:#a6e22e">parseRequest</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException;
+</span></span></code></pre></div><ul>
+<li>Responsible for parsing the incoming HTTP request.</li>
+<li>Subclasses must provide the implementation.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>processRequest</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">abstract</span> ResponseData <span style="color:#a6e22e">processRequest</span>(RequestData requestData);
+</span></span></code></pre></div><ul>
+<li>Contains the business logic for handling the request.</li>
+<li>Subclasses implement this to define specific behaviors.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>formatResponse</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">abstract</span> String <span style="color:#a6e22e">formatResponse</span>(ResponseData responseData);
+</span></span></code></pre></div><ul>
+<li>Formats the response data into a string (e.g., JSON).</li>
+<li>Subclasses decide how to serialize the response.</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li><strong>Concrete Method:</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong><code>sendResponse</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendResponse</span>(HttpExchange exchange, String response, <span style="color:#66d9ef">int</span> statusCode) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    exchange.<span style="color:#a6e22e">getResponseHeaders</span>().<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/json; charset=UTF-8&#34;</span>);
+</span></span><span style="display:flex;"><span>    exchange.<span style="color:#a6e22e">sendResponseHeaders</span>(statusCode, response.<span style="color:#a6e22e">getBytes</span>(<span style="color:#e6db74">&#34;UTF-8&#34;</span>).<span style="color:#a6e22e">length</span>);
+</span></span><span style="display:flex;"><span>    OutputStream os <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getResponseBody</span>();
+</span></span><span style="display:flex;"><span>    os.<span style="color:#a6e22e">write</span>(response.<span style="color:#a6e22e">getBytes</span>(<span style="color:#e6db74">&#34;UTF-8&#34;</span>));
+</span></span><span style="display:flex;"><span>    os.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>Handles sending the HTTP response back to the client.</li>
+<li>Sets response headers, status code, and writes the response body.</li>
+<li>Shared by all subclasses, promoting code reuse.</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li>
+<p><strong>Exception Handling:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>} <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle exceptions and send error response</span>
+</span></span><span style="display:flex;"><span>    String errorResponse <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Internal Server Error&#34;</span>;
+</span></span><span style="display:flex;"><span>    sendResponse(exchange, errorResponse, 500);
+</span></span><span style="display:flex;"><span>    e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>Catches any exceptions thrown during request handling.</li>
+<li>Sends a 500 Internal Server Error response.</li>
+<li>Prints the stack trace for debugging purposes.</li>
+</ul>
+<hr>
+<p><strong>Supporting Classes (<code>RequestData</code> and <code>ResponseData</code>):</strong></p>
+<p>For this implementation, we assume the existence of simple data classes to encapsulate request and response data.</p>
+<p><strong>RequestData.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestData</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String method;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String body;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> queryParams;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getters and setters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Constructor(s)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>ResponseData.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ResponseData</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> statusCode;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Object data;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getters and setters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Constructor(s)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong><code>RequestData</code></strong> holds information extracted from the incoming HTTP request.</li>
+<li><strong><code>ResponseData</code></strong> holds information to be sent back in the HTTP response.</li>
+</ul>
+<hr>
+<p><strong>Usage in Subclasses:</strong></p>
+<p>Subclasses like <code>TaskRequestHandler</code> will extend <code>RequestHandler</code> and provide concrete implementations for the abstract methods.</p>
+<p><strong>TaskRequestHandler.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Map;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.sun.net.httpserver.HttpExchange;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> RequestData <span style="color:#a6e22e">parseRequest</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Implementation to parse the request</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Extract method, body, query parameters, etc.</span>
+</span></span><span style="display:flex;"><span>        RequestData requestData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RequestData();
+</span></span><span style="display:flex;"><span>        requestData.<span style="color:#a6e22e">setMethod</span>(exchange.<span style="color:#a6e22e">getRequestMethod</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Parse body and query params as needed</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> requestData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> ResponseData <span style="color:#a6e22e">processRequest</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Business logic based on request data</span>
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Set status code and data</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">formatResponse</span>(ResponseData responseData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Convert responseData to JSON or other formats</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// For simplicity, let&#39;s return a JSON string</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;{\&#34;status\&#34;:\&#34;success\&#34;}&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong><code>parseRequest</code></strong>: Parses the HTTP method, request body, and query parameters.</li>
+<li><strong><code>processRequest</code></strong>: Implements the logic for handling task operations (e.g., creating, updating tasks).</li>
+<li><strong><code>formatResponse</code></strong>: Converts the response data into a JSON string.</li>
+</ul>
+<hr>
+<p><strong>Why Template Method Pattern?</strong></p>
+<ul>
+<li><strong>Defines the Algorithm Structure</strong>: The <code>handle</code> method outlines the steps required to process a request.</li>
+<li><strong>Enforces Consistent Workflow</strong>: All subclasses follow the same processing sequence, ensuring consistency.</li>
+<li><strong>Promotes Code Reuse</strong>: Common code like <code>sendResponse</code> is implemented once and used by all subclasses.</li>
+<li><strong>Allows Flexibility</strong>: Subclasses can customize specific steps without altering the overall algorithm.</li>
+</ul>
+<hr>
+<p><strong>Key Components:</strong></p>
+<ol>
+<li><strong>Abstract Class (<code>RequestHandler</code>)</strong>:</li>
+</ol>
+<ul>
+<li>Contains the template method (<code>handle</code>) and abstract methods to be implemented by subclasses.</li>
+</ul>
+<ol start="2">
+<li><strong>Template Method (<code>handle</code>)</strong>:</li>
+</ol>
+<ul>
+<li>Orchestrates the algorithm&rsquo;s steps.</li>
+<li>Declared <code>final</code> to prevent modification.</li>
+</ul>
+<ol start="3">
+<li><strong>Abstract Methods</strong>:</li>
+</ol>
+<ul>
+<li><strong><code>parseRequest</code></strong>, <strong><code>processRequest</code></strong>, <strong><code>formatResponse</code></strong>.</li>
+<li>Provide extension points for subclasses.</li>
+</ul>
+<ol start="4">
+<li><strong>Concrete Methods</strong>:</li>
+</ol>
+<ul>
+<li><strong><code>sendResponse</code></strong>: Shared utility method for sending responses.</li>
+</ul>
+<hr>
+<p><strong>Advantages of This Design:</strong></p>
+<ul>
+<li><strong>Separation of Concerns</strong>: Each method handles a specific part of the request processing.</li>
+<li><strong>Ease of Maintenance</strong>: Changes to the common workflow are made in one place.</li>
+<li><strong>Extensibility</strong>: New request handlers can be added by extending <code>RequestHandler</code> and implementing the abstract methods.</li>
+<li><strong>Consistency</strong>: Ensures all request handlers behave similarly, reducing potential errors.</li>
+</ul>
+<hr>
+<p><strong>Example Scenario:</strong></p>
+<p>Suppose a new request handler is needed for user authentication. You can create a new class <code>AuthRequestHandler</code> that extends <code>RequestHandler</code> and implements the abstract methods.</p>
+<p><strong>AuthRequestHandler.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> RequestData <span style="color:#a6e22e">parseRequest</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Parse authentication request details</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> ResponseData <span style="color:#a6e22e">processRequest</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Authenticate the user</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">formatResponse</span>(ResponseData responseData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Format the authentication response</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Reuses the common workflow</strong>: No need to re-implement the sequence of steps.</li>
+<li><strong>Focuses on specific logic</strong>: Only implements the parts that are unique to authentication.</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>RequestHandler</code> class effectively utilizes the <strong>Template Method</strong> design pattern to define a consistent algorithm for handling HTTP requests. By abstracting the common workflow and allowing subclasses to implement specific steps, the design promotes code reuse, maintainability, and flexibility.</p>
+<p>This implementation aligns with the goal of keeping the application simple (within 20 classes) while applying key design patterns to enhance structure and scalability.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li><strong>Implement Subclasses</strong>: Create concrete request handlers like <code>TaskRequestHandler</code> to handle specific endpoints.</li>
+<li><strong>Develop Supporting Classes</strong>: Ensure <code>RequestData</code> and <code>ResponseData</code> are fully implemented to facilitate data exchange.</li>
+<li><strong>Integrate with Other Patterns</strong>: As you develop further, integrate other design patterns as per the initial design plan (e.g., Command pattern in <code>processRequest</code>).</li>
+</ul>
+<hr>
+<p><strong>Assumptions and Dependencies:</strong></p>
+<ul>
+<li><strong>HttpExchange</strong>: Part of <code>com.sun.net.httpserver</code>, represents an HTTP request and response pair.</li>
+<li><strong>Exception Handling</strong>: Simplified for this example; in a production environment, you&rsquo;d have more robust error handling.</li>
+<li><strong>Content-Type</strong>: Set to <code>application/json</code> for simplicity; can be adjusted based on response format.</li>
+<li><strong>Character Encoding</strong>: Uses UTF-8 encoding for response data.</li>
+</ul>
+<hr>
+<p><strong>Final Notes:</strong></p>
+<ul>
+<li><strong>Extensibility</strong>: The design allows easy addition of new request handlers for different endpoints or services.</li>
+<li><strong>Testability</strong>: Each method can be unit tested separately, improving code reliability.</li>
+<li><strong>Simplicity</strong>: The implementation remains straightforward, adhering to the requirement of simplicity and minimal class count.</li>
+</ul>
+<hr>
+<p><strong>Implementation of <code>TaskRequestHandler</code> (Concrete Implementation of Template Method Pattern)</strong></p>
+<hr>
+<p><strong>TaskRequestHandler.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStream;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.charset.StandardCharsets;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Map;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.sun.net.httpserver.HttpExchange;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.json.JSONObject;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> RequestData <span style="color:#a6e22e">parseRequest</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Extract HTTP method and URI</span>
+</span></span><span style="display:flex;"><span>        String method <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequestMethod</span>();
+</span></span><span style="display:flex;"><span>        String uri <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequestURI</span>().<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Read request body</span>
+</span></span><span style="display:flex;"><span>        InputStream is <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequestBody</span>();
+</span></span><span style="display:flex;"><span>        String body <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String(is.<span style="color:#a6e22e">readAllBytes</span>(), StandardCharsets.<span style="color:#a6e22e">UTF_8</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Parse query parameters (assuming a utility class for parsing)</span>
+</span></span><span style="display:flex;"><span>        Map<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> queryParams <span style="color:#f92672">=</span> QueryUtils.<span style="color:#a6e22e">parseQuery</span>(exchange.<span style="color:#a6e22e">getRequestURI</span>().<span style="color:#a6e22e">getQuery</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Create and return a RequestData object</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RequestData(method, uri, body, queryParams);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> ResponseData <span style="color:#a6e22e">processRequest</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        String method <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getMethod</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">switch</span> (method) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;GET&#34;</span>:
+</span></span><span style="display:flex;"><span>                    responseData <span style="color:#f92672">=</span> handleGet(requestData);
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;POST&#34;</span>:
+</span></span><span style="display:flex;"><span>                    responseData <span style="color:#f92672">=</span> handlePost(requestData);
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;PUT&#34;</span>:
+</span></span><span style="display:flex;"><span>                    responseData <span style="color:#f92672">=</span> handlePut(requestData);
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;DELETE&#34;</span>:
+</span></span><span style="display:flex;"><span>                    responseData <span style="color:#f92672">=</span> handleDelete(requestData);
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>                    responseData.<span style="color:#a6e22e">setStatusCode</span>(405);
+</span></span><span style="display:flex;"><span>                    responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Method Not Allowed&#34;</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(500);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Internal Server Error&#34;</span>);
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">formatResponse</span>(ResponseData responseData) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Convert response data to JSON format</span>
+</span></span><span style="display:flex;"><span>        JSONObject jsonResponse <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject();
+</span></span><span style="display:flex;"><span>        jsonResponse.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;status&#34;</span>, responseData.<span style="color:#a6e22e">getStatusCode</span>());
+</span></span><span style="display:flex;"><span>        jsonResponse.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;data&#34;</span>, responseData.<span style="color:#a6e22e">getData</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jsonResponse.<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Helper methods for handling different HTTP methods</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleGet</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// For simplicity, returning a static list of tasks</span>
+</span></span><span style="display:flex;"><span>        String tasksJson <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[{\&#34;id\&#34;:1,\&#34;title\&#34;:\&#34;Task 1\&#34;},{\&#34;id\&#34;:2,\&#34;title\&#34;:\&#34;Task 2\&#34;}]&#34;</span>;
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setData</span>(tasksJson);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Parse the request body to create a new task</span>
+</span></span><span style="display:flex;"><span>        JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>        String title <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">getString</span>(<span style="color:#e6db74">&#34;title&#34;</span>);
+</span></span><span style="display:flex;"><span>        String description <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;description&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Use TaskBuilder to create a new Task</span>
+</span></span><span style="display:flex;"><span>        TaskBuilder taskBuilder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder();
+</span></span><span style="display:flex;"><span>        Task task <span style="color:#f92672">=</span> taskBuilder
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">setTitle</span>(title)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">setDescription</span>(description)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Save the task using DatabaseAdapter (simplified here)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// DatabaseAdapter.getInstance().saveTask(task);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Return the created task</span>
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setStatusCode</span>(201);
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePut</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Extract task ID from URI</span>
+</span></span><span style="display:flex;"><span>        String<span style="color:#f92672">[]</span> uriParts <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getUri</span>().<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#34;/&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> taskId <span style="color:#f92672">=</span> Integer.<span style="color:#a6e22e">parseInt</span>(uriParts<span style="color:#f92672">[</span>uriParts.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Parse the request body to update the task</span>
+</span></span><span style="display:flex;"><span>        JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>        String title <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;title&#34;</span>, <span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>        String description <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;description&#34;</span>, <span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Retrieve and update the task (simplified)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Task task = DatabaseAdapter.getInstance().getTask(taskId);</span>
+</span></span><span style="display:flex;"><span>        Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Task(); <span style="color:#75715e">// Placeholder for the existing task</span>
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setId</span>(taskId);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (title <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) task.<span style="color:#a6e22e">setTitle</span>(title);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (description <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) task.<span style="color:#a6e22e">setDescription</span>(description);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Save the updated task</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// DatabaseAdapter.getInstance().updateTask(task);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Return the updated task</span>
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleDelete</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Extract task ID from URI</span>
+</span></span><span style="display:flex;"><span>        String<span style="color:#f92672">[]</span> uriParts <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getUri</span>().<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#34;/&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> taskId <span style="color:#f92672">=</span> Integer.<span style="color:#a6e22e">parseInt</span>(uriParts<span style="color:#f92672">[</span>uriParts.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Delete the task (simplified)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// DatabaseAdapter.getInstance().deleteTask(taskId);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Return a success message</span>
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Task deleted successfully&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Purpose of <code>TaskRequestHandler</code>:</strong></p>
+<p><code>TaskRequestHandler</code> is a concrete subclass of the abstract <code>RequestHandler</code> class. It implements the abstract methods to handle HTTP requests related to tasks (e.g., creating, reading, updating, deleting tasks). This class applies the <strong>Template Method</strong> pattern by providing specific implementations of the steps defined in the <code>RequestHandler</code>&rsquo;s template method.</p>
+<hr>
+<p><strong>Implementation Details:</strong></p>
+<ol>
+<li>
+<p><strong>Extending <code>RequestHandler</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>Inherits the <code>handle()</code> method, which is the template method.</li>
+<li>Provides concrete implementations for <code>parseRequest</code>, <code>processRequest</code>, and <code>formatResponse</code>.</li>
+</ul>
+<ol start="2">
+<li>
+<p><strong>Implementing <code>parseRequest</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> RequestData <span style="color:#a6e22e">parseRequest</span>(HttpExchange exchange) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Extract HTTP method and URI</span>
+</span></span><span style="display:flex;"><span>    String method <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequestMethod</span>();
+</span></span><span style="display:flex;"><span>    String uri <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequestURI</span>().<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Read request body</span>
+</span></span><span style="display:flex;"><span>    InputStream is <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequestBody</span>();
+</span></span><span style="display:flex;"><span>    String body <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String(is.<span style="color:#a6e22e">readAllBytes</span>(), StandardCharsets.<span style="color:#a6e22e">UTF_8</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Parse query parameters</span>
+</span></span><span style="display:flex;"><span>    Map<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> queryParams <span style="color:#f92672">=</span> QueryUtils.<span style="color:#a6e22e">parseQuery</span>(exchange.<span style="color:#a6e22e">getRequestURI</span>().<span style="color:#a6e22e">getQuery</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return a new RequestData object</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RequestData(method, uri, body, queryParams);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li><strong>Method and URI Extraction:</strong>
+<ul>
+<li>Retrieves the HTTP method (e.g., GET, POST) and the requested URI.</li>
+</ul>
+</li>
+<li><strong>Reading Request Body:</strong>
+<ul>
+<li>Reads the body of the request, which may contain JSON data.</li>
+<li>Uses UTF-8 character encoding.</li>
+</ul>
+</li>
+<li><strong>Parsing Query Parameters:</strong>
+<ul>
+<li>Utilizes a hypothetical <code>QueryUtils</code> class to parse query parameters into a <code>Map</code>.</li>
+</ul>
+</li>
+<li><strong>Creating <code>RequestData</code>:</strong>
+<ul>
+<li>Encapsulates the extracted information into a <code>RequestData</code> object for further processing.</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>
+<p><strong>Implementing <code>processRequest</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> ResponseData <span style="color:#a6e22e">processRequest</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>    ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>    String method <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getMethod</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (method) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;GET&#34;</span>:
+</span></span><span style="display:flex;"><span>                responseData <span style="color:#f92672">=</span> handleGet(requestData);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;POST&#34;</span>:
+</span></span><span style="display:flex;"><span>                responseData <span style="color:#f92672">=</span> handlePost(requestData);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;PUT&#34;</span>:
+</span></span><span style="display:flex;"><span>                responseData <span style="color:#f92672">=</span> handlePut(requestData);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;DELETE&#34;</span>:
+</span></span><span style="display:flex;"><span>                responseData <span style="color:#f92672">=</span> handleDelete(requestData);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>                responseData.<span style="color:#a6e22e">setStatusCode</span>(405);
+</span></span><span style="display:flex;"><span>                responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Method Not Allowed&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setStatusCode</span>(500);
+</span></span><span style="display:flex;"><span>        responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Internal Server Error&#34;</span>);
+</span></span><span style="display:flex;"><span>        e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li><strong>Switch Statement:</strong>
+<ul>
+<li>Determines the appropriate action based on the HTTP method.</li>
+</ul>
+</li>
+<li><strong>Handling Each Method:</strong>
+<ul>
+<li>Calls specific helper methods for GET, POST, PUT, DELETE.</li>
+</ul>
+</li>
+<li><strong>Error Handling:</strong>
+<ul>
+<li>Catches exceptions and sets a 500 Internal Server Error response.</li>
+</ul>
+</li>
+<li><strong>Unsupported Methods:</strong>
+<ul>
+<li>Returns a 405 Method Not Allowed for any other HTTP methods.</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>
+<p><strong>Implementing <code>formatResponse</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">formatResponse</span>(ResponseData responseData) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Convert response data to JSON format</span>
+</span></span><span style="display:flex;"><span>    JSONObject jsonResponse <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject();
+</span></span><span style="display:flex;"><span>    jsonResponse.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;status&#34;</span>, responseData.<span style="color:#a6e22e">getStatusCode</span>());
+</span></span><span style="display:flex;"><span>    jsonResponse.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;data&#34;</span>, responseData.<span style="color:#a6e22e">getData</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jsonResponse.<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li><strong>JSON Formatting:</strong>
+<ul>
+<li>Uses the <code>org.json</code> library to create a JSON object.</li>
+<li>Includes the status code and data in the response.</li>
+</ul>
+</li>
+<li><strong>Returning the Response String:</strong>
+<ul>
+<li>Converts the JSON object to a string for sending back to the client.</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li><strong>Helper Methods for Each HTTP Method:</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong><code>handleGet</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleGet</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>    ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Returning a static list of tasks for simplicity</span>
+</span></span><span style="display:flex;"><span>    String tasksJson <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[{\&#34;id\&#34;:1,\&#34;title\&#34;:\&#34;Task 1\&#34;},{\&#34;id\&#34;:2,\&#34;title\&#34;:\&#34;Task 2\&#34;}]&#34;</span>;
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setData</span>(tasksJson);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Retrieves tasks from the data source.</li>
+</ul>
+</li>
+<li><strong>Simplification:</strong>
+<ul>
+<li>Returns a static JSON string representing a list of tasks.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>handlePost</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>    ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Parse the request body to create a new task</span>
+</span></span><span style="display:flex;"><span>    JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>    String title <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">getString</span>(<span style="color:#e6db74">&#34;title&#34;</span>);
+</span></span><span style="display:flex;"><span>    String description <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;description&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Use TaskBuilder to create a new Task</span>
+</span></span><span style="display:flex;"><span>    TaskBuilder taskBuilder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder();
+</span></span><span style="display:flex;"><span>    Task task <span style="color:#f92672">=</span> taskBuilder
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">setTitle</span>(title)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">setDescription</span>(description)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Save the task (simplified)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DatabaseAdapter.getInstance().saveTask(task);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return the created task</span>
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setStatusCode</span>(201);
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Parsing Request Body:</strong>
+<ul>
+<li>Extracts <code>title</code> and <code>description</code> from the JSON body.</li>
+</ul>
+</li>
+<li><strong>Using TaskBuilder:</strong>
+<ul>
+<li>Applies the <strong>Builder Pattern</strong> to create a <code>Task</code> object.</li>
+</ul>
+</li>
+<li><strong>Saving the Task:</strong>
+<ul>
+<li>Saving to the database is simplified/omitted.</li>
+</ul>
+</li>
+<li><strong>Returning Response:</strong>
+<ul>
+<li>Sets the status code to 201 (Created) and includes the new task data.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>handlePut</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePut</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>    ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Extract task ID from URI</span>
+</span></span><span style="display:flex;"><span>    String<span style="color:#f92672">[]</span> uriParts <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getUri</span>().<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#34;/&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> taskId <span style="color:#f92672">=</span> Integer.<span style="color:#a6e22e">parseInt</span>(uriParts<span style="color:#f92672">[</span>uriParts.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Parse the request body</span>
+</span></span><span style="display:flex;"><span>    JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>    String title <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;title&#34;</span>, <span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>    String description <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;description&#34;</span>, <span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Retrieve and update the task (simplified)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Task task = DatabaseAdapter.getInstance().getTask(taskId);</span>
+</span></span><span style="display:flex;"><span>    Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Task(); <span style="color:#75715e">// Placeholder for the existing task</span>
+</span></span><span style="display:flex;"><span>    task.<span style="color:#a6e22e">setId</span>(taskId);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (title <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) task.<span style="color:#a6e22e">setTitle</span>(title);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (description <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) task.<span style="color:#a6e22e">setDescription</span>(description);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Save the updated task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DatabaseAdapter.getInstance().updateTask(task);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return the updated task</span>
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Extracting Task ID:</strong>
+<ul>
+<li>Parses the task ID from the request URI.</li>
+</ul>
+</li>
+<li><strong>Updating the Task:</strong>
+<ul>
+<li>Retrieves the existing task (simplified) and updates it with new data.</li>
+</ul>
+</li>
+<li><strong>Saving Changes:</strong>
+<ul>
+<li>Saving is simplified/omitted.</li>
+</ul>
+</li>
+<li><strong>Returning Response:</strong>
+<ul>
+<li>Includes the updated task data in the response.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>handleDelete</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleDelete</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>    ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Extract task ID from URI</span>
+</span></span><span style="display:flex;"><span>    String<span style="color:#f92672">[]</span> uriParts <span style="color:#f92672">=</span> requestData.<span style="color:#a6e22e">getUri</span>().<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#34;/&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> taskId <span style="color:#f92672">=</span> Integer.<span style="color:#a6e22e">parseInt</span>(uriParts<span style="color:#f92672">[</span>uriParts.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Delete the task (simplified)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DatabaseAdapter.getInstance().deleteTask(taskId);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return a success message</span>
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Task deleted successfully&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Deleting the Task:</strong>
+<ul>
+<li>Deletes the task with the specified ID (simplified).</li>
+</ul>
+</li>
+<li><strong>Returning Response:</strong>
+<ul>
+<li>Provides a confirmation message.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Integration with Other Design Patterns:</strong></p>
+<ul>
+<li>
+<p><strong>Builder Pattern (<code>TaskBuilder</code>):</strong></p>
+<ul>
+<li>Used in <code>handlePost</code> to construct a <code>Task</code> object.</li>
+<li>Simplifies the creation of complex objects.</li>
+</ul>
+</li>
+<li>
+<p><strong>Singleton Pattern (<code>DatabaseAdapter</code>):</strong></p>
+<ul>
+<li>Implied usage in database operations (commented out in code).</li>
+<li>Ensures a single instance manages database interactions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Strategy Pattern (Serializer):</strong></p>
+<ul>
+<li>Could be applied in <code>formatResponse</code> to use different serialization strategies.</li>
+<li>Here, JSON serialization is hardcoded for simplicity.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Supporting Classes and Utilities:</strong></p>
+<ul>
+<li>
+<p><strong><code>RequestData</code> Class:</strong></p>
+<ul>
+<li>Encapsulates request information.</li>
+<li>Contains methods like <code>getMethod()</code>, <code>getUri()</code>, <code>getBody()</code>, and <code>getQueryParams()</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>ResponseData</code> Class:</strong></p>
+<ul>
+<li>Encapsulates response information.</li>
+<li>Contains methods like <code>setStatusCode()</code>, <code>setData()</code>, and <code>getStatusCode()</code>, <code>getData()</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Task</code> Class:</strong></p>
+<ul>
+<li>Represents a task entity.</li>
+<li>Methods like <code>setId()</code>, <code>setTitle()</code>, <code>setDescription()</code>, <code>toJson()</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>TaskBuilder</code> Class:</strong></p>
+<ul>
+<li>Implements the <strong>Builder Pattern</strong>.</li>
+<li>Methods for setting task properties and a <code>build()</code> method.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>QueryUtils</code> Class:</strong></p>
+<ul>
+<li>Provides utility methods for parsing query parameters.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>org.json</code> Library:</strong></p>
+<ul>
+<li>Used for JSON parsing and generation.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>
+<p><strong>Template Method Pattern:</strong></p>
+<ul>
+<li><code>handle()</code> method from <code>RequestHandler</code> defines the algorithm structure.</li>
+<li><code>TaskRequestHandler</code> provides concrete implementations for abstract methods.</li>
+</ul>
+</li>
+<li>
+<p><strong>HTTP Method Handling:</strong></p>
+<ul>
+<li>Supports standard CRUD operations via HTTP methods.</li>
+<li>Ensures RESTful API design principles.</li>
+</ul>
+</li>
+<li>
+<p><strong>Error Handling:</strong></p>
+<ul>
+<li>Basic error handling with status codes and messages.</li>
+<li>Exceptions are caught and logged.</li>
+</ul>
+</li>
+<li>
+<p><strong>Response Formatting:</strong></p>
+<ul>
+<li>Consistent JSON responses for client compatibility.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Assumptions and Simplifications:</strong></p>
+<ul>
+<li>
+<p><strong>Database Operations:</strong></p>
+<ul>
+<li>Actual database interactions are omitted for simplicity.</li>
+<li>Comments indicate where database code would be integrated.</li>
+</ul>
+</li>
+<li>
+<p><strong>Input Validation:</strong></p>
+<ul>
+<li>Minimal validation; in a production environment, thorough validation is essential.</li>
+</ul>
+</li>
+<li>
+<p><strong>Thread Safety:</strong></p>
+<ul>
+<li>Not explicitly handled; would need consideration in a real-world application.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>TaskRequestHandler</code> class effectively implements the abstract methods of the <code>RequestHandler</code> base class, applying the <strong>Template Method</strong> design pattern. It handles the parsing of HTTP requests, processing according to the HTTP method, and formatting responses consistently in JSON.</p>
+<p>By integrating other design patterns like <strong>Builder</strong> and implying the use of <strong>Singleton</strong> and <strong>Strategy</strong>, the class contributes to a modular, maintainable codebase within the constraint of using around 20 classes.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>
+<p><strong>Implement Supporting Classes:</strong></p>
+<ul>
+<li>Fully implement <code>Task</code>, <code>TaskBuilder</code>, <code>RequestData</code>, <code>ResponseData</code>, and <code>QueryUtils</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Database Integration:</strong></p>
+<ul>
+<li>Implement <code>DatabaseAdapter</code> and <code>DatabaseConnectionManager</code> for actual data persistence.</li>
+</ul>
+</li>
+<li>
+<p><strong>Enhance Functionality:</strong></p>
+<ul>
+<li>Add comprehensive error handling and input validation.</li>
+<li>Implement additional features like user authentication if needed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Apply Additional Patterns:</strong></p>
+<ul>
+<li>Consider using the <strong>Command</strong> pattern for actions like undo/redo.</li>
+<li>Use the <strong>Observer</strong> pattern to notify components of task changes.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>
+<p><strong>Compliance with Requirements:</strong></p>
+<ul>
+<li>The implementation is kept simple and within the specified class limit.</li>
+<li>The explanation provides clarity on how the class fits into the overall design.</li>
+</ul>
+</li>
+<li>
+<p><strong>Educational Value:</strong></p>
+<ul>
+<li>Demonstrates how to apply the <strong>Template Method</strong> pattern in a real-world scenario.</li>
+<li>Shows integration with other patterns for a cohesive design.</li>
+</ul>
+</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Prototype Pattern
+  #
+
+The Prototype pattern is a creational design pattern that enables object creation by cloning existing instances. Instead of creating new instances from scratch, the Prototype pattern allows objects to be duplicated, reducing the need to repeat expensive initialization processes. This pattern is ideal when object creation is costly, complex, or involves significant configuration.
+
+  Intent
+  #
+
+The main intent of the Prototype pattern is to specify the kinds of objects to create using a prototypical instance, allowing new objects to be created by copying this prototype. This pattern helps reduce the overhead of creating new instances by cloning pre-configured objects.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/creational/prototype/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Prototype Pattern">
+  <meta property="og:description" content="Prototype Pattern # The Prototype pattern is a creational design pattern that enables object creation by cloning existing instances. Instead of creating new instances from scratch, the Prototype pattern allows objects to be duplicated, reducing the need to repeat expensive initialization processes. This pattern is ideal when object creation is costly, complex, or involves significant configuration.
+Intent # The main intent of the Prototype pattern is to specify the kinds of objects to create using a prototypical instance, allowing new objects to be created by copying this prototype. This pattern helps reduce the overhead of creating new instances by cloning pre-configured objects.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Prototype Pattern | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/creational/prototype/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.1ca45c072f658d605da4c39f5488baab8f623eee0de706444de815f392fc14b2.js" integrity="sha256-HKRcBy9ljWBdpMOfVIi6q49iPu4N5wZETegV85L8FLI=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Prototype Pattern</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-graphic-editor-with-shapes">Example: Graphic Editor with Shapes</a>
+      <ul>
+        <li><a href="#step-1-define-the-prototype-interface">Step 1: Define the Prototype Interface</a></li>
+        <li><a href="#step-2-implement-concrete-prototypes">Step 2: Implement Concrete Prototypes</a></li>
+        <li><a href="#step-3-client-code">Step 3: Client Code</a></li>
+        <li><a href="#explanation">Explanation</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-prototype-pattern">Best Practices for Implementing the Prototype Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="prototype-pattern">
+  Prototype Pattern
+  <a class="anchor" href="#prototype-pattern">#</a>
+</h1>
+<p>The <strong>Prototype</strong> pattern is a creational design pattern that enables object creation by cloning existing instances. Instead of creating new instances from scratch, the Prototype pattern allows objects to be duplicated, reducing the need to repeat expensive initialization processes. This pattern is ideal when object creation is costly, complex, or involves significant configuration.</p>
+<h2 id="intent">
+  Intent
+  <a class="anchor" href="#intent">#</a>
+</h2>
+<p><strong>The main intent of the Prototype pattern is to specify the kinds of objects to create using a prototypical instance, allowing new objects to be created by copying this prototype.</strong> This pattern helps reduce the overhead of creating new instances by cloning pre-configured objects.</p>
+<h2 id="problem-and-solution">
+  Problem and Solution
+  <a class="anchor" href="#problem-and-solution">#</a>
+</h2>
+<h3 id="problem">
+  Problem
+  <a class="anchor" href="#problem">#</a>
+</h3>
+<p>Imagine you’re developing a graphic editor where you need to create multiple shapes with similar properties (e.g., colors, dimensions, coordinates). Each shape requires configuration, which can be repetitive and resource-intensive if created from scratch each time.</p>
+<h3 id="solution">
+  Solution
+  <a class="anchor" href="#solution">#</a>
+</h3>
+<p>The Prototype pattern lets you define a prototype object (e.g., <code>Circle</code>, <code>Rectangle</code>) with pre-configured properties. New shapes can be created by cloning these prototypes, inheriting the configuration of the original and making adjustments as needed. This approach minimizes the need for repetitive configuration and reduces object creation overhead.</p>
+<h2 id="structure">
+  Structure
+  <a class="anchor" href="#structure">#</a>
+</h2>
+<p>The Prototype pattern typically includes:</p>
+<ol>
+<li><strong>Prototype Interface</strong>: Declares a <code>clone</code> method for cloning objects.</li>
+<li><strong>Concrete Prototypes</strong>: Classes implementing the prototype interface, providing their own cloning mechanisms.</li>
+<li><strong>Client Code</strong>: Uses the prototype objects to create new instances by cloning.</li>
+</ol>
+<h2 id="uml-diagram">
+  UML Diagram
+  <a class="anchor" href="#uml-diagram">#</a>
+</h2>
+<pre tabindex="0"><code>+-------------------+
+|   Prototype       |
+|-------------------|
+| + clone()         |
++-------------------+
+        ^
+        |
++------------------+       +------------------+
+|   Circle         |       |   Rectangle      |
+|------------------|       |------------------|
+| + clone()        |       | + clone()        |
++------------------+       +------------------+
+</code></pre><h2 id="example-graphic-editor-with-shapes">
+  Example: Graphic Editor with Shapes
+  <a class="anchor" href="#example-graphic-editor-with-shapes">#</a>
+</h2>
+<p>Let’s implement a graphic editor that creates various shapes by cloning prototypes. We’ll define a <code>Shape</code> interface with a <code>clone</code> method, and concrete shapes (<code>Circle</code> and <code>Rectangle</code>) that implement this interface.</p>
+<h3 id="step-1-define-the-prototype-interface">
+  Step 1: Define the Prototype Interface
+  <a class="anchor" href="#step-1-define-the-prototype-interface">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Prototype interface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Shape</span> {
+</span></span><span style="display:flex;"><span>    Shape <span style="color:#a6e22e">clone</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-2-implement-concrete-prototypes">
+  Step 2: Implement Concrete Prototypes
+  <a class="anchor" href="#step-2-implement-concrete-prototypes">#</a>
+</h3>
+<p>Each concrete shape class (<code>Circle</code> and <code>Rectangle</code>) implements the <code>clone</code> method, allowing new instances to be created by copying existing ones.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Prototype for Circle</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Circle</span> <span style="color:#66d9ef">implements</span> Shape {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> radius;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String color;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Circle</span>(<span style="color:#66d9ef">int</span> radius, String color) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">radius</span> <span style="color:#f92672">=</span> radius;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">color</span> <span style="color:#f92672">=</span> color;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setRadius</span>(<span style="color:#66d9ef">int</span> radius) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">radius</span> <span style="color:#f92672">=</span> radius;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Shape <span style="color:#a6e22e">clone</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Circle(radius, color); <span style="color:#75715e">// Creates a copy with the same properties</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Circle with radius &#34;</span> <span style="color:#f92672">+</span> radius <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; and color &#34;</span> <span style="color:#f92672">+</span> color;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete Prototype for Rectangle</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Rectangle</span> <span style="color:#66d9ef">implements</span> Shape {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> width;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> height;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String color;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Rectangle</span>(<span style="color:#66d9ef">int</span> width, <span style="color:#66d9ef">int</span> height, String color) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">width</span> <span style="color:#f92672">=</span> width;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">height</span> <span style="color:#f92672">=</span> height;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">color</span> <span style="color:#f92672">=</span> color;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDimensions</span>(<span style="color:#66d9ef">int</span> width, <span style="color:#66d9ef">int</span> height) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">width</span> <span style="color:#f92672">=</span> width;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">height</span> <span style="color:#f92672">=</span> height;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Shape <span style="color:#a6e22e">clone</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Rectangle(width, height, color); <span style="color:#75715e">// Creates a copy with the same properties</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Rectangle with width &#34;</span> <span style="color:#f92672">+</span> width <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, height &#34;</span> <span style="color:#f92672">+</span> height <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; and color &#34;</span> <span style="color:#f92672">+</span> color;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-3-client-code">
+  Step 3: Client Code
+  <a class="anchor" href="#step-3-client-code">#</a>
+</h3>
+<p>The client can create new shapes by cloning prototypes, making adjustments as needed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Create initial prototypes</span>
+</span></span><span style="display:flex;"><span>        Circle baseCircle <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Circle(5, <span style="color:#e6db74">&#34;Red&#34;</span>);
+</span></span><span style="display:flex;"><span>        Rectangle baseRectangle <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Rectangle(4, 7, <span style="color:#e6db74">&#34;Blue&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Clone the prototypes to create new instances</span>
+</span></span><span style="display:flex;"><span>        Circle circleClone <span style="color:#f92672">=</span> (Circle) baseCircle.<span style="color:#a6e22e">clone</span>();
+</span></span><span style="display:flex;"><span>        circleClone.<span style="color:#a6e22e">setRadius</span>(10);  <span style="color:#75715e">// Adjust properties if necessary</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Rectangle rectangleClone <span style="color:#f92672">=</span> (Rectangle) baseRectangle.<span style="color:#a6e22e">clone</span>();
+</span></span><span style="display:flex;"><span>        rectangleClone.<span style="color:#a6e22e">setDimensions</span>(8, 10);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(baseCircle);      <span style="color:#75715e">// Output: Circle with radius 5 and color Red</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(circleClone);     <span style="color:#75715e">// Output: Circle with radius 10 and color Red</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(baseRectangle);   <span style="color:#75715e">// Output: Rectangle with width 4, height 7 and color Blue</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(rectangleClone);  <span style="color:#75715e">// Output: Rectangle with width 8, height 10 and color Blue</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="explanation">
+  Explanation
+  <a class="anchor" href="#explanation">#</a>
+</h3>
+<p>In this example:</p>
+<ul>
+<li><code>Shape</code> defines a <code>clone</code> method that each concrete shape class (<code>Circle</code>, <code>Rectangle</code>) implements.</li>
+<li><code>Circle</code> and <code>Rectangle</code> provide their own cloning mechanisms, creating copies with the same properties.</li>
+<li>The client can create new shapes by cloning the prototypes, making adjustments as necessary.</li>
+</ul>
+<h2 id="applicability">
+  Applicability
+  <a class="anchor" href="#applicability">#</a>
+</h2>
+<p>Use the Prototype pattern when:</p>
+<ol>
+<li>Object creation is resource-intensive, complex, or requires significant configuration.</li>
+<li>You want to avoid duplicating code to initialize objects with similar properties.</li>
+<li>You need to create new instances by copying existing instances rather than creating them from scratch.</li>
+</ol>
+<h2 id="advantages-and-disadvantages">
+  Advantages and Disadvantages
+  <a class="anchor" href="#advantages-and-disadvantages">#</a>
+</h2>
+<h3 id="advantages">
+  Advantages
+  <a class="anchor" href="#advantages">#</a>
+</h3>
+<ol>
+<li><strong>Reduced Overhead</strong>: Prototypes can be cloned rather than recreated from scratch, reducing initialization costs for complex objects.</li>
+<li><strong>Easier Object Creation</strong>: Prototype cloning simplifies object creation when similar configurations are needed.</li>
+<li><strong>Flexibility</strong>: New objects can be created dynamically by cloning prototypes, providing flexibility without modifying the underlying code.</li>
+</ol>
+<h3 id="disadvantages">
+  Disadvantages
+  <a class="anchor" href="#disadvantages">#</a>
+</h3>
+<ol>
+<li><strong>Deep vs. Shallow Copying</strong>: Cloning may require deep copying if the object contains references to mutable objects, which can increase complexity.</li>
+<li><strong>Complex Cloning Logic</strong>: For objects with complex structures, implementing a reliable <code>clone</code> method can be challenging.</li>
+<li><strong>Limited Use Case</strong>: Prototype is not suitable for objects that are simple or where instantiation from scratch is straightforward.</li>
+</ol>
+<h2 id="best-practices-for-implementing-the-prototype-pattern">
+  Best Practices for Implementing the Prototype Pattern
+  <a class="anchor" href="#best-practices-for-implementing-the-prototype-pattern">#</a>
+</h2>
+<ol>
+<li><strong>Consider Deep Cloning</strong>: For objects with nested structures, ensure that deep copies are made to avoid shared references.</li>
+<li><strong>Use <code>clone</code> Carefully</strong>: In Java, the <code>clone</code> method from <code>Object</code> can lead to issues if not properly implemented. Consider custom <code>clone</code> methods or use external libraries when necessary.</li>
+<li><strong>Avoid Overusing</strong>: The Prototype pattern is best suited for scenarios where object creation is costly or complex; for simpler cases, regular instantiation is sufficient.</li>
+</ol>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The Prototype pattern provides a way to create new objects by duplicating existing instances, making it ideal for scenarios where objects require costly or complex configuration. By cloning prototypes, you can reduce object creation overhead and simplify the construction process, leading to cleaner and more flexible code.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-graphic-editor-with-shapes">Example: Graphic Editor with Shapes</a>
+      <ul>
+        <li><a href="#step-1-define-the-prototype-interface">Step 1: Define the Prototype Interface</a></li>
+        <li><a href="#step-2-implement-concrete-prototypes">Step 2: Implement Concrete Prototypes</a></li>
+        <li><a href="#step-3-client-code">Step 3: Client Code</a></li>
+        <li><a href="#explanation">Explanation</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-prototype-pattern">Best Practices for Implementing the Prototype Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+      <div class="book-toc-languages">
+        
+<h4>Coding Principles in ...</h4>
+<nav>
+  <div class="book-search">
+    <input type="text" id="book-search-language-input" placeholder="Search Language" aria-label="Search Language" maxlength="64" data-hotkeys="s/">
+  </div>
+  <ul id="languages"></ul>
+  <script>
+    const languages = [];
+    const languageLinks = document.getElementById('languages');
+    const searchInput = document.getElementById('book-search-language-input');
+    const maxLanguages = 15
+
+    const listLanguages = (filter = '') => {
+      languageLinks.innerHTML = ''
+      const filtered = languages
+        .filter(item => item.title.toLowerCase().includes(filter.toLowerCase()))
+      filtered.slice(0, filtered.length > maxLanguages ? maxLanguages : filtered.length)
+        .forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.title;
+          const li = document.createElement('li');
+          li.appendChild(link);
+          languageLinks.appendChild(li);
+        })
+      if (filtered.length > maxLanguages) {
+        const li = document.createElement('li');
+        li.textContent = '...';
+        languageLinks.appendChild(li);
+      }
+    }
+
+    listLanguages('')
+    searchInput.onkeyup = () => { listLanguages(searchInput.value) }
+  </script>
+</nav>
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

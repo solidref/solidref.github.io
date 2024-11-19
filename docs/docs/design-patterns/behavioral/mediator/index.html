@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Mediator Pattern
+  #
+
+The Mediator pattern is a behavioral design pattern that promotes loose coupling between objects by encapsulating their communication within a mediator. The mediator centralizes interactions between objects, making them easier to modify and reuse independently.
+
+  Intent
+  #
+
+The main intent of the Mediator pattern is to reduce dependencies between communicating objects by introducing a mediator that handles their interactions. This pattern is especially useful in scenarios where multiple objects need to communicate, and direct coupling would create a complex web of dependencies.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/behavioral/mediator/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Mediator Pattern">
+  <meta property="og:description" content="Mediator Pattern # The Mediator pattern is a behavioral design pattern that promotes loose coupling between objects by encapsulating their communication within a mediator. The mediator centralizes interactions between objects, making them easier to modify and reuse independently.
+Intent # The main intent of the Mediator pattern is to reduce dependencies between communicating objects by introducing a mediator that handles their interactions. This pattern is especially useful in scenarios where multiple objects need to communicate, and direct coupling would create a complex web of dependencies.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Mediator Pattern | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/behavioral/mediator/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.1ca45c072f658d605da4c39f5488baab8f623eee0de706444de815f392fc14b2.js" integrity="sha256-HKRcBy9ljWBdpMOfVIi6q49iPu4N5wZETegV85L8FLI=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Mediator Pattern</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-chat-application">Example: Chat Application</a>
+      <ul>
+        <li><a href="#step-1-define-the-mediator-interface">Step 1: Define the Mediator Interface</a></li>
+        <li><a href="#step-2-implement-the-concrete-mediator">Step 2: Implement the Concrete Mediator</a></li>
+        <li><a href="#step-3-define-the-colleague-interface">Step 3: Define the Colleague Interface</a></li>
+        <li><a href="#step-4-implement-concrete-colleagues">Step 4: Implement Concrete Colleagues</a></li>
+        <li><a href="#step-5-client-code-using-the-mediator">Step 5: Client Code Using the Mediator</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-mediator-pattern">Best Practices for Implementing the Mediator Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="mediator-pattern">
+  Mediator Pattern
+  <a class="anchor" href="#mediator-pattern">#</a>
+</h1>
+<p>The <strong>Mediator</strong> pattern is a behavioral design pattern that promotes loose coupling between objects by encapsulating their communication within a mediator. The mediator centralizes interactions between objects, making them easier to modify and reuse independently.</p>
+<h2 id="intent">
+  Intent
+  <a class="anchor" href="#intent">#</a>
+</h2>
+<p><strong>The main intent of the Mediator pattern is to reduce dependencies between communicating objects by introducing a mediator that handles their interactions.</strong> This pattern is especially useful in scenarios where multiple objects need to communicate, and direct coupling would create a complex web of dependencies.</p>
+<h2 id="problem-and-solution">
+  Problem and Solution
+  <a class="anchor" href="#problem-and-solution">#</a>
+</h2>
+<h3 id="problem">
+  Problem
+  <a class="anchor" href="#problem">#</a>
+</h3>
+<p>Suppose you’re designing a chat application where multiple users can send messages to each other. Without a centralized way to manage communication, each user would need to be aware of all other users, resulting in tightly coupled code that is difficult to maintain and extend. Adding new users or changing communication behavior would require modifying all related classes.</p>
+<h3 id="solution">
+  Solution
+  <a class="anchor" href="#solution">#</a>
+</h3>
+<p>The Mediator pattern solves this problem by creating a mediator object (e.g., <code>ChatRoom</code>) that manages the communication between users. Each user communicates only with the mediator, which then relays messages to the appropriate recipients. This setup decouples users from each other, making the system easier to maintain, modify, and extend.</p>
+<h2 id="structure">
+  Structure
+  <a class="anchor" href="#structure">#</a>
+</h2>
+<p>The Mediator pattern typically includes:</p>
+<ol>
+<li><strong>Mediator Interface</strong>: Defines methods for communication between colleagues.</li>
+<li><strong>Concrete Mediator</strong>: Implements the mediator interface, coordinating interactions between colleagues.</li>
+<li><strong>Colleague Interface</strong>: Defines a common interface for all participants that communicate through the mediator.</li>
+<li><strong>Concrete Colleagues</strong>: Implement the colleague interface and interact with each other through the mediator.</li>
+</ol>
+<h2 id="uml-diagram">
+  UML Diagram
+  <a class="anchor" href="#uml-diagram">#</a>
+</h2>
+<pre tabindex="0"><code>+-------------------+          +-----------------------+
+|    Mediator       |&lt;---------|   ConcreteMediator    |
+|-------------------|          |-----------------------|
+| + sendMessage()   |          | + sendMessage()       |
++-------------------+          +-----------------------+
+         ^
+         |
++-------------------+          +-----------------------+
+|   Colleague       |&lt;---------|   ConcreteColleague   |
+|-------------------|          |-----------------------|
+| + send()          |          | + send()             |
+| + receive()       |          | + receive()          |
++-------------------+          +-----------------------+
+</code></pre><h2 id="example-chat-application">
+  Example: Chat Application
+  <a class="anchor" href="#example-chat-application">#</a>
+</h2>
+<p>Let’s implement a simple chat application using the Mediator pattern. We’ll create a <code>ChatRoom</code> mediator to handle communication between users, allowing them to send messages to each other without being directly aware of one another.</p>
+<h3 id="step-1-define-the-mediator-interface">
+  Step 1: Define the Mediator Interface
+  <a class="anchor" href="#step-1-define-the-mediator-interface">#</a>
+</h3>
+<p>The <code>ChatMediator</code> interface defines a method for sending messages. The mediator will coordinate message delivery between users.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Mediator Interface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ChatMediator</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span>(String message, User user);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-2-implement-the-concrete-mediator">
+  Step 2: Implement the Concrete Mediator
+  <a class="anchor" href="#step-2-implement-the-concrete-mediator">#</a>
+</h3>
+<p>The <code>ChatRoom</code> class implements the <code>ChatMediator</code> interface, managing a list of users and relaying messages between them.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Mediator</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ChatRoom</span> <span style="color:#66d9ef">implements</span> ChatMediator {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addUser</span>(User user) {
+</span></span><span style="display:flex;"><span>        users.<span style="color:#a6e22e">add</span>(user);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span>(String message, User user) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (User u : users) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (u <span style="color:#f92672">!=</span> user) {
+</span></span><span style="display:flex;"><span>                u.<span style="color:#a6e22e">receive</span>(message);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-3-define-the-colleague-interface">
+  Step 3: Define the Colleague Interface
+  <a class="anchor" href="#step-3-define-the-colleague-interface">#</a>
+</h3>
+<p>The <code>User</code> class represents a participant in the chat. Each user has methods to send and receive messages and interacts with others through the <code>ChatRoom</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Colleague Interface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> ChatMediator mediator;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> String name;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">User</span>(ChatMediator mediator, String name) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">mediator</span> <span style="color:#f92672">=</span> mediator;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span>(String message);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">receive</span>(String message);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-4-implement-concrete-colleagues">
+  Step 4: Implement Concrete Colleagues
+  <a class="anchor" href="#step-4-implement-concrete-colleagues">#</a>
+</h3>
+<p>Each <code>ConcreteUser</code> class represents a specific user in the chat and interacts only through the mediator.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Colleague</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConcreteUser</span> <span style="color:#66d9ef">extends</span> User {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ConcreteUser</span>(ChatMediator mediator, String name) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(mediator, name);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span>(String message) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; sends: &#34;</span> <span style="color:#f92672">+</span> message);
+</span></span><span style="display:flex;"><span>        mediator.<span style="color:#a6e22e">sendMessage</span>(message, <span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">receive</span>(String message) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; received: &#34;</span> <span style="color:#f92672">+</span> message);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-5-client-code-using-the-mediator">
+  Step 5: Client Code Using the Mediator
+  <a class="anchor" href="#step-5-client-code-using-the-mediator">#</a>
+</h3>
+<p>The client code creates users and a chat room, adding users to the chat room and allowing them to send messages.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        ChatMediator chatRoom <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ChatRoom();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        User user1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcreteUser(chatRoom, <span style="color:#e6db74">&#34;Alice&#34;</span>);
+</span></span><span style="display:flex;"><span>        User user2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcreteUser(chatRoom, <span style="color:#e6db74">&#34;Bob&#34;</span>);
+</span></span><span style="display:flex;"><span>        User user3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcreteUser(chatRoom, <span style="color:#e6db74">&#34;Charlie&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ((ChatRoom) chatRoom).<span style="color:#a6e22e">addUser</span>(user1);
+</span></span><span style="display:flex;"><span>        ((ChatRoom) chatRoom).<span style="color:#a6e22e">addUser</span>(user2);
+</span></span><span style="display:flex;"><span>        ((ChatRoom) chatRoom).<span style="color:#a6e22e">addUser</span>(user3);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        user1.<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#34;Hello, everyone!&#34;</span>);
+</span></span><span style="display:flex;"><span>        user2.<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#34;Hi, Alice!&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="output">
+  Output
+  <a class="anchor" href="#output">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Alice sends: Hello, everyone!
+</span></span><span style="display:flex;"><span>Bob received: Hello, everyone!
+</span></span><span style="display:flex;"><span>Charlie received: Hello, everyone!
+</span></span><span style="display:flex;"><span>Bob sends: Hi, Alice!
+</span></span><span style="display:flex;"><span>Alice received: Hi, Alice!
+</span></span><span style="display:flex;"><span>Charlie received: Hi, Alice!
+</span></span></code></pre></div><p>In this example:</p>
+<ul>
+<li>The <code>ChatRoom</code> mediator handles communication between users, with each user sending and receiving messages only through the mediator.</li>
+<li><code>ConcreteUser</code> represents a user in the chat, sending and receiving messages through the <code>ChatRoom</code>.</li>
+<li>The client code interacts with the users through the mediator, which manages all message delivery.</li>
+</ul>
+<h2 id="applicability">
+  Applicability
+  <a class="anchor" href="#applicability">#</a>
+</h2>
+<p>Use the Mediator pattern when:</p>
+<ol>
+<li>You need to reduce coupling between multiple classes that communicate with each other.</li>
+<li>You want to simplify complex communication patterns or workflows by centralizing interactions.</li>
+<li>You need flexibility to modify communication between objects without modifying the objects themselves.</li>
+</ol>
+<h2 id="advantages-and-disadvantages">
+  Advantages and Disadvantages
+  <a class="anchor" href="#advantages-and-disadvantages">#</a>
+</h2>
+<h3 id="advantages">
+  Advantages
+  <a class="anchor" href="#advantages">#</a>
+</h3>
+<ol>
+<li><strong>Reduces Coupling</strong>: The Mediator pattern reduces direct dependencies between objects, promoting loose coupling and improving maintainability.</li>
+<li><strong>Centralized Control</strong>: By managing interactions in one place, the mediator simplifies complex communication and makes it easier to understand and modify.</li>
+<li><strong>Enhanced Flexibility</strong>: New colleagues can be added or removed easily, and communication behavior can be changed by modifying the mediator.</li>
+</ol>
+<h3 id="disadvantages">
+  Disadvantages
+  <a class="anchor" href="#disadvantages">#</a>
+</h3>
+<ol>
+<li><strong>Increased Complexity in the Mediator</strong>: As more communication logic is centralized, the mediator can become complex, potentially turning into a “god object.”</li>
+<li><strong>Potential Performance Bottleneck</strong>: Since all interactions go through the mediator, it can become a performance bottleneck, especially in high-traffic scenarios.</li>
+</ol>
+<h2 id="best-practices-for-implementing-the-mediator-pattern">
+  Best Practices for Implementing the Mediator Pattern
+  <a class="anchor" href="#best-practices-for-implementing-the-mediator-pattern">#</a>
+</h2>
+<ol>
+<li><strong>Limit Mediator Complexity</strong>: Avoid turning the mediator into an overly complex object. If the mediator becomes too complex, consider splitting its responsibilities.</li>
+<li><strong>Use Mediator to Manage High Interdependencies</strong>: Apply the Mediator pattern in systems where multiple objects interact frequently, as it simplifies managing these dependencies.</li>
+<li><strong>Encapsulate Communication Patterns</strong>: Use the mediator to encapsulate communication patterns, making it easier to modify behavior without affecting the colleagues.</li>
+</ol>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The Mediator pattern provides a centralized way to manage communication between objects, reducing coupling and making the system easier to extend and maintain. By isolating communication logic, the Mediator pattern enhances flexibility and scalability in complex systems.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-chat-application">Example: Chat Application</a>
+      <ul>
+        <li><a href="#step-1-define-the-mediator-interface">Step 1: Define the Mediator Interface</a></li>
+        <li><a href="#step-2-implement-the-concrete-mediator">Step 2: Implement the Concrete Mediator</a></li>
+        <li><a href="#step-3-define-the-colleague-interface">Step 3: Define the Colleague Interface</a></li>
+        <li><a href="#step-4-implement-concrete-colleagues">Step 4: Implement Concrete Colleagues</a></li>
+        <li><a href="#step-5-client-code-using-the-mediator">Step 5: Client Code Using the Mediator</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-mediator-pattern">Best Practices for Implementing the Mediator Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+      <div class="book-toc-languages">
+        
+<h4>Coding Principles in ...</h4>
+<nav>
+  <div class="book-search">
+    <input type="text" id="book-search-language-input" placeholder="Search Language" aria-label="Search Language" maxlength="64" data-hotkeys="s/">
+  </div>
+  <ul id="languages"></ul>
+  <script>
+    const languages = [];
+    const languageLinks = document.getElementById('languages');
+    const searchInput = document.getElementById('book-search-language-input');
+    const maxLanguages = 15
+
+    const listLanguages = (filter = '') => {
+      languageLinks.innerHTML = ''
+      const filtered = languages
+        .filter(item => item.title.toLowerCase().includes(filter.toLowerCase()))
+      filtered.slice(0, filtered.length > maxLanguages ? maxLanguages : filtered.length)
+        .forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.title;
+          const li = document.createElement('li');
+          li.appendChild(link);
+          languageLinks.appendChild(li);
+        })
+      if (filtered.length > maxLanguages) {
+        const li = document.createElement('li');
+        li.textContent = '...';
+        languageLinks.appendChild(li);
+      }
+    }
+
+    listLanguages('')
+    searchInput.onkeyup = () => { listLanguages(searchInput.value) }
+  </script>
+</nav>
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

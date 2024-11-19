@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="
@@ -29,7 +29,7 @@ Intent # The main intent of the Facade pattern is to provide a simple interface 
 <link rel="canonical" href="http://localhost:1313/docs/design-patterns/facade/">
 <link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e31b164b4cda7f640f4a3610a53c6b31afb1a3e794d81922d45570fd66de629f.js" integrity="sha256-4xsWS0zaf2QPSjYQpTxrMa&#43;xo&#43;eU2Bki1FVw/WbeYp8=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -463,6 +463,47 @@ https://github.com/alex-shpak/hugo-book
 </nav>
 
 
+ 
+      </div>
+      
+      <div class="book-toc-languages">
+        
+<h4>Coding Principles in ...</h4>
+<nav>
+  <div class="book-search">
+    <input type="text" id="book-search-language-input" placeholder="Search Language" aria-label="Search Language" maxlength="64" data-hotkeys="s/">
+  </div>
+  <ul id="languages"></ul>
+  <script>
+    const languages = [{ title: "Go", href: "\/docs\/design-patterns\/go\/" }, ];
+    const languageLinks = document.getElementById('languages');
+    const searchInput = document.getElementById('book-search-language-input');
+    const maxLanguages = 15
+
+    const listLanguages = (filter = '') => {
+      languageLinks.innerHTML = ''
+      const filtered = languages
+        .filter(item => item.title.toLowerCase().includes(filter.toLowerCase()))
+      filtered.slice(0, filtered.length > maxLanguages ? maxLanguages : filtered.length)
+        .forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.title;
+          const li = document.createElement('li');
+          li.appendChild(link);
+          languageLinks.appendChild(li);
+        })
+      if (filtered.length > maxLanguages) {
+        const li = document.createElement('li');
+        li.textContent = '...';
+        languageLinks.appendChild(li);
+      }
+    }
+
+    listLanguages('')
+    searchInput.onkeyup = () => { listLanguages(searchInput.value) }
+  </script>
+</nav>
  
       </div>
       

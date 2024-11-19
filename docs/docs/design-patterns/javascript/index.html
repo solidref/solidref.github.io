@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Design Patterns in JavaScript
+  #
+
+JavaScript&rsquo;s versatility and support for both object-oriented and functional programming make it suitable for implementing a wide range of design patterns.
+With ES6&#43; features like classes, modules, and Proxy, many traditional design patterns can be applied to JavaScript effectively. This article provides examples of Creational, Structural, and Behavioral design patterns, each tailored for JavaScript.
+
+  Why Design Patterns Matter in JavaScript
+  #
+
+Design patterns are reusable solutions to common software design problems. They help organize code, making it more modular, maintainable, and scalable. In JavaScript, patterns like Singleton, Observer, and Module are particularly useful for managing complexity, especially in asynchronous and event-driven applications.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/javascript/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Design Patterns in JavaScript">
+  <meta property="og:description" content="Design Patterns in JavaScript # JavaScript’s versatility and support for both object-oriented and functional programming make it suitable for implementing a wide range of design patterns.
+With ES6&#43; features like classes, modules, and Proxy, many traditional design patterns can be applied to JavaScript effectively. This article provides examples of Creational, Structural, and Behavioral design patterns, each tailored for JavaScript.
+Why Design Patterns Matter in JavaScript # Design patterns are reusable solutions to common software design problems. They help organize code, making it more modular, maintainable, and scalable. In JavaScript, patterns like Singleton, Observer, and Module are particularly useful for managing complexity, especially in asynchronous and event-driven applications.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Design Patterns in JavaScript | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/javascript/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Design Patterns in JavaScript</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-design-patterns-matter-in-javascript">Why Design Patterns Matter in JavaScript</a></li>
+    <li><a href="#creational-patterns">Creational Patterns</a>
+      <ul>
+        <li><a href="#abstract-factory">Abstract Factory</a></li>
+        <li><a href="#builder">Builder</a></li>
+        <li><a href="#factory-method">Factory Method</a></li>
+        <li><a href="#prototype">Prototype</a></li>
+        <li><a href="#singleton">Singleton</a></li>
+      </ul>
+    </li>
+    <li><a href="#structural-patterns">Structural Patterns</a>
+      <ul>
+        <li><a href="#adapter">Adapter</a></li>
+        <li><a href="#decorator">Decorator</a></li>
+        <li><a href="#proxy">Proxy</a></li>
+        <li><a href="#composite">Composite</a></li>
+        <li><a href="#facade">Facade</a></li>
+        <li><a href="#flyweight">Flyweight</a></li>
+      </ul>
+    </li>
+    <li><a href="#behavioral-patterns">Behavioral Patterns</a>
+      <ul>
+        <li><a href="#observer">Observer</a></li>
+        <li><a href="#strategy">Strategy</a></li>
+        <li><a href="#command">Command</a></li>
+        <li><a href="#chain-of-responsibility">Chain of Responsibility</a></li>
+        <li><a href="#state">State</a></li>
+        <li><a href="#visitor">Visitor</a></li>
+      </ul>
+    </li>
+    <li><a href="#javascript-specific-patterns">JavaScript-Specific Patterns</a>
+      <ul>
+        <li><a href="#module-pattern">Module Pattern</a></li>
+        <li><a href="#revealing-module-pattern">Revealing Module Pattern</a></li>
+      </ul>
+    </li>
+    <li><a href="#external-references">External References</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="design-patterns-in-javascript">
+  Design Patterns in JavaScript
+  <a class="anchor" href="#design-patterns-in-javascript">#</a>
+</h1>
+<p>JavaScript&rsquo;s versatility and support for both object-oriented and functional programming make it suitable for implementing a wide range of design patterns.</p>
+<p>With ES6+ features like classes, modules, and <code>Proxy</code>, many traditional design patterns can be applied to JavaScript effectively. This article provides examples of <strong>Creational</strong>, <strong>Structural</strong>, and <strong>Behavioral</strong> design patterns, each tailored for JavaScript.</p>
+<h2 id="why-design-patterns-matter-in-javascript">
+  Why Design Patterns Matter in JavaScript
+  <a class="anchor" href="#why-design-patterns-matter-in-javascript">#</a>
+</h2>
+<p>Design patterns are reusable solutions to common software design problems. They help organize code, making it more modular, maintainable, and scalable. In JavaScript, patterns like Singleton, Observer, and Module are particularly useful for managing complexity, especially in asynchronous and event-driven applications.</p>
+<h2 id="creational-patterns">
+  Creational Patterns
+  <a class="anchor" href="#creational-patterns">#</a>
+</h2>
+<p>Creational patterns deal with object creation, making it more flexible and decoupled from the client.</p>
+<h3 id="abstract-factory">
+  Abstract Factory
+  <a class="anchor" href="#abstract-factory">#</a>
+</h3>
+<p>The Abstract Factory pattern provides an interface for creating families of related objects. In JavaScript, factories can return objects configured with different properties or methods.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// using ES5 features (similar with Factory Method)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">createUIFactory</span>(<span style="color:#a6e22e">theme</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">theme</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;dark&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">?</span> { <span style="color:#a6e22e">background</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;black&#34;</span>, <span style="color:#a6e22e">textColor</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;white&#34;</span> }
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">:</span> { <span style="color:#a6e22e">background</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;white&#34;</span>, <span style="color:#a6e22e">textColor</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;black&#34;</span> };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Although JavaScript does not have the <code>interface</code> and <code>abstract</code> concepts, we can still try and implement a solution.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Button and Checkbox become classed with unimplemented (throwing error) methods
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Button</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;render()&#39; must be implemented.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Checkbox</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;render()&#39; must be implemented.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Dark* and Ligh* classes with extend Button and Checkbox implementing/overriding their methods to have relevant actions
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DarkButton</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Button</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Rendering Dark Mode Button&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DarkCheckbox</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Checkbox</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Rendering Dark Mode Checkbox&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LightButton</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Button</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Rendering Light Mode Button&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LightCheckbox</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Checkbox</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">render</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Rendering Light Mode Checkbox&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Similar with Button and Checkbox, UIFactory becomes a class with unimplemented (throwing error) methods
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UIFactory</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">createButton</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;createButton()&#39; must be implemented.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">createCheckbox</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;createCheckbox()&#39; must be implemented.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete factory for Dark Mode components
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DarkUIFactory</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">UIFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Button</span> <span style="color:#a6e22e">createButton</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DarkButton</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Checkbox</span> <span style="color:#a6e22e">createCheckbox</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DarkCheckbox</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete factory for Light Mode components
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LightUIFactory</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">UIFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Button</span> <span style="color:#a6e22e">createButton</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">LightButton</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Checkbox</span> <span style="color:#a6e22e">createCheckbox</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">LightCheckbox</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Function to choose the appropriate factory based on theme
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getThemeFactory</span>(<span style="color:#a6e22e">theme</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">theme</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;dark&#34;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DarkUIFactory</span>();
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">theme</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;light&#34;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">LightUIFactory</span>();
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Unknown theme: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage example
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">theme</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dark&#34;</span>; <span style="color:#75715e">// This could be dynamically chosen
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">factory</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getThemeFactory</span>(<span style="color:#a6e22e">theme</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">button</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">factory</span>.<span style="color:#a6e22e">createButton</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">checkbox</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">factory</span>.<span style="color:#a6e22e">createCheckbox</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">button</span>.<span style="color:#a6e22e">render</span>();      <span style="color:#75715e">// Output: Rendering Dark Mode Button
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">checkbox</span>.<span style="color:#a6e22e">render</span>();    <span style="color:#75715e">// Output: Rendering Dark Mode Checkbox
+</span></span></span></code></pre></div><h3 id="builder">
+  Builder
+  <a class="anchor" href="#builder">#</a>
+</h3>
+<p>The Builder pattern constructs complex objects step-by-step. JavaScript’s chaining methods and object literals make it well-suited for this pattern.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// using ES5 capabilities
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">carBuilder</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">_color</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Default Color&#34;</span>; <span style="color:#75715e">// Default value
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">_engine</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Default Engine&#34;</span>; <span style="color:#75715e">// Default value
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">setColor</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">color</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">_color</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">color</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>; <span style="color:#75715e">// Enable chaining
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">setEngine</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">engine</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">_engine</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">engine</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>; <span style="color:#75715e">// Enable chaining
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">build</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Return a new Car object with the current settings
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">color</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">_color</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">engine</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">_engine</span>
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">car</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">carBuilder</span>()
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setColor</span>(<span style="color:#e6db74">&#34;Red&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setEngine</span>(<span style="color:#e6db74">&#34;V8&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">build</span>();
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// using ES6+ capabilities
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Car</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">builder</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">color</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">builder</span>.<span style="color:#a6e22e">color</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">engine</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">builder</span>.<span style="color:#a6e22e">engine</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Nested Builder Class
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">static</span> <span style="color:#a6e22e">get</span> <span style="color:#a6e22e">Builder</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">class</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Optional default values
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">color</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">engine</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">setColor</span>(<span style="color:#a6e22e">color</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">color</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">color</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>; <span style="color:#75715e">// Enable chaining
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">setEngine</span>(<span style="color:#a6e22e">engine</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">engine</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">engine</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>; <span style="color:#75715e">// Enable chaining
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">build</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Car</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">car</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Car</span>.<span style="color:#a6e22e">Builder</span>()
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">setColor</span>(<span style="color:#e6db74">&#34;Red&#34;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">setEngine</span>(<span style="color:#e6db74">&#34;V8&#34;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">build</span>();
+</span></span></code></pre></div><h3 id="factory-method">
+  Factory Method
+  <a class="anchor" href="#factory-method">#</a>
+</h3>
+<p>The Factory Method pattern provides a way to create objects without specifying the exact class. JavaScript commonly uses factory functions to produce instances.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">createUser</span>(<span style="color:#a6e22e">type</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">type</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;admin&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">role</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;admin&#34;</span>, <span style="color:#a6e22e">permissions</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;read&#34;</span>, <span style="color:#e6db74">&#34;write&#34;</span>, <span style="color:#e6db74">&#34;delete&#34;</span>] };
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">type</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;guest&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">role</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;guest&#34;</span>, <span style="color:#a6e22e">permissions</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;read&#34;</span>] };
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Product</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">use</span>() { <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;use()&#39; must be implemented.&#34;</span>); }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConcreteProductA</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Product</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">use</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Using Product A&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConcreteProductB</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Product</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">use</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Using Product B&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createProduct</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">type</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">type</span> ) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ConcreteProductA</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;B&#34;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ConcreteProductB</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Add more types as needed
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">product</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createProduct</span>(<span style="color:#e6db74">&#34;A&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">product</span>.<span style="color:#a6e22e">use</span>();
+</span></span></code></pre></div><h3 id="prototype">
+  Prototype
+  <a class="anchor" href="#prototype">#</a>
+</h3>
+<p>The Prototype pattern creates objects based on a prototype object, ideal for cloning objects. JavaScript&rsquo;s <code>Object.create()</code> method supports this pattern natively.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">vehicle</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;vehicle&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">start</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Starting the vehicle...&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">car</span> <span style="color:#f92672">=</span> Object.<span style="color:#a6e22e">create</span>(<span style="color:#a6e22e">vehicle</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">car</span>.<span style="color:#a6e22e">wheels</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+</span></span></code></pre></div><h3 id="singleton">
+  Singleton
+  <a class="anchor" href="#singleton">#</a>
+</h3>
+<p>The Singleton pattern ensures a class has only one instance and provides a global point of access. JavaScript&rsquo;s closures or modules are commonly used to implement this pattern.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// using ES5 features
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Singleton</span> <span style="color:#f92672">=</span> (<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">createInstance</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;This is the single instance&#34;</span> };
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">getInstance</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">instance</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">instance</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createInstance</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>})();
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// using ES6 features
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Singleton</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">constructor</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">instance</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;This is the single instance&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">instance</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// getInstance method is redundant already hence the constructor does the same thing
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">static</span> <span style="color:#a6e22e">getInstance</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">instance</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">instance</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Singleton</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">instance1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">getInstance</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">instance2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Singleton</span>.<span style="color:#a6e22e">getInstance</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">instance1</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">instance2</span>); <span style="color:#75715e">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">instance1</span>.<span style="color:#a6e22e">message</span>); <span style="color:#75715e">// &#34;This is the single instance&#34;
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// using ES2022+ features
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Singleton</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">Singleton</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">instance</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Singleton</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;This is the single instance&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Singleton</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">instance</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// getInstance method is redundant already hence the constructor does the same thing
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#a6e22e">getInstance</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">Singleton</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">instance</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Singleton</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">instance</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Singleton</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Singleton</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">instance</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">instance1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Singleton</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">instance2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Singleton</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">instance1</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">instance2</span>); <span style="color:#75715e">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">instance1</span>.<span style="color:#a6e22e">message</span>);       <span style="color:#75715e">// &#34;This is the single instance&#34;
+</span></span></span></code></pre></div><h2 id="structural-patterns">
+  Structural Patterns
+  <a class="anchor" href="#structural-patterns">#</a>
+</h2>
+<p>Structural patterns organize object composition, making it more flexible and extendable.</p>
+<h3 id="adapter">
+  Adapter
+  <a class="anchor" href="#adapter">#</a>
+</h3>
+<p>The Adapter pattern allows incompatible interfaces to work together, often used for integrating third-party libraries or APIs.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// The unified interface for database interactions
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;connect()&#39; must be implemented.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">insert</span>(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;insert()&#39; must be implemented.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disconnect</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Method &#39;disconnect()&#39; must be implemented.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// The SQLDatabase class implementing the unified interface directly
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SQLDatabase</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Connecting to SQL database...&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">insert</span>(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Inserting data into SQL database: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">data</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disconnect</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Disconnecting from SQL database.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// The NoSQLDatabase class with a different interface
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NoSQLDatabase</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">openConnection</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Opening connection to NoSQL database...&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">saveDocument</span>(document) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Saving document to NoSQL database: &#34;</span> <span style="color:#f92672">+</span> document);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">closeConnection</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Closing connection to NoSQL database.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// The Adapter class to make NoSQLDatabase compatible with the Database interface
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NoSQLDatabaseAdapter</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">noSQLDatabase</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">noSQLDatabase</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">noSQLDatabase</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">connect</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">noSQLDatabase</span>.<span style="color:#a6e22e">openConnection</span>(); <span style="color:#75715e">// Adapting openConnection to connect
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">insert</span>(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">noSQLDatabase</span>.<span style="color:#a6e22e">saveDocument</span>(<span style="color:#a6e22e">data</span>); <span style="color:#75715e">// Adapting saveDocument to insert
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disconnect</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">noSQLDatabase</span>.<span style="color:#a6e22e">closeConnection</span>(); <span style="color:#75715e">// Adapting closeConnection to disconnect
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage example
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sqlDatabase</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SQLDatabase</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">sqlDatabase</span>.<span style="color:#a6e22e">connect</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">sqlDatabase</span>.<span style="color:#a6e22e">insert</span>(<span style="color:#e6db74">&#34;SQL Record&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">sqlDatabase</span>.<span style="color:#a6e22e">disconnect</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">noSQLDatabase</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">NoSQLDatabaseAdapter</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">NoSQLDatabase</span>());
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">noSQLDatabase</span>.<span style="color:#a6e22e">connect</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">noSQLDatabase</span>.<span style="color:#a6e22e">insert</span>(<span style="color:#e6db74">&#34;NoSQL Document&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">noSQLDatabase</span>.<span style="color:#a6e22e">disconnect</span>();
+</span></span></code></pre></div><h3 id="decorator">
+  Decorator
+  <a class="anchor" href="#decorator">#</a>
+</h3>
+<p>The Decorator pattern dynamically adds new behavior to an object, often implemented as higher-order functions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">withLogging</span>(<span style="color:#a6e22e">fn</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">function</span> (...<span style="color:#a6e22e">args</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Calling with arguments:&#34;</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fn</span>(...<span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In ES6+, JavaScript introduced decorators as a proposal that, while still in the stage 2 proposal phase, can be used in many environments with a transpiler like Babel. Decorators provide a cleaner and more readable way to wrap or extend functions or methods.</p>
+<p>Here’s how to create a logging decorator that can be applied directly to a method using the <code>@decorator</code> syntax.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Decorator function
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">withLogging</span>(<span style="color:#a6e22e">target</span>, <span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">descriptor</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">originalFunction</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Modify the method to include logging functionality
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> (...<span style="color:#a6e22e">args</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`Calling </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">key</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> with arguments:`</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">originalFunction</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">descriptor</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Example</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">withLogging</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">myMethod</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Usage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">example</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Example</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">myMethod</span>(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">7</span>); <span style="color:#75715e">// Output: Calling myMethod with arguments: [5, 7]
+</span></span></span></code></pre></div><h3 id="proxy">
+  Proxy
+  <a class="anchor" href="#proxy">#</a>
+</h3>
+<p>The Proxy pattern provides a surrogate or placeholder to control access to an object, and JavaScript’s <code>Proxy</code> object enables this natively.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">target</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Hello, Proxy!&#34;</span>
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handler</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">obj</span>, <span style="color:#a6e22e">prop</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">prop</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">obj</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">obj</span>[<span style="color:#a6e22e">prop</span>] <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Property not found&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h3 id="composite">
+  Composite
+  <a class="anchor" href="#composite">#</a>
+</h3>
+<p>The Composite pattern allows you to treat individual objects and compositions uniformly. JavaScript classes and arrays support this pattern.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Component</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">name</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span> <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">child</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">child</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="facade">
+  Facade
+  <a class="anchor" href="#facade">#</a>
+</h3>
+<p>The Facade pattern provides a simple interface to a complex system. JavaScript modules are a good way to implement a Facade.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">APIService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fetchData</span>() { <span style="color:#75715e">/* complex logic */</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Facade</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">api</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">APIService</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">getData</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">fetchData</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="flyweight">
+  Flyweight
+  <a class="anchor" href="#flyweight">#</a>
+</h3>
+<p>The Flyweight pattern reduces memory usage by sharing common data between similar objects. This can be emulated using closures or data structures in JavaScript.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">FlyweightFactory</span> <span style="color:#f92672">=</span> (<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">instances</span> <span style="color:#f92672">=</span> {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getFlyweight</span>(<span style="color:#a6e22e">key</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">instances</span>[<span style="color:#a6e22e">key</span>]) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">instances</span>[<span style="color:#a6e22e">key</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Flyweight</span>(<span style="color:#a6e22e">key</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">instances</span>[<span style="color:#a6e22e">key</span>];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">getFlyweight</span> };
+</span></span><span style="display:flex;"><span>})();
+</span></span></code></pre></div><h2 id="behavioral-patterns">
+  Behavioral Patterns
+  <a class="anchor" href="#behavioral-patterns">#</a>
+</h2>
+<p>Behavioral patterns handle communication between objects, defining the flow of control and interaction.</p>
+<h3 id="observer">
+  Observer
+  <a class="anchor" href="#observer">#</a>
+</h3>
+<p>The Observer pattern establishes a one-to-many dependency between objects. JavaScript&rsquo;s event-driven nature makes it well-suited for the Observer pattern.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Subject</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">observers</span> <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">subscribe</span>(<span style="color:#a6e22e">observer</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">observers</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">observer</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">notify</span>(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">observers</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">observer</span> =&gt; <span style="color:#a6e22e">observer</span>(<span style="color:#a6e22e">data</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="strategy">
+  Strategy
+  <a class="anchor" href="#strategy">#</a>
+</h3>
+<p>The Strategy pattern allows interchangeable algorithms for different tasks. This pattern is common in JavaScript for algorithmic flexibility.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">calculate</span>(<span style="color:#a6e22e">strategy</span>, <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">strategy</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="command">
+  Command
+  <a class="anchor" href="#command">#</a>
+</h3>
+<p>The Command pattern encapsulates requests as objects, allowing for parameterization and queuing.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CommandManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">commands</span> <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">addCommand</span>(<span style="color:#a6e22e">command</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">commands</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">command</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="chain-of-responsibility">
+  Chain of Responsibility
+  <a class="anchor" href="#chain-of-responsibility">#</a>
+</h3>
+<p>The Chain of Responsibility pattern passes a request along a chain of handlers until one handles it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setNext</span>(<span style="color:#a6e22e">handler</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nextHandler</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">handler</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">handler</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="state">
+  State
+  <a class="anchor" href="#state">#</a>
+</h3>
+<p>The State pattern allows an object to change its behavior when its internal state changes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Order</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PendingState</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="visitor">
+  Visitor
+  <a class="anchor" href="#visitor">#</a>
+</h3>
+<p>The Visitor pattern allows you to define new operations on objects without modifying them.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Animal</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">accept</span>(<span style="color:#a6e22e">visitor</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">visitor</span>.<span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="javascript-specific-patterns">
+  JavaScript-Specific Patterns
+  <a class="anchor" href="#javascript-specific-patterns">#</a>
+</h2>
+<p>In addition to traditional design patterns, JavaScript has several unique patterns and idioms that leverage its functional and asynchronous capabilities.</p>
+<h3 id="module-pattern">
+  Module Pattern
+  <a class="anchor" href="#module-pattern">#</a>
+</h3>
+<p>The Module pattern is commonly used in JavaScript to encapsulate and organize code, controlling which parts are exposed and which remain private. Modules help maintain a clean namespace.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">CounterModule</span> <span style="color:#f92672">=</span> (<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">counter</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">increment</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">counter</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getCounter</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">counter</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">increment</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">getCounter</span>
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>})();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">CounterModule</span>.<span style="color:#a6e22e">increment</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">CounterModule</span>.<span style="color:#a6e22e">getCounter</span>()); <span style="color:#75715e">// 1
+</span></span></span></code></pre></div><h3 id="revealing-module-pattern">
+  Revealing Module Pattern
+  <a class="anchor" href="#revealing-module-pattern">#</a>
+</h3>
+<p>The Revealing Module pattern is a variation of the Module pattern where internal functions and variables are encapsulated, and only the desired functions are exposed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">RevealingCounterModule</span> <span style="color:#f92672">=</span> (<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">counter</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">increment</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">counter</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getCounter</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">counter</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">increment</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">getCounter</span>
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>})();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">RevealingCounterModule</span>.<span style="color:#a6e22e">increment</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">RevealingCounterModule</span>.<span style="color:#a6e22e">getCounter</span>()); <span style="color:#75715e">// 1
+</span></span></span></code></pre></div><h2 id="external-references">
+  External References
+  <a class="anchor" href="#external-references">#</a>
+</h2>
+<ul>
+<li><a href="https://toddmotto.com/mastering-the-module-pattern/">JavaScript Module Pattern</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Events">Observer Pattern in JavaScript</a></li>
+<li><a href="https://medium.com/@saraswati.jonwal/factory-pattern-javascript-23d9d39fc3a1">JavaScript Factory Pattern</a></li>
+<li><a href="https://www.dofactory.com/javascript/design-patterns/singleton">Singleton Pattern in JavaScript</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference">JavaScript Proxy and Reflect</a></li>
+<li><a href="https://refactoring.guru/design-patterns/javascript">JavaScript Design Patterns and Practices</a></li>
+</ul>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>JavaScript’s dynamic and flexible nature, combined with ES6+ features, makes it well-suited for implementing a wide range of design patterns. Understanding and utilizing these patterns can help improve the structure, maintainability, and scalability of your code, especially in complex or large-scale applications.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-design-patterns-matter-in-javascript">Why Design Patterns Matter in JavaScript</a></li>
+    <li><a href="#creational-patterns">Creational Patterns</a>
+      <ul>
+        <li><a href="#abstract-factory">Abstract Factory</a></li>
+        <li><a href="#builder">Builder</a></li>
+        <li><a href="#factory-method">Factory Method</a></li>
+        <li><a href="#prototype">Prototype</a></li>
+        <li><a href="#singleton">Singleton</a></li>
+      </ul>
+    </li>
+    <li><a href="#structural-patterns">Structural Patterns</a>
+      <ul>
+        <li><a href="#adapter">Adapter</a></li>
+        <li><a href="#decorator">Decorator</a></li>
+        <li><a href="#proxy">Proxy</a></li>
+        <li><a href="#composite">Composite</a></li>
+        <li><a href="#facade">Facade</a></li>
+        <li><a href="#flyweight">Flyweight</a></li>
+      </ul>
+    </li>
+    <li><a href="#behavioral-patterns">Behavioral Patterns</a>
+      <ul>
+        <li><a href="#observer">Observer</a></li>
+        <li><a href="#strategy">Strategy</a></li>
+        <li><a href="#command">Command</a></li>
+        <li><a href="#chain-of-responsibility">Chain of Responsibility</a></li>
+        <li><a href="#state">State</a></li>
+        <li><a href="#visitor">Visitor</a></li>
+      </ul>
+    </li>
+    <li><a href="#javascript-specific-patterns">JavaScript-Specific Patterns</a>
+      <ul>
+        <li><a href="#module-pattern">Module Pattern</a></li>
+        <li><a href="#revealing-module-pattern">Revealing Module Pattern</a></li>
+      </ul>
+    </li>
+    <li><a href="#external-references">External References</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+      <div class="book-toc-languages">
+        
+<h4>Coding Principles in ...</h4>
+<nav>
+  <div class="book-search">
+    <input type="text" id="book-search-language-input" placeholder="Search Language" aria-label="Search Language" maxlength="64" data-hotkeys="s/">
+  </div>
+  <ul id="languages"></ul>
+  <script>
+    const languages = [{ title: "Go", href: "\/docs\/design-patterns\/go\/" }, { title: "Java", href: "\/docs\/design-patterns\/java\/" }, { title: "JavaScript", href: "\/docs\/design-patterns\/javascript\/" }, ];
+    const languageLinks = document.getElementById('languages');
+    const searchInput = document.getElementById('book-search-language-input');
+    const maxLanguages = 15
+
+    const listLanguages = (filter = '') => {
+      languageLinks.innerHTML = ''
+      const filtered = languages
+        .filter(item => item.title.toLowerCase().includes(filter.toLowerCase()))
+      filtered.slice(0, filtered.length > maxLanguages ? maxLanguages : filtered.length)
+        .forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.title;
+          const li = document.createElement('li');
+          li.appendChild(link);
+          languageLinks.appendChild(li);
+        })
+      if (filtered.length > maxLanguages) {
+        const li = document.createElement('li');
+        li.textContent = '...';
+        languageLinks.appendChild(li);
+      }
+    }
+
+    listLanguages('')
+    searchInput.onkeyup = () => { listLanguages(searchInput.value) }
+  </script>
+</nav>
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

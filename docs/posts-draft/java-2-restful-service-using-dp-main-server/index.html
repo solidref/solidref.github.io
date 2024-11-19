@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of MainServer (Singleton Pattern)
+
+MainServer.java
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+import com.sun.net.httpserver.HttpServer;
+
+public class MainServer {
+    // Static variable to hold the single instance of MainServer
+    private static MainServer instance = null;
+
+    // Private constructor to prevent instantiation from outside
+    private MainServer() {
+        // Initialize the server here
+        startServer();
+    }
+
+    // Public method to provide access to the instance
+    public static MainServer getInstance() {
+        if (instance == null) {
+            synchronized (MainServer.class) {
+                if (instance == null) {
+                    instance = new MainServer();
+                }
+            }
+        }
+        return instance;
+    }
+
+    // Method to start the HTTP server
+    private void startServer() {
+        System.out.println(&#34;Starting the HTTP server...&#34;);
+        try {
+            // Create an HTTP server listening on port 8000
+            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+            // Set up a context to handle &#34;/tasks&#34; requests
+            server.createContext(&#34;/tasks&#34;, new TaskRequestHandler());
+            // Use the default executor
+            server.setExecutor(null);
+            // Start the server
+            server.start();
+            System.out.println(&#34;Server started on port 8000&#34;);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Explanation:">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-2-restful-service-using-dp-main-server/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of MainServer (Singleton Pattern)
+MainServer.java
+import java.io.IOException; import java.net.InetSocketAddress; import com.sun.net.httpserver.HttpServer; public class MainServer { // Static variable to hold the single instance of MainServer private static MainServer instance = null; // Private constructor to prevent instantiation from outside private MainServer() { // Initialize the server here startServer(); } // Public method to provide access to the instance public static MainServer getInstance() { if (instance == null) { synchronized (MainServer.class) { if (instance == null) { instance = new MainServer(); } } } return instance; } // Method to start the HTTP server private void startServer() { System.out.println(&#34;Starting the HTTP server...&#34;); try { // Create an HTTP server listening on port 8000 HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0); // Set up a context to handle &#34;/tasks&#34; requests server.createContext(&#34;/tasks&#34;, new TaskRequestHandler()); // Use the default executor server.setExecutor(null); // Start the server server.start(); System.out.println(&#34;Server started on port 8000&#34;); } catch (IOException e) { e.printStackTrace(); } } } Explanation:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 2 Restful Service Using Dp Main Server | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-2-restful-service-using-dp-main-server/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 2 Restful Service Using Dp Main Server</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>MainServer</code> (Singleton Pattern)</strong></p>
+<hr>
+<p><strong>MainServer.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.InetSocketAddress;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.sun.net.httpserver.HttpServer;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainServer</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Static variable to hold the single instance of MainServer</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> MainServer instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Private constructor to prevent instantiation from outside</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">MainServer</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Initialize the server here</span>
+</span></span><span style="display:flex;"><span>        startServer();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Public method to provide access to the instance</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainServer <span style="color:#a6e22e">getInstance</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">synchronized</span> (MainServer.<span style="color:#a6e22e">class</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                    instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MainServer();
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> instance;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Method to start the HTTP server</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">startServer</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Starting the HTTP server...&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Create an HTTP server listening on port 8000</span>
+</span></span><span style="display:flex;"><span>            HttpServer server <span style="color:#f92672">=</span> HttpServer.<span style="color:#a6e22e">create</span>(<span style="color:#66d9ef">new</span> InetSocketAddress(8000), 0);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Set up a context to handle &#34;/tasks&#34; requests</span>
+</span></span><span style="display:flex;"><span>            server.<span style="color:#a6e22e">createContext</span>(<span style="color:#e6db74">&#34;/tasks&#34;</span>, <span style="color:#66d9ef">new</span> TaskRequestHandler());
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Use the default executor</span>
+</span></span><span style="display:flex;"><span>            server.<span style="color:#a6e22e">setExecutor</span>(<span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Start the server</span>
+</span></span><span style="display:flex;"><span>            server.<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Server started on port 8000&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Purpose of <code>MainServer</code>:</strong></p>
+<p>The <code>MainServer</code> class is responsible for initializing and starting the HTTP server for the application. It ensures that only one instance of the server runs throughout the application&rsquo;s lifecycle by implementing the <strong>Singleton</strong> design pattern.</p>
+<hr>
+<p><strong>Singleton Pattern Implementation:</strong></p>
+<ol>
+<li>
+<p><strong>Private Static Instance Variable:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> MainServer instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>Holds the single instance of <code>MainServer</code>.</li>
+<li>Declared <code>static</code> so it belongs to the class rather than any object.</li>
+</ul>
+<ol start="2">
+<li>
+<p><strong>Private Constructor:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#a6e22e">MainServer</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Initialize the server here</span>
+</span></span><span style="display:flex;"><span>    startServer();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>The constructor is <code>private</code> to prevent instantiation from outside the class.</li>
+<li>Calls <code>startServer()</code> to initialize the server when the instance is created.</li>
+</ul>
+<ol start="3">
+<li>
+<p><strong>Public Static Access Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainServer <span style="color:#a6e22e">getInstance</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">synchronized</span> (MainServer.<span style="color:#a6e22e">class</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MainServer();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> instance;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>Provides a global access point to the <code>MainServer</code> instance.</li>
+<li>Uses <strong>double-checked locking</strong> with <code>synchronized</code> to ensure thread safety.</li>
+<li>Checks if <code>instance</code> is <code>null</code> before creating a new one to avoid unnecessary synchronization after the instance is created.</li>
+</ul>
+<hr>
+<p><strong>Server Initialization:</strong></p>
+<ol>
+<li>
+<p><strong>startServer() Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">startServer</span>() {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Starting the HTTP server...&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Create an HTTP server listening on port 8000</span>
+</span></span><span style="display:flex;"><span>        HttpServer server <span style="color:#f92672">=</span> HttpServer.<span style="color:#a6e22e">create</span>(<span style="color:#66d9ef">new</span> InetSocketAddress(8000), 0);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Set up a context to handle &#34;/tasks&#34; requests</span>
+</span></span><span style="display:flex;"><span>        server.<span style="color:#a6e22e">createContext</span>(<span style="color:#e6db74">&#34;/tasks&#34;</span>, <span style="color:#66d9ef">new</span> TaskRequestHandler());
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Use the default executor</span>
+</span></span><span style="display:flex;"><span>        server.<span style="color:#a6e22e">setExecutor</span>(<span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Start the server</span>
+</span></span><span style="display:flex;"><span>        server.<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Server started on port 8000&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>        e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li><strong>HttpServer Creation:</strong>
+<ul>
+<li>Uses Java&rsquo;s built-in <code>HttpServer</code> from <code>com.sun.net.httpserver</code>.</li>
+<li>Listens on port <code>8000</code>.</li>
+</ul>
+</li>
+<li><strong>Context Setup:</strong>
+<ul>
+<li>Creates a context for the path <code>/tasks</code>.</li>
+<li>Associates it with a <code>TaskRequestHandler</code> (to be implemented separately), which handles incoming HTTP requests to <code>/tasks</code>.</li>
+</ul>
+</li>
+<li><strong>Executor Setup:</strong>
+<ul>
+<li><code>server.setExecutor(null);</code> uses a default executor.</li>
+</ul>
+</li>
+<li><strong>Server Start:</strong>
+<ul>
+<li>Calls <code>server.start();</code> to begin listening for incoming requests.</li>
+</ul>
+</li>
+<li><strong>Exception Handling:</strong>
+<ul>
+<li>Catches <code>IOException</code> and prints the stack trace.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Usage Example:</strong></p>
+<p>To start the server, you would call the <code>getInstance()</code> method from your application&rsquo;s entry point.</p>
+<p><strong>Application.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Application</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Start the MainServer instance</span>
+</span></span><span style="display:flex;"><span>        MainServer.<span style="color:#a6e22e">getInstance</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>By calling <code>MainServer.getInstance();</code>, you ensure that the server is initialized and started.</li>
+<li>Subsequent calls to <code>getInstance()</code> will return the same instance, thanks to the Singleton pattern.</li>
+</ul>
+<hr>
+<p><strong>Why Singleton Pattern?</strong></p>
+<ul>
+<li><strong>Single Instance Guarantee:</strong> Ensures that only one instance of <code>MainServer</code> exists, preventing conflicts like multiple servers trying to listen on the same port.</li>
+<li><strong>Global Access Point:</strong> Provides a way to access the server instance from anywhere in the application if needed.</li>
+<li><strong>Lazy Initialization:</strong> The instance is created only when it&rsquo;s needed, saving resources if the server is not started immediately.</li>
+<li><strong>Thread Safety:</strong> The use of <code>synchronized</code> and double-checked locking ensures that the Singleton instance is created safely in a multithreaded environment.</li>
+</ul>
+<hr>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><strong>Private Constructor:</strong> Prevents external instantiation.</li>
+<li><strong>Static getInstance() Method:</strong> Controls access to the singleton instance.</li>
+<li><strong>Thread-Safe Initialization:</strong> Double-checked locking prevents multiple threads from creating multiple instances.</li>
+<li><strong>Server Setup:</strong>
+<ul>
+<li>Uses Java&rsquo;s built-in HTTP server for simplicity.</li>
+<li>Sets up a context for handling <code>/tasks</code> endpoint.</li>
+<li>Starts listening for HTTP requests.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Assumptions and Dependencies:</strong></p>
+<ul>
+<li><strong>TaskRequestHandler:</strong>
+<ul>
+<li>Not implemented here but expected to handle HTTP requests for <code>/tasks</code>.</li>
+<li>Should implement <code>HttpHandler</code> from <code>com.sun.net.httpserver</code>.</li>
+</ul>
+</li>
+<li><strong>Imports:</strong>
+<ul>
+<li>Necessary imports like <code>java.io.IOException</code>, <code>java.net.InetSocketAddress</code>, and <code>com.sun.net.httpserver.HttpServer</code>.</li>
+</ul>
+</li>
+<li><strong>Exception Handling:</strong>
+<ul>
+<li>In a production environment, you&rsquo;d have more robust exception handling and possibly logging instead of printing stack traces.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>MainServer</code> class is a straightforward implementation of the Singleton design pattern applied to a simple HTTP server in Java. It ensures that only one server instance exists and provides a centralized point to manage server operations. By using Java&rsquo;s built-in HTTP server, the implementation remains minimal and focused, aligning with your requirement for simplicity and a limited number of classes.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li><strong>Implement TaskRequestHandler:</strong>
+<ul>
+<li>To handle HTTP requests to <code>/tasks</code>, you&rsquo;ll need to implement the <code>TaskRequestHandler</code> class.</li>
+</ul>
+</li>
+<li><strong>Expand Functionality:</strong>
+<ul>
+<li>Add additional request handlers for other endpoints as needed.</li>
+</ul>
+</li>
+<li><strong>Integrate Other Patterns:</strong>
+<ul>
+<li>As you proceed, incorporate other design patterns for different components, following the structure outlined in the initial design.</li>
+</ul>
+</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

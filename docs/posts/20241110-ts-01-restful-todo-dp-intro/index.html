@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Design patterns represent foundational approaches to recurring challenges in software architecture. They encapsulate best practices in object-oriented design, providing flexible, adaptable templates that developers can apply to construct robust, maintainable, and scalable systems. By adhering to established, reusable strategies, design patterns facilitate problem-solving in complex software environments and contribute to systematic, reliable development practices.
+
+  The Significance of Design Patterns
+  #
+
+The application of design patterns offers multiple, distinct advantages within the software development lifecycle:">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts/20241110-ts-01-restful-todo-dp-intro/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="A TypeScript RESTful API Using Design Patterns">
+  <meta property="og:description" content="Design patterns represent foundational approaches to recurring challenges in software architecture. They encapsulate best practices in object-oriented design, providing flexible, adaptable templates that developers can apply to construct robust, maintainable, and scalable systems. By adhering to established, reusable strategies, design patterns facilitate problem-solving in complex software environments and contribute to systematic, reliable development practices.
+The Significance of Design Patterns # The application of design patterns offers multiple, distinct advantages within the software development lifecycle:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-11-10T00:00:00+00:00">
+<title>A TypeScript RESTful API Using Design Patterns | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts/20241110-ts-01-restful-todo-dp-intro/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.87808ea417af4429d15ad778f9be0ca7c8395128c44683e501c29847d1684c4c.js" integrity="sha256-h4COpBevRCnRWtd4&#43;b4Mp8g5USjERoPlAcKYR9FoTEw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>A TypeScript RESTful API Using Design Patterns</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#the-significance-of-design-patterns">The Significance of Design Patterns</a></li>
+      </ul>
+    </li>
+    <li><a href="#building-a-restful-api-with-typescript-using-design-patterns">Building a RESTful API with TypeScript Using Design Patterns</a></li>
+    <li><a href="#initial-implementation">Initial Implementation</a>
+      <ul>
+        <li><a href="#project-structure">Project Structure</a></li>
+        <li><a href="#project-initialization">Project Initialization</a></li>
+        <li><a href="#using-bunsh-to-run-typescript">Using Bun.sh to Run TypeScript</a></li>
+      </ul>
+    </li>
+    <li><a href="#core-models">Core Models</a>
+      <ul>
+        <li><a href="#task-model">Task Model</a></li>
+        <li><a href="#errorresponse-model">ErrorResponse Model</a></li>
+      </ul>
+    </li>
+    <li><a href="#in-memory-database">In-Memory Database</a></li>
+    <li><a href="#service-actions">Service Actions</a>
+      <ul>
+        <li><a href="#api-endpoints-setup">API Endpoints Setup</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h2>
+    A TypeScript RESTful API Using Design Patterns
+  </h2>
+  
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>November 10, 2024</span>
+  </div>
+
+
+
+  
+
+  
+
+
+  <div class="book-post-content"><p><strong>Design patterns</strong> represent foundational approaches to recurring challenges in software architecture. They encapsulate best practices in object-oriented design, providing flexible, adaptable templates that developers can apply to construct robust, maintainable, and scalable systems. By adhering to established, reusable strategies, design patterns facilitate problem-solving in complex software environments and contribute to systematic, reliable development practices.</p>
+<h3 id="the-significance-of-design-patterns">
+  The Significance of Design Patterns
+  <a class="anchor" href="#the-significance-of-design-patterns">#</a>
+</h3>
+<p>The application of design patterns offers multiple, distinct advantages within the software development lifecycle:</p>
+<ul>
+<li>
+<p><strong>Enhancement of Reusability</strong>: By encapsulating well-documented, field-tested solutions, design patterns encourage reuse across diverse projects and domains, reducing development time and improving consistency in codebases.</p>
+</li>
+<li>
+<p><strong>Improved Communication and Collaboration</strong>: Design patterns introduce a shared vocabulary among developers, fostering more effective discourse on structural and behavioral approaches, thereby aligning team efforts and bridging understanding across diverse expertise levels.</p>
+</li>
+<li>
+<p><strong>Reinforcement of Design Principles</strong>: Design patterns inherently support principles of modularity, decoupling, and encapsulation, promoting systematic, principle-driven design choices that ensure code quality and stability.</p>
+</li>
+<li>
+<p><strong>Facilitation of System Flexibility and Extensibility</strong>: Many design patterns are constructed to accommodate modifications and extensions, thus enabling systems to evolve gracefully as requirements shift or expand, reducing the potential for disruption and technical debt.</p>
+</li>
+</ul>
+<h2 id="building-a-restful-api-with-typescript-using-design-patterns">
+  Building a RESTful API with TypeScript Using Design Patterns
+  <a class="anchor" href="#building-a-restful-api-with-typescript-using-design-patterns">#</a>
+</h2>
+<p>To showcase the practical application of design patterns, I’ll develop a simple RESTful API—a <strong>Todo List Service</strong>. Despite its simplicity, this problem can be incrementally enhanced to illustrate various design patterns effectively, making it an excellent foundation for exploring pattern-based architecture in a manageable and comprehensible way.</p>
+<p>The initial implementation of the Todo List Service will prioritize simplicity, establishing a basic working API. We’ll then progressively apply design patterns to enhance the structure, flexibility, and maintainability of the code, demonstrating how each pattern contributes to solving specific architectural challenges.</p>
+<h2 id="initial-implementation">
+  Initial Implementation
+  <a class="anchor" href="#initial-implementation">#</a>
+</h2>
+<p>In this section, we’ll outline the foundational project setup and code structure. Starting with a straightforward implementation will allow us to focus on incremental enhancements using design patterns in subsequent sections.</p>
+<h3 id="project-structure">
+  Project Structure
+  <a class="anchor" href="#project-structure">#</a>
+</h3>
+<p>The initial project will be organized as follows:</p>
+<pre tabindex="0"><code>.
+├── LICENSE
+├── package-lock.json
+├── package.json
+├── src
+│   ├── actions.ts
+│   ├── database.ts
+│   ├── index.ts
+│   └── models
+│       ├── ErrorResponse.ts
+│       ├── Task.ts
+│       └── TaskStatus.ts
+├── swagger.yaml
+└── test.sh
+</code></pre><ul>
+<li><strong><code>Task</code></strong>: The core model representing a task in the todo list.</li>
+<li><strong><code>ErrorResponse</code></strong>: A utility model for handling error responses consistently.</li>
+<li><strong><code>TaskStatus</code></strong>: An enumeration defining various states a task may have, providing structured task management.</li>
+<li><strong><code>database</code></strong>: A simple, in-memory data store to persist tasks temporarily during development.</li>
+<li><strong><code>actions</code></strong>: Defines mappings between API endpoints and core logic, facilitating modular and testable code.</li>
+</ul>
+<p>The structure above provides a foundation that we can expand as we incorporate design patterns.</p>
+<h3 id="project-initialization">
+  Project Initialization
+  <a class="anchor" href="#project-initialization">#</a>
+</h3>
+<p>To begin, initialize the project directory, install dependencies, and configure TypeScript support:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir todo-restful-dp
+</span></span><span style="display:flex;"><span>cd todo-restful-dp
+</span></span><span style="display:flex;"><span>npm init
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>npm install -i @types/express @types/uuid express uuid
+</span></span></code></pre></div><h3 id="using-bunsh-to-run-typescript">
+  Using Bun.sh to Run TypeScript
+  <a class="anchor" href="#using-bunsh-to-run-typescript">#</a>
+</h3>
+<p>For this project, I opted to use <a href="https://bun.sh/">Bun</a> as a TypeScript runtime. Although Node.js 22 now supports TypeScript with the <code>--experimental-strip-types</code> flag, it remains prone to issues, especially when managing CommonJS modules. Bun provides a reliable alternative to ensure the code runs smoothly without compromising on compatibility.</p>
+<p>To configure the project to run with Bun, modify the <code>start</code> script in <code>package.json</code> as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;typescript-todo-restful-dp&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1.0.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;main&#34;</span>: <span style="color:#e6db74">&#34;index.js&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;scripts&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;start&#34;</span>: <span style="color:#e6db74">&#34;bun ./src/index.ts&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>This foundational setup prepares us to implement a basic API and explore design patterns through targeted enhancements, ultimately illustrating their advantages within a TypeScript-based RESTful service.</p>
+<h2 id="core-models">
+  Core Models
+  <a class="anchor" href="#core-models">#</a>
+</h2>
+<p>The following section covers the models used in the application, each representing a distinct part of the Todo List API’s structure.</p>
+<h3 id="task-model">
+  Task Model
+  <a class="anchor" href="#task-model">#</a>
+</h3>
+<p>The <code>Task</code> model represents the core entity of this API, encapsulating the essential data required to manage a task.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">TaskStatus</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;./TaskStatus&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Task</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">title</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">description</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">TaskStatus</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">createdAt</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">updatedAt</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">Task</span>;
+</span></span></code></pre></div><h4 id="taskstatus-enum">
+  TaskStatus Enum
+  <a class="anchor" href="#taskstatus-enum">#</a>
+</h4>
+<p>The <code>TaskStatus</code> enumeration provides a structured way to represent a task&rsquo;s lifecycle states. This enum allows us to categorize tasks by status, making the API’s data more consistent and predictable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">TaskStatus</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Pending</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">InProgress</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Completed</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">TaskStatus</span>;
+</span></span></code></pre></div><h3 id="errorresponse-model">
+  ErrorResponse Model
+  <a class="anchor" href="#errorresponse-model">#</a>
+</h3>
+<p>The <code>ErrorResponse</code> model describes the error messages that the API may return, making it easier for clients to understand and handle errors systematically.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ErrorResponse</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">ErrorResponse</span>;
+</span></span></code></pre></div><h2 id="in-memory-database">
+  In-Memory Database
+  <a class="anchor" href="#in-memory-database">#</a>
+</h2>
+<p>For this initial implementation, I’ve chosen a lightweight, in-memory database. While not suitable for production, it serves our purpose in demonstrating how data can be managed and manipulated within the API.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;./models/task&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Database</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">tasks</span>: <span style="color:#66d9ef">Task</span>[] <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">addTask</span>(<span style="color:#a6e22e">task</span>: <span style="color:#66d9ef">Task</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">task</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">getTasks</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Task</span>[] {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">getTaskById</span>(<span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Task</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>.<span style="color:#a6e22e">find</span>((<span style="color:#a6e22e">task</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">id</span>) <span style="color:#f92672">??</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">updateTask</span>(<span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">updatedTask</span>: <span style="color:#66d9ef">Task</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Task</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">index</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>.<span style="color:#a6e22e">findIndex</span>((<span style="color:#a6e22e">task</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">!==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>[<span style="color:#a6e22e">index</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        ...<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>[<span style="color:#a6e22e">index</span>],
+</span></span><span style="display:flex;"><span>        ...<span style="color:#a6e22e">updatedTask</span>,
+</span></span><span style="display:flex;"><span>      };
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>[<span style="color:#a6e22e">index</span>];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">deleteTask</span>(<span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tasks</span>.<span style="color:#a6e22e">filter</span>((<span style="color:#a6e22e">task</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">!==</span> <span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="service-actions">
+  Service Actions
+  <a class="anchor" href="#service-actions">#</a>
+</h2>
+<p>The <code>actions.ts</code> file serves as a controller, mapping each endpoint to its corresponding logic. This separation allows us to expand the application’s functionality in a modular, testable manner.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">NextFunction</span>, <span style="color:#a6e22e">Request</span>, <span style="color:#a6e22e">Response</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;express&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">Database</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;./database&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;./models/task&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">v4</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">uuid</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;uuid&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">database</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Database</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">addTask</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">Request</span>, <span style="color:#a6e22e">res</span>: <span style="color:#66d9ef">Response</span>, <span style="color:#a6e22e">next</span>: <span style="color:#66d9ef">NextFunction</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Task</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">task</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">uuid</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Adding task:&#34;</span>, <span style="color:#a6e22e">task</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">addTask</span>(<span style="color:#a6e22e">task</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">201</span>).<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">deleteTask</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">Request</span>, <span style="color:#a6e22e">res</span>: <span style="color:#66d9ef">Response</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">getTaskById</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">task</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">deleteTask</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">204</span>).<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">404</span>).<span style="color:#a6e22e">send</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">404</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Task not found&#34;</span>,
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getTasks</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">Request</span>, <span style="color:#a6e22e">res</span>: <span style="color:#66d9ef">Response</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">200</span>).<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">getTasks</span>()));
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getTaskById</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">Request</span>, <span style="color:#a6e22e">res</span>: <span style="color:#66d9ef">Response</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Getting task::&#34;</span>, <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">getTaskById</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">task</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">200</span>).<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">task</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">404</span>).<span style="color:#a6e22e">send</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">404</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Task not found&#34;</span>,
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">updateTask</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">Request</span>, <span style="color:#a6e22e">res</span>: <span style="color:#66d9ef">Response</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">getTaskById</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">task</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">updateTask</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Task</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">200</span>).<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">task</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">404</span>).<span style="color:#a6e22e">send</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">404</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Task not found&#34;</span>,
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h3 id="api-endpoints-setup">
+  API Endpoints Setup
+  <a class="anchor" href="#api-endpoints-setup">#</a>
+</h3>
+<p>The main application file (<code>index.ts</code>) initializes the Express server and defines the primary API routes. This straightforward setup provides the backbone for the RESTful API.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">express</span>, { <span style="color:#a6e22e">Request</span>, <span style="color:#a6e22e">Response</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;express&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">addTask</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">deleteTask</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">getTaskById</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">getTasks</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">updateTask</span>,
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;./actions&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">use</span>(<span style="color:#a6e22e">express</span>.<span style="color:#a6e22e">json</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#66d9ef">delete</span>(<span style="color:#e6db74">&#34;/task/:id&#34;</span>, <span style="color:#a6e22e">deleteTask</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;/tasks&#34;</span>, <span style="color:#a6e22e">getTasks</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;/task/:id&#34;</span>, <span style="color:#a6e22e">getTaskById</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#34;/task&#34;</span>, <span style="color:#a6e22e">addTask</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;/task/:id&#34;</span>, <span style="color:#a6e22e">updateTask</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#ae81ff">8080</span>, () <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Server is running on port 8080&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>This article presented the foundational setup of a basic RESTful API for managing tasks, laying the groundwork for applying design patterns. By isolating the core components—models, in-memory database, service actions, and routing logic—this initial structure provides a clear, modular baseline.</p>
+<p>In subsequent articles, we will extend this application using various design patterns to address common challenges such as ensuring code reusability, improving flexibility, and handling complex behaviors systematically. Each design pattern will be introduced in response to a specific architectural need, demonstrating how these patterns can contribute to the scalability, robustness, and maintainability of a RESTful API in TypeScript.</p>
+</div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#the-significance-of-design-patterns">The Significance of Design Patterns</a></li>
+      </ul>
+    </li>
+    <li><a href="#building-a-restful-api-with-typescript-using-design-patterns">Building a RESTful API with TypeScript Using Design Patterns</a></li>
+    <li><a href="#initial-implementation">Initial Implementation</a>
+      <ul>
+        <li><a href="#project-structure">Project Structure</a></li>
+        <li><a href="#project-initialization">Project Initialization</a></li>
+        <li><a href="#using-bunsh-to-run-typescript">Using Bun.sh to Run TypeScript</a></li>
+      </ul>
+    </li>
+    <li><a href="#core-models">Core Models</a>
+      <ul>
+        <li><a href="#task-model">Task Model</a></li>
+        <li><a href="#errorresponse-model">ErrorResponse Model</a></li>
+      </ul>
+    </li>
+    <li><a href="#in-memory-database">In-Memory Database</a></li>
+    <li><a href="#service-actions">Service Actions</a>
+      <ul>
+        <li><a href="#api-endpoints-setup">API Endpoints Setup</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

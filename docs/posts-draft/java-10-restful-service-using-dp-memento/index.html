@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of UndoManager Using the Memento Pattern
+
+Purpose of UndoManager:
+The UndoManager class implements undo and redo functionality using the Memento Pattern. The Memento Pattern captures and externalizes an object&rsquo;s internal state without violating encapsulation, so that the object can be restored to this state later. In the context of our task management application, the UndoManager stores snapshots (mementos) of Task states, enabling the application to undo and redo changes to tasks.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-10-restful-service-using-dp-memento/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of UndoManager Using the Memento Pattern
+Purpose of UndoManager:
+The UndoManager class implements undo and redo functionality using the Memento Pattern. The Memento Pattern captures and externalizes an object’s internal state without violating encapsulation, so that the object can be restored to this state later. In the context of our task management application, the UndoManager stores snapshots (mementos) of Task states, enabling the application to undo and redo changes to tasks.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 10 Restful Service Using Dp Memento | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-10-restful-service-using-dp-memento/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 10 Restful Service Using Dp Memento</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>UndoManager</code> Using the Memento Pattern</strong></p>
+<hr>
+<p><strong>Purpose of <code>UndoManager</code>:</strong></p>
+<p>The <code>UndoManager</code> class implements undo and redo functionality using the <strong>Memento Pattern</strong>. The Memento Pattern captures and externalizes an object&rsquo;s internal state without violating encapsulation, so that the object can be restored to this state later. In the context of our task management application, the <code>UndoManager</code> stores snapshots (mementos) of <code>Task</code> states, enabling the application to undo and redo changes to tasks.</p>
+<hr>
+<p><strong>Memento Pattern Overview:</strong></p>
+<ul>
+<li><strong>Intent:</strong> Without violating encapsulation, capture and externalize an object&rsquo;s internal state so that the object can be restored to this state later.</li>
+<li><strong>Participants:</strong>
+<ul>
+<li><strong>Memento:</strong> Stores internal state of the Originator object. The memento may store as much or as little of the originator&rsquo;s internal state as necessary.</li>
+<li><strong>Originator:</strong> Creates a memento containing a snapshot of its current internal state and uses the memento to restore its internal state.</li>
+<li><strong>Caretaker:</strong> Responsible for the memento&rsquo;s safekeeping and does not operate on or examine the contents of a memento.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Implementation Details:</strong></p>
+<p><strong>1. <code>TaskMemento</code> Class (Memento):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskMemento</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> UUID id;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String description;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String assignedTo;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> priority;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String stateName;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskMemento</span>(UUID id, String title, String description, String assignedTo, <span style="color:#66d9ef">int</span> priority, String stateName) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assignedTo</span> <span style="color:#f92672">=</span> assignedTo;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">priority</span> <span style="color:#f92672">=</span> priority;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">stateName</span> <span style="color:#f92672">=</span> stateName;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getters for all fields</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> UUID <span style="color:#a6e22e">getId</span>() { <span style="color:#66d9ef">return</span> id; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getTitle</span>() { <span style="color:#66d9ef">return</span> title; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getDescription</span>() { <span style="color:#66d9ef">return</span> description; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getAssignedTo</span>() { <span style="color:#66d9ef">return</span> assignedTo; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getPriority</span>() { <span style="color:#66d9ef">return</span> priority; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() { <span style="color:#66d9ef">return</span> stateName; }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Stores the state of a <code>Task</code> object.</li>
+<li>Contains all the necessary fields to restore a <code>Task</code> to a previous state.</li>
+<li>Is immutable to ensure the integrity of the stored state.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>2. Modifying <code>Task</code> Class (Originator):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">implements</span> Cloneable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UUID id;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String description;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String assignedTo;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> priority;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String stateName;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing methods...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Method to create a memento of the current state</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TaskMemento <span style="color:#a6e22e">saveToMemento</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TaskMemento(id, title, description, assignedTo, priority, stateName);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Method to restore state from a memento</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">restoreFromMemento</span>(TaskMemento memento) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getId</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getTitle</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getDescription</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assignedTo</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getAssignedTo</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">priority</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getPriority</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">stateName</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getStateName</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Acts as the Originator in the Memento Pattern.</li>
+<li>Provides methods to create a memento (<code>saveToMemento</code>) and restore from a memento (<code>restoreFromMemento</code>).</li>
+<li>Ensures that the task&rsquo;s state can be captured and restored without violating encapsulation.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>3. <code>UndoManager</code> Class (Caretaker):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.HashMap;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Map;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Stack;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.UUID;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UndoManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Map of Task ID to stacks of mementos</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>UUID, Stack<span style="color:#f92672">&lt;</span>TaskMemento<span style="color:#f92672">&gt;&gt;</span> undoHistory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>UUID, Stack<span style="color:#f92672">&lt;</span>TaskMemento<span style="color:#f92672">&gt;&gt;</span> redoHistory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Save state before a change</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveState</span>(Task task) {
+</span></span><span style="display:flex;"><span>        UUID taskId <span style="color:#f92672">=</span> task.<span style="color:#a6e22e">getId</span>();
+</span></span><span style="display:flex;"><span>        TaskMemento memento <span style="color:#f92672">=</span> task.<span style="color:#a6e22e">saveToMemento</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        undoHistory.<span style="color:#a6e22e">putIfAbsent</span>(taskId, <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;&gt;</span>());
+</span></span><span style="display:flex;"><span>        undoHistory.<span style="color:#a6e22e">get</span>(taskId).<span style="color:#a6e22e">push</span>(memento);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Clear redo history since new changes invalidate the redo stack</span>
+</span></span><span style="display:flex;"><span>        redoHistory.<span style="color:#a6e22e">remove</span>(taskId);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Undo the last change</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">undo</span>(Task task) {
+</span></span><span style="display:flex;"><span>        UUID taskId <span style="color:#f92672">=</span> task.<span style="color:#a6e22e">getId</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (undoHistory.<span style="color:#a6e22e">containsKey</span>(taskId) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>undoHistory.<span style="color:#a6e22e">get</span>(taskId).<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Save current state to redo history</span>
+</span></span><span style="display:flex;"><span>            redoHistory.<span style="color:#a6e22e">putIfAbsent</span>(taskId, <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;&gt;</span>());
+</span></span><span style="display:flex;"><span>            redoHistory.<span style="color:#a6e22e">get</span>(taskId).<span style="color:#a6e22e">push</span>(task.<span style="color:#a6e22e">saveToMemento</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Restore state from memento</span>
+</span></span><span style="display:flex;"><span>            TaskMemento memento <span style="color:#f92672">=</span> undoHistory.<span style="color:#a6e22e">get</span>(taskId).<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">restoreFromMemento</span>(memento);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;No actions to undo for task &#34;</span> <span style="color:#f92672">+</span> taskId);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Redo the last undone change</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">redo</span>(Task task) {
+</span></span><span style="display:flex;"><span>        UUID taskId <span style="color:#f92672">=</span> task.<span style="color:#a6e22e">getId</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (redoHistory.<span style="color:#a6e22e">containsKey</span>(taskId) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>redoHistory.<span style="color:#a6e22e">get</span>(taskId).<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Save current state to undo history</span>
+</span></span><span style="display:flex;"><span>            undoHistory.<span style="color:#a6e22e">putIfAbsent</span>(taskId, <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">&lt;&gt;</span>());
+</span></span><span style="display:flex;"><span>            undoHistory.<span style="color:#a6e22e">get</span>(taskId).<span style="color:#a6e22e">push</span>(task.<span style="color:#a6e22e">saveToMemento</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Restore state from memento</span>
+</span></span><span style="display:flex;"><span>            TaskMemento memento <span style="color:#f92672">=</span> redoHistory.<span style="color:#a6e22e">get</span>(taskId).<span style="color:#a6e22e">pop</span>();
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">restoreFromMemento</span>(memento);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;No actions to redo for task &#34;</span> <span style="color:#f92672">+</span> taskId);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Acts as the Caretaker in the Memento Pattern.</li>
+<li>Manages the history of mementos for each task.</li>
+<li>Provides methods to save the state before changes, and to undo and redo changes.</li>
+</ul>
+</li>
+<li><strong>Implementation Details:</strong>
+<ul>
+<li><strong>Data Structures:</strong>
+<ul>
+<li><code>undoHistory</code>: A map of task IDs to stacks of mementos for undo operations.</li>
+<li><code>redoHistory</code>: A map of task IDs to stacks of mementos for redo operations.</li>
+</ul>
+</li>
+<li><strong>Methods:</strong>
+<ul>
+<li><code>saveState(Task task)</code>: Saves the current state of the task before a change.</li>
+<li><code>undo(Task task)</code>: Restores the task&rsquo;s previous state from the undo history.</li>
+<li><code>redo(Task task)</code>: Restores the task&rsquo;s state from the redo history.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>4. Integration with <code>TaskManager</code> and Commands:</strong></p>
+<p>To use the <code>UndoManager</code>, we need to integrate it into the operations that modify tasks.</p>
+<p><strong><code>TaskManager</code> Class:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DatabaseOperations dbAdapter;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UndoManager undoManager;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskManager</span>(DatabaseOperations dbAdapter, UndoManager undoManager) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dbAdapter</span> <span style="color:#f92672">=</span> dbAdapter;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">undoManager</span> <span style="color:#f92672">=</span> undoManager;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">saveTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Save current state before updating</span>
+</span></span><span style="display:flex;"><span>        undoManager.<span style="color:#a6e22e">saveState</span>(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">updateTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteTask</span>(UUID taskId) {
+</span></span><span style="display:flex;"><span>        Task task <span style="color:#f92672">=</span> dbAdapter.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (task <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Save current state before deletion</span>
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">saveState</span>(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            dbAdapter.<span style="color:#a6e22e">deleteTask</span>(taskId);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">getTask</span>(UUID taskId) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> dbAdapter.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Methods to undo and redo</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">undo</span>(UUID taskId) {
+</span></span><span style="display:flex;"><span>        Task task <span style="color:#f92672">=</span> dbAdapter.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (task <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">undo</span>(task);
+</span></span><span style="display:flex;"><span>            dbAdapter.<span style="color:#a6e22e">updateTask</span>(task); <span style="color:#75715e">// Persist the restored state</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">redo</span>(UUID taskId) {
+</span></span><span style="display:flex;"><span>        Task task <span style="color:#f92672">=</span> dbAdapter.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (task <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            undoManager.<span style="color:#a6e22e">redo</span>(task);
+</span></span><span style="display:flex;"><span>            dbAdapter.<span style="color:#a6e22e">updateTask</span>(task); <span style="color:#75715e">// Persist the restored state</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The <code>TaskManager</code> now depends on the <code>UndoManager</code>.</li>
+<li>Before updating or deleting a task, it calls <code>undoManager.saveState(task)</code> to save the current state.</li>
+<li>Provides methods <code>undo(taskId)</code> and <code>redo(taskId)</code> to perform undo and redo operations.</li>
+<li>After restoring a task&rsquo;s state, it updates the database to persist the changes.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>5. Modifying Command Implementations:</strong></p>
+<p>We can adjust our commands to use the <code>UndoManager</code> for undo functionality.</p>
+<p><strong><code>UpdateTaskCommand</code> Using Memento:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UpdateTaskCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Task task;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UpdateTaskCommand</span>(TaskManager taskManager, Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">task</span> <span style="color:#f92672">=</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">updateTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Since the <code>UndoManager</code> handles state saving, the command no longer needs to store the old state.</li>
+<li>The <code>execute</code> method calls <code>taskManager.updateTask(task)</code>, which handles state saving via <code>UndoManager</code>.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Undo and Redo Commands:</strong></p>
+<p>To invoke undo and redo, we can create specific commands.</p>
+<p><strong><code>UndoCommand</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UndoCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UUID taskId;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UndoCommand</span>(TaskManager taskManager, UUID taskId) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskId</span> <span style="color:#f92672">=</span> taskId;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">undo</span>(taskId);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong><code>RedoCommand</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedoCommand</span> <span style="color:#66d9ef">implements</span> Command {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UUID taskId;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RedoCommand</span>(TaskManager taskManager, UUID taskId) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> taskManager;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskId</span> <span style="color:#f92672">=</span> taskId;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>        taskManager.<span style="color:#a6e22e">redo</span>(taskId);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>6. Integration with <code>TaskRequestHandler</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskRequestHandler</span> <span style="color:#66d9ef">extends</span> RequestHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskFactory taskFactory;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskManager taskManager;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> CommandInvoker commandInvoker;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskRequestHandler</span>(DatabaseOperations dbAdapter, UndoManager undoManager) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(dbAdapter);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskFactory</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcreteTaskFactory();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">taskManager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskManager(dbAdapter, undoManager);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">commandInvoker</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CommandInvoker();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle PUT request to update a task</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePut</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            UUID taskId <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">fromString</span>(requestData.<span style="color:#a6e22e">getQueryParams</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;id&#34;</span>));
+</span></span><span style="display:flex;"><span>            Task existingTask <span style="color:#f92672">=</span> taskManager.<span style="color:#a6e22e">getTask</span>(taskId);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (existingTask <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                responseData.<span style="color:#a6e22e">setStatusCode</span>(404);
+</span></span><span style="display:flex;"><span>                responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Task not found.&#34;</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>            Task updatedTask <span style="color:#f92672">=</span> taskFactory.<span style="color:#a6e22e">createTask</span>(jsonBody);
+</span></span><span style="display:flex;"><span>            updatedTask.<span style="color:#a6e22e">setId</span>(taskId);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Command updateTaskCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UpdateTaskCommand(taskManager, updatedTask);
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">executeCommand</span>(updateTaskCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(updatedTask.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Handle exceptions</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle undo request</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleUndo</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            UUID taskId <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">fromString</span>(requestData.<span style="color:#a6e22e">getQueryParams</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;id&#34;</span>));
+</span></span><span style="display:flex;"><span>            Command undoCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UndoCommand(taskManager, taskId);
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">executeCommand</span>(undoCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Undo successful.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(400);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Undo failed.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Handle redo request</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handleRedo</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>        ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            UUID taskId <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">fromString</span>(requestData.<span style="color:#a6e22e">getQueryParams</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;id&#34;</span>));
+</span></span><span style="display:flex;"><span>            Command redoCommand <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RedoCommand(taskManager, taskId);
+</span></span><span style="display:flex;"><span>            commandInvoker.<span style="color:#a6e22e">executeCommand</span>(redoCommand);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(200);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Redo successful.&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setStatusCode</span>(400);
+</span></span><span style="display:flex;"><span>            responseData.<span style="color:#a6e22e">setData</span>(<span style="color:#e6db74">&#34;Redo failed.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Other methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The <code>TaskRequestHandler</code> handles undo and redo requests by creating <code>UndoCommand</code> and <code>RedoCommand</code> and executing them via the <code>CommandInvoker</code>.</li>
+<li>The <code>TaskManager</code> handles the actual undo and redo logic using the <code>UndoManager</code>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Advantages of Using the Memento Pattern for Undo Functionality:</strong></p>
+<ol>
+<li><strong>Encapsulation:</strong></li>
+</ol>
+<ul>
+<li>The internal state of the <code>Task</code> object is captured and restored without exposing its implementation details.</li>
+<li>The <code>TaskMemento</code> class contains only the data necessary to restore the state.</li>
+</ul>
+<ol start="2">
+<li><strong>State Preservation:</strong></li>
+</ol>
+<ul>
+<li>The exact state of the object at a particular time is preserved, allowing for precise undo and redo operations.</li>
+</ul>
+<ol start="3">
+<li><strong>Decoupling:</strong></li>
+</ol>
+<ul>
+<li>The <code>UndoManager</code> (Caretaker) does not need to know the specifics of the <code>Task</code>&rsquo;s implementation.</li>
+</ul>
+<ol start="4">
+<li><strong>Simplification:</strong></li>
+</ol>
+<ul>
+<li>Commands no longer need to store previous states, reducing complexity in command classes.</li>
+</ul>
+<hr>
+<p><strong>Considerations:</strong></p>
+<ol>
+<li><strong>Memory Usage:</strong></li>
+</ol>
+<ul>
+<li>Storing mementos can consume significant memory if tasks are large or if there are many tasks with frequent changes.</li>
+<li>Implement strategies to limit the size of the history or to compress mementos.</li>
+</ul>
+<ol start="2">
+<li><strong>Granularity:</strong></li>
+</ol>
+<ul>
+<li>Decide on the granularity of state saving. Should every change be saved, or only certain actions?</li>
+<li>This affects both memory usage and the user&rsquo;s ability to undo actions.</li>
+</ul>
+<ol start="3">
+<li><strong>Immutable Mementos:</strong></li>
+</ol>
+<ul>
+<li>Ensure that mementos are immutable to prevent accidental changes to the saved state.</li>
+</ul>
+<ol start="4">
+<li><strong>Thread Safety:</strong></li>
+</ol>
+<ul>
+<li>If the application is multi-threaded, synchronize access to shared data structures.</li>
+</ul>
+<ol start="5">
+<li><strong>Persistence (Optional):</strong></li>
+</ol>
+<ul>
+<li>For long-running applications or those requiring persistence across restarts, consider storing mementos in a database or file.</li>
+</ul>
+<hr>
+<p><strong>Possible Enhancements:</strong></p>
+<ol>
+<li><strong>Limit History Size:</strong></li>
+</ol>
+<ul>
+<li>Implement a maximum size for the undo and redo stacks to prevent excessive memory usage.</li>
+</ul>
+<ol start="2">
+<li><strong>Composite Mementos:</strong></li>
+</ol>
+<ul>
+<li>For operations that affect multiple tasks, create composite mementos to capture the state of all involved tasks.</li>
+</ul>
+<ol start="3">
+<li><strong>Selective Undo:</strong></li>
+</ol>
+<ul>
+<li>Allow users to undo specific actions out of order, requiring more complex management of dependencies.</li>
+</ul>
+<ol start="4">
+<li><strong>Serialization of Mementos:</strong></li>
+</ol>
+<ul>
+<li>Enable mementos to be serialized for persistence or network transmission.</li>
+</ul>
+<hr>
+<p><strong>Comparison with Command Pattern for Undo:</strong></p>
+<ul>
+<li>
+<p><strong>Command Pattern Undo:</strong></p>
+<ul>
+<li>Commands encapsulate both the action and its inverse.</li>
+<li>Commands manage their own undo logic.</li>
+<li>May require storing previous states or implementing inverse operations.</li>
+</ul>
+</li>
+<li>
+<p><strong>Memento Pattern Undo:</strong></p>
+<ul>
+<li>Separates state saving from commands.</li>
+<li>The Originator (e.g., <code>Task</code>) is responsible for saving and restoring its state.</li>
+<li>Simplifies commands but requires additional memory for mementos.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>By implementing the <code>UndoManager</code> using the <strong>Memento Pattern</strong>, we have provided a robust mechanism for undoing and redoing changes to tasks in our application. This approach captures the state of <code>Task</code> objects without violating encapsulation and allows for precise restoration of previous states.</p>
+<p>Key benefits include:</p>
+<ul>
+<li>
+<p><strong>Encapsulation of State:</strong></p>
+<ul>
+<li>Mementos capture the internal state without exposing implementation details.</li>
+</ul>
+</li>
+<li>
+<p><strong>Simplified Command Classes:</strong></p>
+<ul>
+<li>Commands no longer need to manage previous states, reducing complexity.</li>
+</ul>
+</li>
+<li>
+<p><strong>Flexible Undo/Redo Mechanism:</strong></p>
+<ul>
+<li>The <code>UndoManager</code> can handle undo and redo operations for multiple tasks independently.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ol>
+<li><strong>Testing:</strong></li>
+</ol>
+<ul>
+<li>Write unit tests to verify that the memento-based undo and redo functionality works as expected.</li>
+</ul>
+<ol start="2">
+<li><strong>Performance Optimization:</strong></li>
+</ol>
+<ul>
+<li>Monitor memory usage and optimize data structures or implement history size limits.</li>
+</ul>
+<ol start="3">
+<li><strong>Error Handling Enhancements:</strong></li>
+</ol>
+<ul>
+<li>Improve exception handling in the <code>UndoManager</code> and related classes.</li>
+</ul>
+<ol start="4">
+<li><strong>User Interface Integration:</strong></li>
+</ol>
+<ul>
+<li>Update client applications or front-end interfaces to support the new undo/redo functionality.</li>
+</ul>
+<ol start="5">
+<li><strong>Documentation:</strong></li>
+</ol>
+<ul>
+<li>Document how the undo/redo functionality works and how to use it within the application.</li>
+</ul>
+<hr>
+<p><strong>Final Thoughts:</strong></p>
+<p>The Memento Pattern provides a clean and effective way to implement undo and redo functionality by capturing the state of objects at specific points in time. In our task management application, integrating the Memento Pattern enhances the user experience by allowing users to revert changes, and it improves the maintainability of the codebase by separating state management from command execution.</p>
+<p>By completing the implementation and explanation of <code>UndoManager</code> using the Memento Pattern, we have further advanced our Java web service application, demonstrating how design patterns can be effectively utilized to solve complex problems within a limited number of classes.</p>
+<hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

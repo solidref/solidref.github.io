@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of TaskObserver Using the Observer Pattern
+
+Purpose of TaskObserver:
+The TaskObserver interface is part of the Observer Pattern, which allows objects to be notified automatically when the state of another object changes. In our task management application, TaskObserver defines an update(Task task) method that observers implement to receive notifications about changes to Task objects. This pattern promotes loose coupling and enables extensibility by decoupling the subject (the Task class) from its observers.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-11-restful-service-using-dp-observer/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of TaskObserver Using the Observer Pattern
+Purpose of TaskObserver:
+The TaskObserver interface is part of the Observer Pattern, which allows objects to be notified automatically when the state of another object changes. In our task management application, TaskObserver defines an update(Task task) method that observers implement to receive notifications about changes to Task objects. This pattern promotes loose coupling and enables extensibility by decoupling the subject (the Task class) from its observers.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 11 Restful Service Using Dp Observer | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-11-restful-service-using-dp-observer/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 11 Restful Service Using Dp Observer</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>TaskObserver</code> Using the Observer Pattern</strong></p>
+<hr>
+<p><strong>Purpose of <code>TaskObserver</code>:</strong></p>
+<p>The <code>TaskObserver</code> interface is part of the <strong>Observer Pattern</strong>, which allows objects to be notified automatically when the state of another object changes. In our task management application, <code>TaskObserver</code> defines an <code>update(Task task)</code> method that observers implement to receive notifications about changes to <code>Task</code> objects. This pattern promotes loose coupling and enables extensibility by decoupling the subject (the <code>Task</code> class) from its observers.</p>
+<hr>
+<p><strong>Observer Pattern Overview:</strong></p>
+<ul>
+<li><strong>Intent:</strong> Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.</li>
+<li><strong>Participants:</strong>
+<ul>
+<li><strong>Subject:</strong> Knows its observers and provides an interface for attaching and detaching observers.</li>
+<li><strong>Observer:</strong> Defines an updating interface for objects that should be notified of changes in the subject.</li>
+<li><strong>ConcreteSubject:</strong> Stores state of interest to ConcreteObservers and sends notifications.</li>
+<li><strong>ConcreteObserver:</strong> Implements the <code>update</code> interface to keep its state consistent with the subject&rsquo;s.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Implementation Details:</strong></p>
+<p><strong>1. <code>TaskObserver</code> Interface (Observer):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TaskObserver</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Declares the <code>update(Task task)</code> method that observers must implement.</li>
+<li>Allows various observers to be notified when a <code>Task</code> changes.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>2. Modifying <code>Task</code> Class to Act as Subject:</strong></p>
+<p>To act as a subject, the <code>Task</code> class needs to maintain a list of observers and notify them when its state changes.</p>
+<p><strong><code>Task</code> Class (Subject):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.ArrayList;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.UUID;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">implements</span> Cloneable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UUID id;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String description;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String assignedTo;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> priority;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String stateName;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// List of observers</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">transient</span> List<span style="color:#f92672">&lt;</span>TaskObserver<span style="color:#f92672">&gt;</span> observers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Constructors, getters, setters...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Methods to manage observers</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">attachObserver</span>(TaskObserver observer) {
+</span></span><span style="display:flex;"><span>        observers.<span style="color:#a6e22e">add</span>(observer);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">detachObserver</span>(TaskObserver observer) {
+</span></span><span style="display:flex;"><span>        observers.<span style="color:#a6e22e">remove</span>(observer);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Notify observers of state changes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">notifyObservers</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (TaskObserver observer : observers) {
+</span></span><span style="display:flex;"><span>            observer.<span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Example method that changes state and notifies observers</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setState</span>(String newState) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">stateName</span> <span style="color:#f92672">=</span> newState;
+</span></span><span style="display:flex;"><span>        notifyObservers();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Other methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><strong>Observer List:</strong>
+<ul>
+<li>Maintains a list of <code>TaskObserver</code> objects.</li>
+</ul>
+</li>
+<li><strong>Observer Management Methods:</strong>
+<ul>
+<li><code>attachObserver(TaskObserver observer)</code>: Adds an observer to the list.</li>
+<li><code>detachObserver(TaskObserver observer)</code>: Removes an observer from the list.</li>
+</ul>
+</li>
+<li><strong><code>notifyObservers()</code> Method:</strong>
+<ul>
+<li>Calls <code>update(this)</code> on each observer, passing itself as the subject.</li>
+</ul>
+</li>
+<li><strong>State Change Methods:</strong>
+<ul>
+<li>When the task&rsquo;s state changes (e.g., <code>setState</code>), it calls <code>notifyObservers()</code> to inform observers.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Note on Transient Keyword:</strong></p>
+<ul>
+<li>The <code>observers</code> list is marked as <code>transient</code> to prevent serialization issues if the <code>Task</code> object is serialized (e.g., for storage). Observers are typically not serialized.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>3. Implementing Concrete Observers:</strong></p>
+<p><strong>Example 1: <code>EmailNotifier</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmailNotifier</span> <span style="color:#66d9ef">implements</span> TaskObserver {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String emailAddress;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">EmailNotifier</span>(String emailAddress) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">emailAddress</span> <span style="color:#f92672">=</span> emailAddress;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Send an email notification about the task update</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Sending email to &#34;</span> <span style="color:#f92672">+</span> emailAddress <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; about task update: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getTitle</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Implementation of email sending logic...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Sends an email notification when a task is updated.</li>
+</ul>
+</li>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Implements the <code>update</code> method to perform the notification.</li>
+<li>Uses the task information to compose and send the email.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Example 2: <code>LoggingObserver</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LoggingObserver</span> <span style="color:#66d9ef">implements</span> TaskObserver {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> LoggerFacade logger;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">LoggingObserver</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">logger</span> <span style="color:#f92672">=</span> LoggerFacade.<span style="color:#a6e22e">getInstance</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Log the task update</span>
+</span></span><span style="display:flex;"><span>        logger.<span style="color:#a6e22e">logInfo</span>(<span style="color:#e6db74">&#34;Task updated: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getId</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, Title: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getTitle</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Logs task updates to a logging system.</li>
+</ul>
+</li>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Uses the <code>LoggerFacade</code> to log information about the task update.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Example 3: <code>AnalyticsObserver</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AnalyticsObserver</span> <span style="color:#66d9ef">implements</span> TaskObserver {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Update analytics data based on the task update</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Updating analytics for task: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getId</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Implementation of analytics logic...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Updates analytics data when a task changes.</li>
+</ul>
+</li>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Implements the <code>update</code> method to perform analytics updates.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>4. Integrating Observers with <code>TaskManager</code>:</strong></p>
+<p>To ensure that observers are attached to tasks, the <code>TaskManager</code> can manage observer registration.</p>
+<p><strong>Modified <code>TaskManager</code> Class:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DatabaseOperations dbAdapter;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskObserver emailNotifier;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskObserver loggingObserver;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskManager</span>(DatabaseOperations dbAdapter) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dbAdapter</span> <span style="color:#f92672">=</span> dbAdapter;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">emailNotifier</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EmailNotifier(<span style="color:#e6db74">&#34;admin@example.com&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">loggingObserver</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LoggingObserver();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Attach observers to the task</span>
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">attachObserver</span>(emailNotifier);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">attachObserver</span>(loggingObserver);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">saveTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Ensure observers are attached (if necessary)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>taskHasObserver(task, emailNotifier)) {
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">attachObserver</span>(emailNotifier);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>taskHasObserver(task, loggingObserver)) {
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">attachObserver</span>(loggingObserver);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">updateTask</span>(task);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Notify observers manually if not done within Task</span>
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">notifyObservers</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">taskHasObserver</span>(Task task, TaskObserver observer) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Check if the observer is already attached</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Implement accordingly (e.g., via a method in Task)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>; <span style="color:#75715e">// Placeholder</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Other methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li><strong>Observer Attachment:</strong>
+<ul>
+<li>When creating a task, observers are attached to it.</li>
+<li>When updating a task, ensure observers are attached (may need a method in <code>Task</code> to check).</li>
+</ul>
+</li>
+<li><strong>Observer Notification:</strong>
+<ul>
+<li>Observers are notified when the task state changes.</li>
+</ul>
+</li>
+<li><strong>Note:</strong>
+<ul>
+<li>This approach ensures that all tasks have the necessary observers attached.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>5. Modifying <code>Task</code> Methods to Notify Observers:</strong></p>
+<p>To ensure observers are notified when the task changes, methods that modify the task&rsquo;s state should call <code>notifyObservers()</code>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTitle</span>(String title) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>    notifyObservers();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDescription</span>(String description) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>    notifyObservers();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Similarly for other setters...</span>
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Each setter method calls <code>notifyObservers()</code> after changing the state.</li>
+<li>This ensures that observers are notified of all changes.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>6. Handling Observer Registration and Lifecycle:</strong></p>
+<ul>
+<li>
+<p><strong>Observer Management:</strong></p>
+<ul>
+<li>Observers can be attached and detached dynamically.</li>
+<li>For example, if a user wants to receive notifications about a task, an <code>EmailNotifier</code> can be attached with their email address.</li>
+</ul>
+</li>
+<li>
+<p><strong>Avoiding Memory Leaks:</strong></p>
+<ul>
+<li>Be cautious with long-lived observers to prevent memory leaks.</li>
+<li>Detach observers when they are no longer needed.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>7. Example Usage:</strong></p>
+<p><strong>Creating a Task with Observers:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(<span style="color:#e6db74">&#34;Implement Observer Pattern&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Implement TaskObserver using Observer Pattern&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Attach observers</span>
+</span></span><span style="display:flex;"><span>TaskObserver emailObserver <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EmailNotifier(<span style="color:#e6db74">&#34;user@example.com&#34;</span>);
+</span></span><span style="display:flex;"><span>TaskObserver loggingObserver <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LoggingObserver();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">attachObserver</span>(emailObserver);
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">attachObserver</span>(loggingObserver);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Simulate state changes</span>
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Updated description&#34;</span>);
+</span></span></code></pre></div><ul>
+<li><strong>Expected Output:</strong></li>
+</ul>
+<pre tabindex="0"><code>Sending email to user@example.com about task update: Implement Observer Pattern
+[INFO] Task updated: &lt;task-id&gt;, Title: Implement Observer Pattern
+</code></pre><hr>
+<p><strong>Advantages of Using the Observer Pattern:</strong></p>
+<ol>
+<li><strong>Loose Coupling:</strong></li>
+</ol>
+<ul>
+<li>Subjects (Tasks) are independent of observers.</li>
+<li>Subjects do not need to know the concrete implementation of observers.</li>
+</ul>
+<ol start="2">
+<li><strong>Extensibility:</strong></li>
+</ol>
+<ul>
+<li>New observers can be added without modifying the subject.</li>
+<li>Supports the Open/Closed Principle.</li>
+</ul>
+<ol start="3">
+<li><strong>Dynamic Relationships:</strong></li>
+</ol>
+<ul>
+<li>Observers can be attached or detached at runtime.</li>
+<li>Flexible notification mechanisms.</li>
+</ul>
+<ol start="4">
+<li><strong>Broadcast Communication:</strong></li>
+</ol>
+<ul>
+<li>A single subject can notify multiple observers.</li>
+<li>Efficient way to distribute updates.</li>
+</ul>
+<hr>
+<p><strong>Considerations:</strong></p>
+<ol>
+<li><strong>Notification Granularity:</strong></li>
+</ol>
+<ul>
+<li>Decide whether to notify observers on every change or batch updates.</li>
+<li>Frequent notifications may impact performance.</li>
+</ul>
+<ol start="2">
+<li><strong>Thread Safety:</strong></li>
+</ol>
+<ul>
+<li>In multi-threaded environments, ensure that observer lists and notifications are thread-safe.</li>
+<li>Synchronize access to the observer list if necessary.</li>
+</ul>
+<ol start="3">
+<li><strong>Potential Memory Leaks:</strong></li>
+</ol>
+<ul>
+<li>Ensure observers are detached when no longer needed.</li>
+<li>Use weak references if appropriate.</li>
+</ul>
+<ol start="4">
+<li><strong>Error Handling:</strong></li>
+</ol>
+<ul>
+<li>Handle exceptions in observer updates to prevent one faulty observer from affecting others.</li>
+</ul>
+<ol start="5">
+<li><strong>Order of Notifications:</strong></li>
+</ol>
+<ul>
+<li>The order in which observers are notified may be important.</li>
+<li>Define and document the notification order if necessary.</li>
+</ul>
+<hr>
+<p><strong>Extending Functionality:</strong></p>
+<ol>
+<li><strong>Event Types:</strong></li>
+</ol>
+<ul>
+<li>Extend the <code>update</code> method to include information about the type of event or change.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TaskObserver</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task, String eventType);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>Observers can then handle different events differently.</li>
+</ul>
+<ol start="2">
+<li><strong>Filtering Notifications:</strong></li>
+</ol>
+<ul>
+<li>Observers can subscribe to specific types of changes.</li>
+<li>Implement a more advanced event system to support this.</li>
+</ul>
+<ol start="3">
+<li><strong>Asynchronous Notifications:</strong></li>
+</ol>
+<ul>
+<li>Notify observers asynchronously to avoid blocking the subject.</li>
+<li>Use threads or executors for observer updates.</li>
+</ul>
+<hr>
+<p><strong>Alternative Implementation Using Java&rsquo;s Built-in Observer Pattern (Deprecated):</strong></p>
+<ul>
+<li>Java had built-in <code>Observer</code> and <code>Observable</code> classes, but they are deprecated since Java 9.</li>
+<li>It is recommended to implement the Observer pattern manually, as we have done, or use other libraries like RxJava for reactive programming.</li>
+</ul>
+<hr>
+<p><strong>Integration with Other Patterns:</strong></p>
+<ul>
+<li>
+<p><strong>Chain of Responsibility:</strong></p>
+<ul>
+<li>Combine with the Chain of Responsibility pattern if observers need to process notifications in a chain.</li>
+</ul>
+</li>
+<li>
+<p><strong>Mediator Pattern:</strong></p>
+<ul>
+<li>Use a mediator to manage communication between tasks and observers.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>By implementing the <code>TaskObserver</code> interface and integrating it with the <code>Task</code> class, we have effectively applied the <strong>Observer Pattern</strong> in our task management application. This allows various components (observers) to be notified of changes in tasks without tightly coupling them to the task implementation.</p>
+<p>Key benefits include:</p>
+<ul>
+<li><strong>Loose Coupling:</strong> Subjects and observers are independent.</li>
+<li><strong>Flexibility:</strong> Observers can be added, removed, or changed at runtime.</li>
+<li><strong>Scalability:</strong> Supports multiple observers and various notification mechanisms.</li>
+</ul>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ol>
+<li><strong>Implement Additional Observers:</strong></li>
+</ol>
+<ul>
+<li><strong>Notification Systems:</strong> Integrate with push notifications, SMS alerts, or messaging platforms.</li>
+<li><strong>Audit Trail Observer:</strong> Record changes to tasks for auditing purposes.</li>
+</ul>
+<ol start="2">
+<li><strong>Enhance Observer Management:</strong></li>
+</ol>
+<ul>
+<li>Implement methods to check if an observer is already attached.</li>
+<li>Provide mechanisms to attach observers globally or to specific tasks.</li>
+</ul>
+<ol start="3">
+<li><strong>Optimize Performance:</strong></li>
+</ol>
+<ul>
+<li>Batch notifications or debounce rapid changes to reduce overhead.</li>
+<li>Consider asynchronous updates if performance becomes an issue.</li>
+</ul>
+<ol start="4">
+<li><strong>Error Handling and Logging:</strong></li>
+</ol>
+<ul>
+<li>Improve error handling within observers.</li>
+<li>Log observer notifications and any failures.</li>
+</ul>
+<ol start="5">
+<li><strong>Documentation and Testing:</strong></li>
+</ol>
+<ul>
+<li>Document the observer interfaces and usage.</li>
+<li>Write unit tests for the observer notification system.</li>
+</ul>
+<hr>
+<p><strong>Final Thoughts:</strong></p>
+<p>The Observer Pattern is a powerful tool for decoupling components and creating flexible, maintainable applications. By allowing observers to register interest in subjects, we enable our task management application to respond dynamically to changes and integrate with various systems, enhancing its capabilities and user experience.</p>
+<p>By completing the implementation and explanation of <code>TaskObserver</code> using the Observer Pattern, we have further advanced our Java web service application, demonstrating how design patterns can be effectively utilized to create robust and scalable systems within a limited number of classes.</p>
+<hr>
+<p><strong>Note:</strong> The actual class count and complexity may vary based on the specific requirements and implementations. The focus here is on demonstrating the practical application of the Observer Pattern to enhance the application&rsquo;s architecture.</p>
+<hr>
+<hr>
+<p><strong>Implementation of <code>NotificationService</code> Using the Observer Pattern</strong></p>
+<hr>
+<p><strong>Purpose of <code>NotificationService</code>:</strong></p>
+<p>The <code>NotificationService</code> class implements the <code>TaskObserver</code> interface, serving as a concrete observer in the <strong>Observer Pattern</strong>. Its role is to send notifications to users or systems when a <code>Task</code> changes. This enhances the application by providing real-time alerts about task updates, ensuring that stakeholders are informed promptly about important changes.</p>
+<hr>
+<p><strong>Observer Pattern Overview (Recap):</strong></p>
+<ul>
+<li><strong>Subject:</strong> The object being observed (<code>Task</code>), which maintains a list of observers and notifies them of state changes.</li>
+<li><strong>Observer:</strong> An interface (<code>TaskObserver</code>) that defines the <code>update</code> method for receiving notifications.</li>
+<li><strong>ConcreteObserver:</strong> Implements the <code>Observer</code> interface to receive and handle notifications (<code>NotificationService</code>).</li>
+</ul>
+<hr>
+<p><strong>Implementation Details:</strong></p>
+<p><strong>1. <code>NotificationService</code> Class (ConcreteObserver):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotificationService</span> <span style="color:#66d9ef">implements</span> TaskObserver {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> NotificationSender notificationSender;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">NotificationService</span>(NotificationSender notificationSender) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">notificationSender</span> <span style="color:#f92672">=</span> notificationSender;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Generate the notification message</span>
+</span></span><span style="display:flex;"><span>        String message <span style="color:#f92672">=</span> createNotificationMessage(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Send the notification</span>
+</span></span><span style="display:flex;"><span>        notificationSender.<span style="color:#a6e22e">sendNotification</span>(task.<span style="color:#a6e22e">getAssignedTo</span>(), message);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">createNotificationMessage</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Task Updated: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getTitle</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;Description: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getDescription</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;Priority: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getPriority</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;State: &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getStateName</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>notificationSender</code>: An instance responsible for sending notifications (e.g., via email, SMS, push notifications).</li>
+</ul>
+</li>
+<li><strong>Constructor:</strong>
+<ul>
+<li>Initializes the <code>NotificationService</code> with a <code>NotificationSender</code>.</li>
+</ul>
+</li>
+<li><strong><code>update(Task task)</code> Method:</strong>
+<ul>
+<li>Called when the <code>Task</code> changes.</li>
+<li>Generates a notification message based on the task&rsquo;s updated state.</li>
+<li>Uses <code>notificationSender</code> to send the notification to the assigned user.</li>
+</ul>
+</li>
+<li><strong><code>createNotificationMessage(Task task)</code> Method:</strong>
+<ul>
+<li>Constructs a human-readable message containing task details.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>2. <code>NotificationSender</code> Interface:</strong></p>
+<p>To decouple the <code>NotificationService</code> from the specifics of how notifications are sent, we define a <code>NotificationSender</code> interface.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">NotificationSender</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendNotification</span>(String recipient, String message);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Defines the method for sending notifications.</li>
+<li>Allows for different implementations (e.g., EmailSender, SMSSender, PushNotificationSender).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>3. Implementing Concrete <code>NotificationSender</code>s:</strong></p>
+<p><strong>Example 1: <code>EmailSender</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmailSender</span> <span style="color:#66d9ef">implements</span> NotificationSender {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String smtpServer;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> smtpPort;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String fromAddress;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">EmailSender</span>(String smtpServer, <span style="color:#66d9ef">int</span> smtpPort, String fromAddress) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">smtpServer</span> <span style="color:#f92672">=</span> smtpServer;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">smtpPort</span> <span style="color:#f92672">=</span> smtpPort;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">fromAddress</span> <span style="color:#f92672">=</span> fromAddress;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendNotification</span>(String recipient, String message) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Implement email sending logic</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Sending email to &#34;</span> <span style="color:#f92672">+</span> recipient);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;From: &#34;</span> <span style="color:#f92672">+</span> fromAddress);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Message: &#34;</span> <span style="color:#f92672">+</span> message);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Actual email sending code would go here...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Implements <code>NotificationSender</code> to send emails.</li>
+<li>In a real application, this would integrate with an email library or service.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Example 2: <code>PushNotificationSender</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PushNotificationSender</span> <span style="color:#66d9ef">implements</span> NotificationSender {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendNotification</span>(String recipient, String message) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Implement push notification logic</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Sending push notification to &#34;</span> <span style="color:#f92672">+</span> recipient);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Message: &#34;</span> <span style="color:#f92672">+</span> message);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Actual push notification code would go here...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Implements <code>NotificationSender</code> to send push notifications.</li>
+<li>Could integrate with services like Firebase Cloud Messaging or Apple Push Notification Service.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>4. Integrating <code>NotificationService</code> with <code>Task</code>:</strong></p>
+<p>When a <code>Task</code> changes, it should notify its observers, including the <code>NotificationService</code>.</p>
+<p><strong>Attaching the <code>NotificationService</code> Observer:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskManager</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DatabaseOperations dbAdapter;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> NotificationService notificationService;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskManager</span>(DatabaseOperations dbAdapter, NotificationService notificationService) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dbAdapter</span> <span style="color:#f92672">=</span> dbAdapter;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">notificationService</span> <span style="color:#f92672">=</span> notificationService;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Attach observers to the task</span>
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">attachObserver</span>(notificationService);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">saveTask</span>(task);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateTask</span>(Task task) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Ensure observers are attached</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>taskHasObserver(task, notificationService)) {
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">attachObserver</span>(notificationService);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        dbAdapter.<span style="color:#a6e22e">updateTask</span>(task);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Notify observers (if not already done within Task)</span>
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">notifyObservers</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Method to check if an observer is already attached</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">taskHasObserver</span>(Task task, TaskObserver observer) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> task.<span style="color:#a6e22e">hasObserver</span>(observer);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Other methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Modifying the <code>Task</code> Class to Support Observer Checks:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Task</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing fields and methods...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Add a method to check if an observer is already attached</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">hasObserver</span>(TaskObserver observer) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> observers.<span style="color:#a6e22e">contains</span>(observer);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>5. Example Usage:</strong></p>
+<p><strong>Initializing the <code>NotificationService</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Create a NotificationSender (e.g., EmailSender)</span>
+</span></span><span style="display:flex;"><span>NotificationSender emailSender <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EmailSender(<span style="color:#e6db74">&#34;smtp.example.com&#34;</span>, 587, <span style="color:#e6db74">&#34;noreply@example.com&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create the NotificationService with the EmailSender</span>
+</span></span><span style="display:flex;"><span>NotificationService notificationService <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NotificationService(emailSender);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create the TaskManager with the NotificationService</span>
+</span></span><span style="display:flex;"><span>TaskManager taskManager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskManager(dbAdapter, notificationService);
+</span></span></code></pre></div><p><strong>Creating and Updating a Task:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Create a new task</span>
+</span></span><span style="display:flex;"><span>Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(<span style="color:#e6db74">&#34;Review Design Patterns&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Review and study the Observer Pattern&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setAssignedTo</span>(<span style="color:#e6db74">&#34;user@example.com&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Use the TaskManager to create the task</span>
+</span></span><span style="display:flex;"><span>taskManager.<span style="color:#a6e22e">createTask</span>(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Update the task</span>
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Updated description with more details&#34;</span>);
+</span></span><span style="display:flex;"><span>taskManager.<span style="color:#a6e22e">updateTask</span>(task);
+</span></span></code></pre></div><p><strong>Expected Output:</strong></p>
+<pre tabindex="0"><code>Sending email to user@example.com
+From: noreply@example.com
+Message: Task Updated: Review Design Patterns
+Description: Updated description with more details
+Priority: 0
+State: New
+</code></pre><hr>
+<p><strong>6. Handling Multiple Notification Channels:</strong></p>
+<p>The <code>NotificationService</code> can be extended to support multiple notification channels.</p>
+<p><strong>Example: Supporting Both Email and Push Notifications</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotificationService</span> <span style="color:#66d9ef">implements</span> TaskObserver {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>NotificationSender<span style="color:#f92672">&gt;</span> notificationSenders <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addNotificationSender</span>(NotificationSender sender) {
+</span></span><span style="display:flex;"><span>        notificationSenders.<span style="color:#a6e22e">add</span>(sender);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task) {
+</span></span><span style="display:flex;"><span>        String message <span style="color:#f92672">=</span> createNotificationMessage(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (NotificationSender sender : notificationSenders) {
+</span></span><span style="display:flex;"><span>            sender.<span style="color:#a6e22e">sendNotification</span>(task.<span style="color:#a6e22e">getAssignedTo</span>(), message);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Usage:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Create NotificationSenders</span>
+</span></span><span style="display:flex;"><span>NotificationSender emailSender <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EmailSender(<span style="color:#e6db74">&#34;smtp.example.com&#34;</span>, 587, <span style="color:#e6db74">&#34;noreply@example.com&#34;</span>);
+</span></span><span style="display:flex;"><span>NotificationSender pushSender <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PushNotificationSender();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create the NotificationService and add senders</span>
+</span></span><span style="display:flex;"><span>NotificationService notificationService <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NotificationService();
+</span></span><span style="display:flex;"><span>notificationService.<span style="color:#a6e22e">addNotificationSender</span>(emailSender);
+</span></span><span style="display:flex;"><span>notificationService.<span style="color:#a6e22e">addNotificationSender</span>(pushSender);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create the TaskManager with the NotificationService</span>
+</span></span><span style="display:flex;"><span>TaskManager taskManager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskManager(dbAdapter, notificationService);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create and update tasks as before...</span>
+</span></span></code></pre></div><hr>
+<p><strong>7. Advantages of Using <code>NotificationService</code> as an Observer:</strong></p>
+<ol>
+<li><strong>Separation of Concerns:</strong></li>
+</ol>
+<ul>
+<li>The <code>NotificationService</code> handles notification logic independently of the <code>Task</code> and <code>TaskManager</code> classes.</li>
+</ul>
+<ol start="2">
+<li><strong>Loose Coupling:</strong></li>
+</ol>
+<ul>
+<li>The <code>Task</code> class is decoupled from the specifics of notification mechanisms.</li>
+</ul>
+<ol start="3">
+<li><strong>Scalability:</strong></li>
+</ol>
+<ul>
+<li>Supports adding new notification channels without modifying existing code.</li>
+</ul>
+<ol start="4">
+<li><strong>Reusability:</strong></li>
+</ol>
+<ul>
+<li>The <code>NotificationService</code> and <code>NotificationSender</code> implementations can be reused across different parts of the application.</li>
+</ul>
+<ol start="5">
+<li><strong>Extensibility:</strong></li>
+</ol>
+<ul>
+<li>New types of notifications or observers can be added easily.</li>
+</ul>
+<hr>
+<p><strong>8. Considerations:</strong></p>
+<ol>
+<li><strong>Error Handling:</strong></li>
+</ol>
+<ul>
+<li>Implement robust error handling in the <code>sendNotification</code> methods to handle failures (e.g., email server down).</li>
+</ul>
+<ol start="2">
+<li><strong>Asynchronous Processing:</strong></li>
+</ol>
+<ul>
+<li>Consider sending notifications asynchronously to avoid blocking the main application flow.</li>
+</ul>
+<ol start="3">
+<li><strong>Performance Impact:</strong></li>
+</ol>
+<ul>
+<li>Be mindful of the performance implications of sending notifications, especially if the system handles a large number of tasks or users.</li>
+</ul>
+<ol start="4">
+<li><strong>User Preferences:</strong></li>
+</ol>
+<ul>
+<li>Implement user preferences to allow users to opt-in or opt-out of certain notifications.</li>
+</ul>
+<ol start="5">
+<li><strong>Security:</strong></li>
+</ol>
+<ul>
+<li>Ensure that sensitive information is handled securely in notifications.</li>
+</ul>
+<ol start="6">
+<li><strong>Logging and Monitoring:</strong></li>
+</ol>
+<ul>
+<li>Log notification attempts and results for monitoring and debugging purposes.</li>
+</ul>
+<hr>
+<p><strong>9. Enhancements and Extensions:</strong></p>
+<ul>
+<li>
+<p><strong>Notification Templates:</strong></p>
+<ul>
+<li>Use templating engines to create rich and customizable notification messages.</li>
+</ul>
+</li>
+<li>
+<p><strong>Localization:</strong></p>
+<ul>
+<li>Support multiple languages in notifications.</li>
+</ul>
+</li>
+<li>
+<p><strong>Notification Scheduling:</strong></p>
+<ul>
+<li>Implement functionality to schedule notifications for future delivery.</li>
+</ul>
+</li>
+<li>
+<p><strong>Integration with External Services:</strong></p>
+<ul>
+<li>Integrate with third-party services for sending notifications (e.g., Twilio for SMS, SendGrid for emails).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>10. Integrating with User Management:</strong></p>
+<ul>
+<li>
+<p><strong>User Profiles:</strong></p>
+<ul>
+<li>Store user contact information and notification preferences in a user profile system.</li>
+</ul>
+</li>
+<li>
+<p><strong>Dynamic Recipient Determination:</strong></p>
+<ul>
+<li>Determine the notification recipient based on task assignment or other criteria.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>11. Testing and Validation:</strong></p>
+<ul>
+<li>
+<p><strong>Unit Tests:</strong></p>
+<ul>
+<li>Write unit tests for <code>NotificationService</code> and <code>NotificationSender</code> implementations.</li>
+</ul>
+</li>
+<li>
+<p><strong>Integration Tests:</strong></p>
+<ul>
+<li>Test the end-to-end notification flow, including task updates and observer notifications.</li>
+</ul>
+</li>
+<li>
+<p><strong>Mocking External Dependencies:</strong></p>
+<ul>
+<li>Use mocking frameworks to simulate external services during testing.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>12. Example of Asynchronous Notifications:</strong></p>
+<p><strong>Using a Thread Pool Executor:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.ExecutorService;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.Executors;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotificationService</span> <span style="color:#66d9ef">implements</span> TaskObserver {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>NotificationSender<span style="color:#f92672">&gt;</span> notificationSenders <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ExecutorService executorService <span style="color:#f92672">=</span> Executors.<span style="color:#a6e22e">newFixedThreadPool</span>(10);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addNotificationSender</span>(NotificationSender sender) {
+</span></span><span style="display:flex;"><span>        notificationSenders.<span style="color:#a6e22e">add</span>(sender);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Task task) {
+</span></span><span style="display:flex;"><span>        String message <span style="color:#f92672">=</span> createNotificationMessage(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (NotificationSender sender : notificationSenders) {
+</span></span><span style="display:flex;"><span>            executorService.<span style="color:#a6e22e">submit</span>(() <span style="color:#f92672">-&gt;</span> sender.<span style="color:#a6e22e">sendNotification</span>(task.<span style="color:#a6e22e">getAssignedTo</span>(), message));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Shutdown the executor service when appropriate</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shutdown</span>() {
+</span></span><span style="display:flex;"><span>        executorService.<span style="color:#a6e22e">shutdown</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing methods...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Uses an <code>ExecutorService</code> to send notifications asynchronously.</li>
+<li>Improves performance by not blocking the main thread during notification sending.</li>
+<li>Remember to properly manage the lifecycle of the executor service (e.g., shutting it down).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>13. Conclusion:</strong></p>
+<p>By implementing <code>NotificationService</code> as an observer in the <strong>Observer Pattern</strong>, we have enhanced our task management application to send real-time notifications about task updates. This implementation:</p>
+<ul>
+<li>
+<p><strong>Improves User Engagement:</strong></p>
+<ul>
+<li>Keeps users informed about important changes, enhancing collaboration and productivity.</li>
+</ul>
+</li>
+<li>
+<p><strong>Demonstrates Design Pattern Application:</strong></p>
+<ul>
+<li>Showcases the practical use of the Observer Pattern to solve real-world problems.</li>
+</ul>
+</li>
+<li>
+<p><strong>Supports Extensibility and Maintainability:</strong></p>
+<ul>
+<li>Allows for easy addition of new notification channels and observers without modifying existing code.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ol>
+<li><strong>Implement Additional NotificationSenders:</strong></li>
+</ol>
+<ul>
+<li>Create implementations for SMS, in-app notifications, or other channels as needed.</li>
+</ul>
+<ol start="2">
+<li><strong>Enhance Notification Content:</strong></li>
+</ol>
+<ul>
+<li>Include more detailed information or action links in notifications.</li>
+</ul>
+<ol start="3">
+<li><strong>User Preferences and Settings:</strong></li>
+</ol>
+<ul>
+<li>Allow users to customize their notification preferences.</li>
+</ul>
+<ol start="4">
+<li><strong>Error Handling and Retries:</strong></li>
+</ol>
+<ul>
+<li>Implement retry mechanisms for failed notification attempts.</li>
+</ul>
+<ol start="5">
+<li><strong>Monitoring and Analytics:</strong></li>
+</ol>
+<ul>
+<li>Track notification delivery and engagement metrics.</li>
+</ul>
+<ol start="6">
+<li><strong>Security Enhancements:</strong></li>
+</ol>
+<ul>
+<li>Ensure compliance with data protection regulations (e.g., GDPR).</li>
+</ul>
+<hr>
+<p><strong>Final Thoughts:</strong></p>
+<p>The <code>NotificationService</code> plays a crucial role in alerting users and systems about task updates, enhancing the responsiveness and interactivity of the application. By leveraging the Observer Pattern, we achieve a flexible and scalable architecture that can adapt to evolving requirements.</p>
+<p>This implementation aligns with the goals of using design patterns to build robust, maintainable, and efficient applications within a limited number of classes, demonstrating how thoughtful design can significantly improve application functionality.</p>
+<hr>
+<p><strong>Note on Class Count:</strong></p>
+<p>While we strive to keep the class count within approximately 20, the actual number may vary depending on the level of detail and specific requirements. The focus is on demonstrating the practical application of design patterns to enhance the application&rsquo;s architecture and capabilities.</p>
+<hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

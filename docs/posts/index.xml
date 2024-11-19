@@ -6,8 +6,22 @@
     <description>Recent content in Posts on SOLID.ref</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A TypeScript RESTful API Using Design Patterns, Creational</title>
+      <link>http://localhost:1313/posts/20241111-ts-01-restful-todo-design-patterns-creational/</link>
+      <pubDate>Mon, 11 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/20241111-ts-01-restful-todo-design-patterns-creational/</guid>
+      <description>&lt;p&gt;Let’s talk about &lt;strong&gt;creational design patterns&lt;/strong&gt;—arguably the foundation of any well-architected system. At their core, these patterns focus on how objects are created. Why does this matter? Well, if you’ve ever written code that tightly couples object creation to the logic that depends on those objects, you’ve likely felt the pain of trying to refactor it later.&lt;/p&gt;&#xA;&lt;p&gt;Creational patterns abstract that creation process, giving us flexibility and reuse. By adopting these patterns, our systems become more scalable, maintainable, and adaptable. In this article, we’ll explore how creational patterns can bring order and elegance to a RESTful API built with TypeScript. And yes, we’ll sprinkle in some practical examples to keep things grounded.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A TypeScript RESTful API Using Design Patterns</title>
+      <link>http://localhost:1313/posts/20241110-ts-01-restful-todo-design-patterns-intro/</link>
+      <pubDate>Sun, 10 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/20241110-ts-01-restful-todo-design-patterns-intro/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Design patterns&lt;/strong&gt; represent foundational approaches to recurring challenges in software architecture. They encapsulate best practices in object-oriented design, providing flexible, adaptable templates that developers can apply to construct robust, maintainable, and scalable systems. By adhering to established, reusable strategies, design patterns facilitate problem-solving in complex software environments and contribute to systematic, reliable development practices.&lt;/p&gt;&#xA;&lt;h3 id=&#34;the-significance-of-design-patterns&#34;&gt;&#xA;  The Significance of Design Patterns&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#the-significance-of-design-patterns&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;The application of design patterns offers multiple, distinct advantages within the software development lifecycle:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Welcome to Our SOLID.ref</title>
       <link>http://localhost:1313/posts/20241103-welcome/</link>

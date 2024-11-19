@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  Strategy Pattern
+  #
+
+The Strategy pattern is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each algorithm, and make them interchangeable. This pattern enables clients to choose and switch algorithms dynamically without altering the objects that use them, promoting flexibility and modularity.
+
+  Intent
+  #
+
+The main intent of the Strategy pattern is to enable selecting an algorithm’s behavior at runtime, allowing algorithms to vary independently from the context that uses them. This pattern makes it easy to add, remove, or swap algorithms without modifying the client code, adhering to the Open-Closed Principle.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/design-patterns/behavioral/strategy/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="Strategy Pattern">
+  <meta property="og:description" content="Strategy Pattern # The Strategy pattern is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each algorithm, and make them interchangeable. This pattern enables clients to choose and switch algorithms dynamically without altering the objects that use them, promoting flexibility and modularity.
+Intent # The main intent of the Strategy pattern is to enable selecting an algorithm’s behavior at runtime, allowing algorithms to vary independently from the context that uses them. This pattern makes it easy to add, remove, or swap algorithms without modifying the client code, adhering to the Open-Closed Principle.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Strategy Pattern | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/design-patterns/behavioral/strategy/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.1ca45c072f658d605da4c39f5488baab8f623eee0de706444de815f392fc14b2.js" integrity="sha256-HKRcBy9ljWBdpMOfVIi6q49iPu4N5wZETegV85L8FLI=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Strategy Pattern</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-payment-processing-system">Example: Payment Processing System</a>
+      <ul>
+        <li><a href="#step-1-define-the-strategy-interface">Step 1: Define the Strategy Interface</a></li>
+        <li><a href="#step-2-implement-concrete-strategies">Step 2: Implement Concrete Strategies</a></li>
+        <li><a href="#step-3-implement-the-context">Step 3: Implement the Context</a></li>
+        <li><a href="#step-4-client-code-using-the-strategy-pattern">Step 4: Client Code Using the Strategy Pattern</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-strategy-pattern">Best Practices for Implementing the Strategy Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="strategy-pattern">
+  Strategy Pattern
+  <a class="anchor" href="#strategy-pattern">#</a>
+</h1>
+<p>The <strong>Strategy</strong> pattern is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each algorithm, and make them interchangeable. This pattern enables clients to choose and switch algorithms dynamically without altering the objects that use them, promoting flexibility and modularity.</p>
+<h2 id="intent">
+  Intent
+  <a class="anchor" href="#intent">#</a>
+</h2>
+<p><strong>The main intent of the Strategy pattern is to enable selecting an algorithm’s behavior at runtime, allowing algorithms to vary independently from the context that uses them.</strong> This pattern makes it easy to add, remove, or swap algorithms without modifying the client code, adhering to the Open-Closed Principle.</p>
+<h2 id="problem-and-solution">
+  Problem and Solution
+  <a class="anchor" href="#problem-and-solution">#</a>
+</h2>
+<h3 id="problem">
+  Problem
+  <a class="anchor" href="#problem">#</a>
+</h3>
+<p>Consider an application that processes payments, where different payment methods (e.g., credit card, PayPal, bank transfer) require specific processing logic. Without the Strategy pattern, the application would need conditional statements to handle each payment method, resulting in tightly coupled, hard-to-maintain code.</p>
+<h3 id="solution">
+  Solution
+  <a class="anchor" href="#solution">#</a>
+</h3>
+<p>The Strategy pattern addresses this by encapsulating each payment method as a separate strategy. The application can dynamically select and switch between payment strategies, allowing for easy addition or modification of payment methods without changing the core processing logic.</p>
+<h2 id="structure">
+  Structure
+  <a class="anchor" href="#structure">#</a>
+</h2>
+<p>The Strategy pattern typically includes:</p>
+<ol>
+<li><strong>Strategy Interface</strong>: Declares the method(s) that all concrete strategies must implement.</li>
+<li><strong>Concrete Strategies</strong>: Implement specific algorithms as classes that conform to the strategy interface.</li>
+<li><strong>Context</strong>: Maintains a reference to a strategy and delegates tasks to it, allowing the strategy to be changed at runtime.</li>
+</ol>
+<h2 id="uml-diagram">
+  UML Diagram
+  <a class="anchor" href="#uml-diagram">#</a>
+</h2>
+<pre tabindex="0"><code>+------------------+       +----------------------+
+|    Context       |       |      Strategy        |
+|------------------|       |----------------------|
+| - strategy       |       | + executeAlgorithm() |
+| + setStrategy()  |       +----------------------+
+| + execute()      |                ^
++------------------+                |
+         |                          |
+         |            +------------------------+
+         +-----------&gt;|   ConcreteStrategyA    |
+                      |------------------------|
+                      | + executeAlgorithm()   |
+                      +------------------------+
+</code></pre><h2 id="example-payment-processing-system">
+  Example: Payment Processing System
+  <a class="anchor" href="#example-payment-processing-system">#</a>
+</h2>
+<p>Let’s implement a payment processing system using the Strategy pattern. Each payment method (e.g., credit card, PayPal, bank transfer) is encapsulated as a separate strategy.</p>
+<h3 id="step-1-define-the-strategy-interface">
+  Step 1: Define the Strategy Interface
+  <a class="anchor" href="#step-1-define-the-strategy-interface">#</a>
+</h3>
+<p>The <code>PaymentStrategy</code> interface declares the <code>pay</code> method that all concrete strategies must implement.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Strategy Interface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">PaymentStrategy</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span>(<span style="color:#66d9ef">double</span> amount);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-2-implement-concrete-strategies">
+  Step 2: Implement Concrete Strategies
+  <a class="anchor" href="#step-2-implement-concrete-strategies">#</a>
+</h3>
+<p>Each payment method is implemented as a concrete strategy, defining its specific behavior for the <code>pay</code> method.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Concrete Strategy for Credit Card Payment</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CreditCardPayment</span> <span style="color:#66d9ef">implements</span> PaymentStrategy {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String cardNumber;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CreditCardPayment</span>(String cardNumber) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cardNumber</span> <span style="color:#f92672">=</span> cardNumber;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span>(<span style="color:#66d9ef">double</span> amount) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Processing credit card payment of $&#34;</span> <span style="color:#f92672">+</span> amount <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; with card &#34;</span> <span style="color:#f92672">+</span> cardNumber);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete Strategy for PayPal Payment</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PayPalPayment</span> <span style="color:#66d9ef">implements</span> PaymentStrategy {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String email;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">PayPalPayment</span>(String email) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">email</span> <span style="color:#f92672">=</span> email;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span>(<span style="color:#66d9ef">double</span> amount) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Processing PayPal payment of $&#34;</span> <span style="color:#f92672">+</span> amount <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; for account &#34;</span> <span style="color:#f92672">+</span> email);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Concrete Strategy for Bank Transfer Payment</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BankTransferPayment</span> <span style="color:#66d9ef">implements</span> PaymentStrategy {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String bankAccount;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">BankTransferPayment</span>(String bankAccount) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">bankAccount</span> <span style="color:#f92672">=</span> bankAccount;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span>(<span style="color:#66d9ef">double</span> amount) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Processing bank transfer of $&#34;</span> <span style="color:#f92672">+</span> amount <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; to account &#34;</span> <span style="color:#f92672">+</span> bankAccount);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-3-implement-the-context">
+  Step 3: Implement the Context
+  <a class="anchor" href="#step-3-implement-the-context">#</a>
+</h3>
+<p>The <code>PaymentProcessor</code> class is the context that maintains a reference to a <code>PaymentStrategy</code> and delegates the <code>pay</code> action to it. This allows the client to choose a payment strategy dynamically.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Context</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PaymentProcessor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> PaymentStrategy paymentStrategy;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setPaymentStrategy</span>(PaymentStrategy paymentStrategy) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">paymentStrategy</span> <span style="color:#f92672">=</span> paymentStrategy;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processPayment</span>(<span style="color:#66d9ef">double</span> amount) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (paymentStrategy <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException(<span style="color:#e6db74">&#34;Payment strategy not set&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        paymentStrategy.<span style="color:#a6e22e">pay</span>(amount);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-4-client-code-using-the-strategy-pattern">
+  Step 4: Client Code Using the Strategy Pattern
+  <a class="anchor" href="#step-4-client-code-using-the-strategy-pattern">#</a>
+</h3>
+<p>The client code chooses a payment strategy and processes a payment, allowing for dynamic selection and switching of strategies.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        PaymentProcessor processor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PaymentProcessor();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Use Credit Card payment strategy</span>
+</span></span><span style="display:flex;"><span>        processor.<span style="color:#a6e22e">setPaymentStrategy</span>(<span style="color:#66d9ef">new</span> CreditCardPayment(<span style="color:#e6db74">&#34;1234-5678-9012-3456&#34;</span>));
+</span></span><span style="display:flex;"><span>        processor.<span style="color:#a6e22e">processPayment</span>(100.<span style="color:#a6e22e">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Switch to PayPal payment strategy</span>
+</span></span><span style="display:flex;"><span>        processor.<span style="color:#a6e22e">setPaymentStrategy</span>(<span style="color:#66d9ef">new</span> PayPalPayment(<span style="color:#e6db74">&#34;user@example.com&#34;</span>));
+</span></span><span style="display:flex;"><span>        processor.<span style="color:#a6e22e">processPayment</span>(50.<span style="color:#a6e22e">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Switch to Bank Transfer payment strategy</span>
+</span></span><span style="display:flex;"><span>        processor.<span style="color:#a6e22e">setPaymentStrategy</span>(<span style="color:#66d9ef">new</span> BankTransferPayment(<span style="color:#e6db74">&#34;987654321&#34;</span>));
+</span></span><span style="display:flex;"><span>        processor.<span style="color:#a6e22e">processPayment</span>(200.<span style="color:#a6e22e">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="output">
+  Output
+  <a class="anchor" href="#output">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Processing credit card payment of $100.0 with card 1234-5678-9012-3456
+</span></span><span style="display:flex;"><span>Processing PayPal payment of $50.0 for account user@example.com
+</span></span><span style="display:flex;"><span>Processing bank transfer of $200.0 to account 987654321
+</span></span></code></pre></div><p>In this example:</p>
+<ul>
+<li><code>PaymentProcessor</code> is the context that delegates payment processing to a <code>PaymentStrategy</code>.</li>
+<li><code>CreditCardPayment</code>, <code>PayPalPayment</code>, and <code>BankTransferPayment</code> are concrete strategies, each implementing a specific payment method.</li>
+<li>The client code selects and switches payment strategies dynamically, allowing flexible control over the payment process.</li>
+</ul>
+<h2 id="applicability">
+  Applicability
+  <a class="anchor" href="#applicability">#</a>
+</h2>
+<p>Use the Strategy pattern when:</p>
+<ol>
+<li>You need multiple variations of an algorithm, and they should be interchangeable.</li>
+<li>The behavior of a class varies based on some parameter, and you want to avoid complex conditionals.</li>
+<li>You want to enable clients to dynamically choose from a set of algorithms at runtime.</li>
+</ol>
+<h2 id="advantages-and-disadvantages">
+  Advantages and Disadvantages
+  <a class="anchor" href="#advantages-and-disadvantages">#</a>
+</h2>
+<h3 id="advantages">
+  Advantages
+  <a class="anchor" href="#advantages">#</a>
+</h3>
+<ol>
+<li><strong>Promotes Open-Closed Principle</strong>: New strategies can be added without modifying the existing context, making the code extensible and maintainable.</li>
+<li><strong>Eliminates Conditional Logic</strong>: The pattern reduces the need for conditional statements by encapsulating algorithms in separate classes.</li>
+<li><strong>Easily Interchangeable Algorithms</strong>: Strategies can be swapped dynamically, providing flexible control over behavior.</li>
+</ol>
+<h3 id="disadvantages">
+  Disadvantages
+  <a class="anchor" href="#disadvantages">#</a>
+</h3>
+<ol>
+<li><strong>Increased Number of Classes</strong>: The Strategy pattern requires creating a separate class for each algorithm, which can lead to more classes in the codebase.</li>
+<li><strong>Context Awareness</strong>: The context must be aware of available strategies, requiring clients to understand the strategies and choose appropriately.</li>
+<li><strong>Potential Overhead</strong>: In some cases, the added flexibility of strategies may introduce overhead, especially if the strategies are simple and rarely change.</li>
+</ol>
+<h2 id="best-practices-for-implementing-the-strategy-pattern">
+  Best Practices for Implementing the Strategy Pattern
+  <a class="anchor" href="#best-practices-for-implementing-the-strategy-pattern">#</a>
+</h2>
+<ol>
+<li><strong>Choose the Pattern for Complex Algorithms</strong>: The Strategy pattern is most beneficial for complex algorithms that are likely to vary. Avoid using it for simple behaviors.</li>
+<li><strong>Encapsulate Variants Carefully</strong>: Ensure that each strategy encapsulates a specific behavior or algorithm to maintain modularity and simplicity.</li>
+<li><strong>Provide a Default Strategy</strong>: In some cases, consider providing a default strategy to handle cases where the client does not specify one.</li>
+</ol>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The Strategy pattern provides a clean way to define and swap algorithms dynamically, allowing clients to choose behavior at runtime. By encapsulating each algorithm in its own class, the Strategy pattern promotes flexible, reusable code that adheres to the Open-Closed Principle.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#intent">Intent</a></li>
+    <li><a href="#problem-and-solution">Problem and Solution</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#structure">Structure</a></li>
+    <li><a href="#uml-diagram">UML Diagram</a></li>
+    <li><a href="#example-payment-processing-system">Example: Payment Processing System</a>
+      <ul>
+        <li><a href="#step-1-define-the-strategy-interface">Step 1: Define the Strategy Interface</a></li>
+        <li><a href="#step-2-implement-concrete-strategies">Step 2: Implement Concrete Strategies</a></li>
+        <li><a href="#step-3-implement-the-context">Step 3: Implement the Context</a></li>
+        <li><a href="#step-4-client-code-using-the-strategy-pattern">Step 4: Client Code Using the Strategy Pattern</a></li>
+        <li><a href="#output">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicability">Applicability</a></li>
+    <li><a href="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-for-implementing-the-strategy-pattern">Best Practices for Implementing the Strategy Pattern</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+      
+      <div class="book-toc-languages">
+        
+<h4>Coding Principles in ...</h4>
+<nav>
+  <div class="book-search">
+    <input type="text" id="book-search-language-input" placeholder="Search Language" aria-label="Search Language" maxlength="64" data-hotkeys="s/">
+  </div>
+  <ul id="languages"></ul>
+  <script>
+    const languages = [];
+    const languageLinks = document.getElementById('languages');
+    const searchInput = document.getElementById('book-search-language-input');
+    const maxLanguages = 15
+
+    const listLanguages = (filter = '') => {
+      languageLinks.innerHTML = ''
+      const filtered = languages
+        .filter(item => item.title.toLowerCase().includes(filter.toLowerCase()))
+      filtered.slice(0, filtered.length > maxLanguages ? maxLanguages : filtered.length)
+        .forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.title;
+          const li = document.createElement('li');
+          li.appendChild(link);
+          languageLinks.appendChild(li);
+        })
+      if (filtered.length > maxLanguages) {
+        const li = document.createElement('li');
+        li.textContent = '...';
+        languageLinks.appendChild(li);
+      }
+    }
+
+    listLanguages('')
+    searchInput.onkeyup = () => { listLanguages(searchInput.value) }
+  </script>
+</nav>
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

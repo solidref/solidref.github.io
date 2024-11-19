@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Implementation of Task (Prototype, Memento, State Patterns)
+
+Task.java
+import java.util.UUID;
+import org.json.JSONObject;
+
+public class Task implements Cloneable {
+    // Inner State interface and concrete state classes
+    public interface TaskState {
+        void next(Task task);
+        void prev(Task task);
+        String getStateName();
+    }
+
+    public class NewState implements TaskState {
+        @Override
+        public void next(Task task) {
+            task.setState(new InProgressState());
+        }
+
+        @Override
+        public void prev(Task task) {
+            System.out.println(&#34;The task is already in the initial state.&#34;);
+        }
+
+        @Override
+        public String getStateName() {
+            return &#34;New&#34;;
+        }
+    }
+
+    public class InProgressState implements TaskState {
+        @Override
+        public void next(Task task) {
+            task.setState(new CompletedState());
+        }
+
+        @Override
+        public void prev(Task task) {
+            task.setState(new NewState());
+        }
+
+        @Override
+        public String getStateName() {
+            return &#34;In Progress&#34;;
+        }
+    }
+
+    public class CompletedState implements TaskState {
+        @Override
+        public void next(Task task) {
+            System.out.println(&#34;The task is already completed.&#34;);
+        }
+
+        @Override
+        public void prev(Task task) {
+            task.setState(new InProgressState());
+        }
+
+        @Override
+        public String getStateName() {
+            return &#34;Completed&#34;;
+        }
+    }
+
+    // Task properties
+    private UUID id;
+    private String title;
+    private String description;
+    private TaskState state;
+
+    // Constructor
+    public Task() {
+        this.id = UUID.randomUUID();
+        this.state = new NewState();
+    }
+
+    // Getters and setters
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStateName() {
+        return state.getStateName();
+    }
+
+    // State pattern methods
+    public void nextState() {
+        state.next(this);
+    }
+
+    public void previousState() {
+        state.prev(this);
+    }
+
+    public void setState(TaskState state) {
+        this.state = state;
+    }
+
+    // Prototype pattern (cloneable)
+    @Override
+    public Task clone() {
+        try {
+            Task clonedTask = (Task) super.clone();
+            // Deep copy if needed
+            // For this simple example, strings are immutable and UUID is final, so shallow copy suffices
+            return clonedTask;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
+    // Memento pattern
+    public TaskMemento saveToMemento() {
+        return new TaskMemento(title, description, state.getStateName());
+    }
+
+    public void restoreFromMemento(TaskMemento memento) {
+        this.title = memento.getTitle();
+        this.description = memento.getDescription();
+        // Restore the state based on state name
+        switch (memento.getStateName()) {
+            case &#34;New&#34;:
+                this.state = new NewState();
+                break;
+            case &#34;In Progress&#34;:
+                this.state = new InProgressState();
+                break;
+            case &#34;Completed&#34;:
+                this.state = new CompletedState();
+                break;
+            default:
+                throw new IllegalArgumentException(&#34;Unknown state: &#34; &#43; memento.getStateName());
+        }
+    }
+
+    // Memento inner class
+    public static class TaskMemento {
+        private final String title;
+        private final String description;
+        private final String stateName;
+
+        public TaskMemento(String title, String description, String stateName) {
+            this.title = title;
+            this.description = description;
+            this.stateName = stateName;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getStateName() {
+            return stateName;
+        }
+    }
+
+    // Convert Task to JSON
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put(&#34;id&#34;, id.toString());
+        json.put(&#34;title&#34;, title);
+        json.put(&#34;description&#34;, description);
+        json.put(&#34;state&#34;, state.getStateName());
+        return json;
+    }
+}
+
+Explanation:">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/posts-draft/java-04-restful-service-using-dp-task/">
+  <meta property="og:site_name" content="SOLID.ref">
+  <meta property="og:title" content="SOLID.ref">
+  <meta property="og:description" content="Implementation of Task (Prototype, Memento, State Patterns)
+Task.java
+import java.util.UUID; import org.json.JSONObject; public class Task implements Cloneable { // Inner State interface and concrete state classes public interface TaskState { void next(Task task); void prev(Task task); String getStateName(); } public class NewState implements TaskState { @Override public void next(Task task) { task.setState(new InProgressState()); } @Override public void prev(Task task) { System.out.println(&#34;The task is already in the initial state.&#34;); } @Override public String getStateName() { return &#34;New&#34;; } } public class InProgressState implements TaskState { @Override public void next(Task task) { task.setState(new CompletedState()); } @Override public void prev(Task task) { task.setState(new NewState()); } @Override public String getStateName() { return &#34;In Progress&#34;; } } public class CompletedState implements TaskState { @Override public void next(Task task) { System.out.println(&#34;The task is already completed.&#34;); } @Override public void prev(Task task) { task.setState(new InProgressState()); } @Override public String getStateName() { return &#34;Completed&#34;; } } // Task properties private UUID id; private String title; private String description; private TaskState state; // Constructor public Task() { this.id = UUID.randomUUID(); this.state = new NewState(); } // Getters and setters public UUID getId() { return id; } public void setId(UUID id) { this.id = id; } public String getTitle() { return title; } public void setTitle(String title) { this.title = title; } public String getDescription() { return description; } public void setDescription(String description) { this.description = description; } public String getStateName() { return state.getStateName(); } // State pattern methods public void nextState() { state.next(this); } public void previousState() { state.prev(this); } public void setState(TaskState state) { this.state = state; } // Prototype pattern (cloneable) @Override public Task clone() { try { Task clonedTask = (Task) super.clone(); // Deep copy if needed // For this simple example, strings are immutable and UUID is final, so shallow copy suffices return clonedTask; } catch (CloneNotSupportedException e) { throw new AssertionError(); } } // Memento pattern public TaskMemento saveToMemento() { return new TaskMemento(title, description, state.getStateName()); } public void restoreFromMemento(TaskMemento memento) { this.title = memento.getTitle(); this.description = memento.getDescription(); // Restore the state based on state name switch (memento.getStateName()) { case &#34;New&#34;: this.state = new NewState(); break; case &#34;In Progress&#34;: this.state = new InProgressState(); break; case &#34;Completed&#34;: this.state = new CompletedState(); break; default: throw new IllegalArgumentException(&#34;Unknown state: &#34; &#43; memento.getStateName()); } } // Memento inner class public static class TaskMemento { private final String title; private final String description; private final String stateName; public TaskMemento(String title, String description, String stateName) { this.title = title; this.description = description; this.stateName = stateName; } public String getTitle() { return title; } public String getDescription() { return description; } public String getStateName() { return stateName; } } // Convert Task to JSON public JSONObject toJson() { JSONObject json = new JSONObject(); json.put(&#34;id&#34;, id.toString()); json.put(&#34;title&#34;, title); json.put(&#34;description&#34;, description); json.put(&#34;state&#34;, state.getStateName()); return json; } } Explanation:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts-draft">
+<title>Java 04 Restful Service Using Dp Task | SOLID.ref</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/posts-draft/java-04-restful-service-using-dp-task/">
+<link rel="stylesheet" href="/book.min.5cca5b9eae3794f73f645864ddc88f2f6a986c858cff98b19a2950df4bab8853.css" integrity="sha256-XMpbnq43lPc/ZFhk3ciPL2qYbIWM/5ixmilQ30uriFM=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.5f0124c5fea475132c44dbfb22ad32561e4cebc4ed1ae10ee6ee1bc8fb4d560e.js" integrity="sha256-XwEkxf6kdRMsRNv7Iq0yVh5M68TtGuEO5u4byPtNVg4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>SOLID.ref</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/clean-code/" class="">Clean Code</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/coding-principles/" class="">Coding Principles</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/design-patterns/" class="">Design Patterns</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Java 04 Restful Service Using Dp Task</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p><strong>Implementation of <code>Task</code> (Prototype, Memento, State Patterns)</strong></p>
+<hr>
+<p><strong>Task.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.UUID;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.json.JSONObject;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">implements</span> Cloneable {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Inner State interface and concrete state classes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TaskState</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task);
+</span></span><span style="display:flex;"><span>        String <span style="color:#a6e22e">getStateName</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NewState</span> <span style="color:#66d9ef">implements</span> TaskState {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task) {
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> InProgressState());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;The task is already in the initial state.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;New&#34;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InProgressState</span> <span style="color:#66d9ef">implements</span> TaskState {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task) {
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> CompletedState());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task) {
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> NewState());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;In Progress&#34;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompletedState</span> <span style="color:#66d9ef">implements</span> TaskState {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;The task is already completed.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task) {
+</span></span><span style="display:flex;"><span>            task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> InProgressState());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Completed&#34;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Task properties</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UUID id;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String description;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskState state;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Constructor</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Task</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">randomUUID</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NewState();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getters and setters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> UUID <span style="color:#a6e22e">getId</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> id;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span>(UUID id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getTitle</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> title;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTitle</span>(String title) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getDescription</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> description;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDescription</span>(String description) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> state.<span style="color:#a6e22e">getStateName</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// State pattern methods</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">nextState</span>() {
+</span></span><span style="display:flex;"><span>        state.<span style="color:#a6e22e">next</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">previousState</span>() {
+</span></span><span style="display:flex;"><span>        state.<span style="color:#a6e22e">prev</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setState</span>(TaskState state) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> state;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Prototype pattern (cloneable)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">clone</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            Task clonedTask <span style="color:#f92672">=</span> (Task) <span style="color:#66d9ef">super</span>.<span style="color:#a6e22e">clone</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Deep copy if needed</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// For this simple example, strings are immutable and UUID is final, so shallow copy suffices</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> clonedTask;
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (CloneNotSupportedException e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> AssertionError();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Memento pattern</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TaskMemento <span style="color:#a6e22e">saveToMemento</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TaskMemento(title, description, state.<span style="color:#a6e22e">getStateName</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">restoreFromMemento</span>(TaskMemento memento) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getTitle</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getDescription</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Restore the state based on state name</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (memento.<span style="color:#a6e22e">getStateName</span>()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;New&#34;</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NewState();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;In Progress&#34;</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InProgressState();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Completed&#34;</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CompletedState();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unknown state: &#34;</span> <span style="color:#f92672">+</span> memento.<span style="color:#a6e22e">getStateName</span>());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Memento inner class</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskMemento</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String title;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String description;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String stateName;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskMemento</span>(String title, String description, String stateName) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">stateName</span> <span style="color:#f92672">=</span> stateName;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getTitle</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> title;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getDescription</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> description;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> stateName;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Convert Task to JSON</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> JSONObject <span style="color:#a6e22e">toJson</span>() {
+</span></span><span style="display:flex;"><span>        JSONObject json <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject();
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;id&#34;</span>, id.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;title&#34;</span>, title);
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;description&#34;</span>, description);
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;state&#34;</span>, state.<span style="color:#a6e22e">getStateName</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> json;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Purpose of <code>Task</code>:</strong></p>
+<p>The <code>Task</code> class represents the core entity in our task management web service. It encapsulates task properties and behaviors, implementing the <strong>Prototype</strong>, <strong>Memento</strong>, and <strong>State</strong> design patterns to enhance flexibility, maintainability, and state management.</p>
+<hr>
+<p><strong>Design Patterns Implemented:</strong></p>
+<ol>
+<li><strong>Prototype Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Usage:</strong> Allows cloning of <code>Task</code> objects to create new instances with the same properties.</li>
+<li><strong>Implementation:</strong> Implements the <code>Cloneable</code> interface and overrides the <code>clone()</code> method.</li>
+</ul>
+<ol start="2">
+<li><strong>Memento Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Usage:</strong> Enables saving and restoring the internal state of a <code>Task</code> without violating encapsulation.</li>
+<li><strong>Implementation:</strong> Provides <code>saveToMemento()</code> and <code>restoreFromMemento()</code> methods, along with a <code>TaskMemento</code> inner class.</li>
+</ul>
+<ol start="3">
+<li><strong>State Pattern</strong></li>
+</ol>
+<ul>
+<li><strong>Usage:</strong> Manages state transitions within a <code>Task</code>, altering behavior based on the current state.</li>
+<li><strong>Implementation:</strong> Defines a <code>TaskState</code> interface with concrete implementations (<code>NewState</code>, <code>InProgressState</code>, <code>CompletedState</code>).</li>
+</ul>
+<hr>
+<p><strong>Detailed Explanation of the Code:</strong></p>
+<p><strong>1. State Pattern Implementation</strong></p>
+<ul>
+<li>
+<p><strong><code>TaskState</code> Interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TaskState</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task);
+</span></span><span style="display:flex;"><span>    String <span style="color:#a6e22e">getStateName</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Defines the contract for state-specific behaviors.</li>
+<li><strong>Methods:</strong>
+<ul>
+<li><code>next(Task task)</code>: Moves the task to the next state.</li>
+<li><code>prev(Task task)</code>: Moves the task to the previous state.</li>
+<li><code>getStateName()</code>: Returns the name of the current state.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Concrete State Classes:</strong></p>
+<ul>
+<li>
+<p><strong><code>NewState</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NewState</span> <span style="color:#66d9ef">implements</span> TaskState {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task) {
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> InProgressState());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;The task is already in the initial state.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;New&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Represents the initial state of a task.</li>
+<li><strong>Behavior:</strong>
+<ul>
+<li><code>next()</code>: Transitions to <code>InProgressState</code>.</li>
+<li><code>prev()</code>: Indicates no previous state exists.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>InProgressState</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InProgressState</span> <span style="color:#66d9ef">implements</span> TaskState {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task) {
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> CompletedState());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task) {
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> NewState());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;In Progress&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Represents a task that is currently being worked on.</li>
+<li><strong>Behavior:</strong>
+<ul>
+<li><code>next()</code>: Transitions to <code>CompletedState</code>.</li>
+<li><code>prev()</code>: Reverts to <code>NewState</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>CompletedState</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompletedState</span> <span style="color:#66d9ef">implements</span> TaskState {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">next</span>(Task task) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;The task is already completed.&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">prev</span>(Task task) {
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setState</span>(<span style="color:#66d9ef">new</span> InProgressState());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Completed&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Represents a task that has been completed.</li>
+<li><strong>Behavior:</strong>
+<ul>
+<li><code>next()</code>: Indicates no further progression.</li>
+<li><code>prev()</code>: Reverts to <code>InProgressState</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>State Management in <code>Task</code> Class:</strong></p>
+<ul>
+<li>
+<p><strong>State Field:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> TaskState state;
+</span></span></code></pre></div><ul>
+<li>Holds the current state object.</li>
+</ul>
+</li>
+<li>
+<p><strong>State Transition Methods:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">nextState</span>() {
+</span></span><span style="display:flex;"><span>    state.<span style="color:#a6e22e">next</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">previousState</span>() {
+</span></span><span style="display:flex;"><span>    state.<span style="color:#a6e22e">prev</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setState</span>(TaskState state) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> state;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getStateName</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> state.<span style="color:#a6e22e">getStateName</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Controls state transitions and provides access to the state name.</li>
+<li><strong>Usage:</strong> Delegates state-specific behavior to the current state object.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Prototype Pattern Implementation</strong></p>
+<ul>
+<li>
+<p><strong>Cloning the Task:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">clone</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        Task clonedTask <span style="color:#f92672">=</span> (Task) <span style="color:#66d9ef">super</span>.<span style="color:#a6e22e">clone</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Deep copy if needed</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> clonedTask;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (CloneNotSupportedException e) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> AssertionError();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Creates a duplicate of the current <code>Task</code> instance.</li>
+<li><strong>Implementation:</strong>
+<ul>
+<li>Calls <code>super.clone()</code> for a shallow copy.</li>
+<li>Handles <code>CloneNotSupportedException</code>.</li>
+</ul>
+</li>
+<li><strong>Note:</strong> Deep copying is unnecessary here because the fields are either primitives or immutable objects.</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. Memento Pattern Implementation</strong></p>
+<ul>
+<li>
+<p><strong>Saving Task State:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> TaskMemento <span style="color:#a6e22e">saveToMemento</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TaskMemento(title, description, state.<span style="color:#a6e22e">getStateName</span>());
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Captures the current state of the task.</li>
+<li><strong>Returns:</strong> A <code>TaskMemento</code> object containing the state.</li>
+</ul>
+</li>
+<li>
+<p><strong>Restoring Task State:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">restoreFromMemento</span>(TaskMemento memento) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getTitle</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> memento.<span style="color:#a6e22e">getDescription</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Restore the state based on state name</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> (memento.<span style="color:#a6e22e">getStateName</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;New&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NewState();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;In Progress&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InProgressState();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Completed&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CompletedState();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unknown state: &#34;</span> <span style="color:#f92672">+</span> memento.<span style="color:#a6e22e">getStateName</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Restores the task&rsquo;s state from a <code>TaskMemento</code>.</li>
+<li><strong>Implementation:</strong>
+<ul>
+<li>Updates properties from the memento.</li>
+<li>Reconstructs the state object based on the saved state name.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>TaskMemento</code> Inner Class:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskMemento</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String description;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String stateName;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskMemento</span>(String title, String description, String stateName) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">stateName</span> <span style="color:#f92672">=</span> stateName;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getters</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Stores the state of a <code>Task</code> for later restoration.</li>
+<li><strong>Properties:</strong> Immutable fields for <code>title</code>, <code>description</code>, and <code>stateName</code>.</li>
+</ul>
+</li>
+</ul>
+<p><strong>4. Task Properties and Methods</strong></p>
+<ul>
+<li>
+<p><strong>Fields:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> UUID id;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> String title;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> String description;
+</span></span></code></pre></div><ul>
+<li><strong><code>id</code>:</strong> Unique identifier generated using <code>UUID</code>.</li>
+<li><strong><code>title</code> and <code>description</code>:</strong> Task details provided by the user.</li>
+</ul>
+</li>
+<li>
+<p><strong>Constructor:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Task</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">randomUUID</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NewState();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Initializes a new task with a unique ID and sets its state to <code>NewState</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Getters and Setters:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Getters and setters for id, title, description</span>
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Provide access and modification of task properties.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>toJson()</code> Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> JSONObject <span style="color:#a6e22e">toJson</span>() {
+</span></span><span style="display:flex;"><span>    JSONObject json <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject();
+</span></span><span style="display:flex;"><span>    json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;id&#34;</span>, id.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>    json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;title&#34;</span>, title);
+</span></span><span style="display:flex;"><span>    json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;description&#34;</span>, description);
+</span></span><span style="display:flex;"><span>    json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;state&#34;</span>, state.<span style="color:#a6e22e">getStateName</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> json;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong> Converts the task object into a JSON representation.</li>
+<li><strong>Usage:</strong> Used by <code>TaskRequestHandler</code> to format responses.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Usage Examples:</strong></p>
+<ul>
+<li>
+<p><strong>Creating a New Task:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Task();
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">setTitle</span>(<span style="color:#e6db74">&#34;Implement Task Class&#34;</span>);
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Implement the Task class with design patterns.&#34;</span>);
+</span></span></code></pre></div></li>
+<li>
+<p><strong>State Transitions:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>task.<span style="color:#a6e22e">nextState</span>(); <span style="color:#75715e">// Moves from New to In Progress</span>
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">nextState</span>(); <span style="color:#75715e">// Moves from In Progress to Completed</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Cloning a Task:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Task clonedTask <span style="color:#f92672">=</span> task.<span style="color:#a6e22e">clone</span>();
+</span></span><span style="display:flex;"><span>clonedTask.<span style="color:#a6e22e">setTitle</span>(<span style="color:#e6db74">&#34;Clone of &#34;</span> <span style="color:#f92672">+</span> task.<span style="color:#a6e22e">getTitle</span>());
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Saving and Restoring State:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Task.<span style="color:#a6e22e">TaskMemento</span> memento <span style="color:#f92672">=</span> task.<span style="color:#a6e22e">saveToMemento</span>();
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Updated Description&#34;</span>);
+</span></span><span style="display:flex;"><span>task.<span style="color:#a6e22e">restoreFromMemento</span>(memento); <span style="color:#75715e">// Reverts to the saved state</span>
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<p><strong>Integration with Other Components:</strong></p>
+<ul>
+<li>
+<p><strong>In <code>TaskRequestHandler</code>:</strong></p>
+<ul>
+<li>When handling POST or PUT requests, <code>Task</code> instances are created or updated.</li>
+<li>The <code>toJson()</code> method is used to serialize tasks for HTTP responses.</li>
+</ul>
+</li>
+<li>
+<p><strong>With <code>TaskBuilder</code> (Builder Pattern):</strong></p>
+<ul>
+<li><code>TaskBuilder</code> can be used to construct <code>Task</code> objects with optional attributes.</li>
+</ul>
+</li>
+<li>
+<p><strong>With <code>UndoManager</code> (Memento Pattern):</strong></p>
+<ul>
+<li><code>UndoManager</code> can store <code>TaskMemento</code> instances to implement undo functionality.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Advantages of This Design:</strong></p>
+<ol>
+<li><strong>Flexibility:</strong></li>
+</ol>
+<ul>
+<li>The <strong>State Pattern</strong> allows easy addition of new states or modification of existing ones without altering the <code>Task</code> class logic.</li>
+</ul>
+<ol start="2">
+<li><strong>Maintainability:</strong></li>
+</ol>
+<ul>
+<li>Encapsulation of state-specific behavior simplifies maintenance and reduces complexity.</li>
+</ul>
+<ol start="3">
+<li><strong>Reusability:</strong></li>
+</ol>
+<ul>
+<li>The <strong>Prototype Pattern</strong> enables efficient duplication of tasks, useful in scenarios like task templates.</li>
+</ul>
+<ol start="4">
+<li><strong>Safety:</strong></li>
+</ol>
+<ul>
+<li>The <strong>Memento Pattern</strong> ensures that the internal state of the task can be saved and restored without exposing implementation details.</li>
+</ul>
+<hr>
+<p><strong>Assumptions and Simplifications:</strong></p>
+<ul>
+<li>
+<p><strong>UUIDs for IDs:</strong></p>
+<ul>
+<li>For simplicity, tasks use UUIDs instead of database-generated IDs.</li>
+</ul>
+</li>
+<li>
+<p><strong>Simple State Machine:</strong></p>
+<ul>
+<li>The state transitions are linear; in a real-world application, state management might be more complex.</li>
+</ul>
+</li>
+<li>
+<p><strong>Error Handling:</strong></p>
+<ul>
+<li>Basic error messages are printed; in production, proper logging and exception handling should be implemented.</li>
+</ul>
+</li>
+<li>
+<p><strong>Thread Safety:</strong></p>
+<ul>
+<li>Not addressed; if the application is multi-threaded, synchronization may be required.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>Task</code> class is a critical component that demonstrates the practical application of multiple design patterns within a single class:</p>
+<ul>
+<li><strong>Prototype Pattern</strong> allows for efficient object cloning.</li>
+<li><strong>Memento Pattern</strong> provides a mechanism for saving and restoring object state, facilitating features like undo/redo.</li>
+<li><strong>State Pattern</strong> manages the internal state transitions, affecting the behavior of the <code>Task</code> object dynamically.</li>
+</ul>
+<p>This implementation aligns with the goal of creating a simple, maintainable, and extensible application using design patterns, all within the constraint of approximately 20 classes.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>
+<p><strong>Implement <code>TaskBuilder</code> (Class 5):</strong></p>
+<ul>
+<li>Use the Builder Pattern to construct <code>Task</code> objects with optional parameters, enhancing flexibility.</li>
+</ul>
+</li>
+<li>
+<p><strong>Integrate with <code>DatabaseAdapter</code>:</strong></p>
+<ul>
+<li>Enable persistence by saving and retrieving <code>Task</code> instances to and from a database.</li>
+</ul>
+</li>
+<li>
+<p><strong>Expand State Management:</strong></p>
+<ul>
+<li>Introduce additional states or more complex state transitions if needed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Enhance Error Handling:</strong></p>
+<ul>
+<li>Implement robust exception handling and logging mechanisms.</li>
+</ul>
+</li>
+<li>
+<p><strong>Consider Thread Safety:</strong></p>
+<ul>
+<li>If the application will be multi-threaded, ensure that shared resources are properly synchronized.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>By implementing and explaining <code>Task</code>, we have advanced our simple Java web service application, showcasing how design patterns can be effectively utilized to create a robust and scalable system within a limited number of classes.</p>
+<hr>
+<p><strong>Implementation of <code>TaskBuilder</code> (Builder Pattern)</strong></p>
+<hr>
+<p><strong>TaskBuilder.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskBuilder</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Required parameters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String title;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Optional parameters with default values</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String assignedTo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> priority <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Constructor for required parameters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaskBuilder</span>(String title) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Setter methods for optional parameters, returning the builder itself for method chaining</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TaskBuilder <span style="color:#a6e22e">setDescription</span>(String description) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TaskBuilder <span style="color:#a6e22e">setAssignedTo</span>(String assignedTo) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assignedTo</span> <span style="color:#f92672">=</span> assignedTo;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TaskBuilder <span style="color:#a6e22e">setPriority</span>(<span style="color:#66d9ef">int</span> priority) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">priority</span> <span style="color:#f92672">=</span> priority;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Build method to create a Task instance</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">build</span>() {
+</span></span><span style="display:flex;"><span>        Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Task();
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setTitle</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span>);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setDescription</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span>);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setAssignedTo</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assignedTo</span>);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setPriority</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">priority</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Purpose of <code>TaskBuilder</code>:</strong></p>
+<p>The <code>TaskBuilder</code> class simplifies the creation of <code>Task</code> objects, especially when tasks have multiple optional attributes. By applying the <strong>Builder Pattern</strong>, it allows developers to construct <code>Task</code> instances with varying configurations in a readable and maintainable way.</p>
+<hr>
+<p><strong>Builder Pattern Implementation:</strong></p>
+<ol>
+<li><strong>Required and Optional Parameters:</strong></li>
+</ol>
+<ul>
+<li>
+<p><strong>Required Parameter:</strong></p>
+<ul>
+<li><code>title</code>: Every task must have a title, so it&rsquo;s required and provided through the builder&rsquo;s constructor.</li>
+</ul>
+</li>
+<li>
+<p><strong>Optional Parameters:</strong></p>
+<ul>
+<li><code>description</code>, <code>assignedTo</code>, and <code>priority</code> are optional attributes with default values.</li>
+<li>Setter methods are provided to set these optional parameters if needed.</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><strong>Fluent Interface:</strong></li>
+</ol>
+<ul>
+<li>The setter methods return the builder instance (<code>this</code>), enabling method chaining.</li>
+<li>This approach makes the code more readable and concise.</li>
+</ul>
+<ol start="3">
+<li><strong>Build Method:</strong></li>
+</ol>
+<ul>
+<li>The <code>build()</code> method constructs a <code>Task</code> object using the values stored in the builder.</li>
+<li>It sets the properties of the <code>Task</code> accordingly.</li>
+</ul>
+<hr>
+<p><strong>Updated <code>Task</code> Class to Support Builder:</strong></p>
+<p>To integrate with <code>TaskBuilder</code>, the <code>Task</code> class should have appropriate setter methods and support the additional optional attributes.</p>
+<p><strong>Task.java (Updated Parts)</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.UUID;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.json.JSONObject;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">implements</span> Cloneable {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing fields</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> UUID id;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String description;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> TaskState state;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// New optional fields</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String assignedTo;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> priority;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing constructor</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Task</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> UUID.<span style="color:#a6e22e">randomUUID</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NewState();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing getters and setters for id, title, description, state</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getters and setters for new fields</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getAssignedTo</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> assignedTo;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setAssignedTo</span>(String assignedTo) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assignedTo</span> <span style="color:#f92672">=</span> assignedTo;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getPriority</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> priority;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setPriority</span>(<span style="color:#66d9ef">int</span> priority) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">priority</span> <span style="color:#f92672">=</span> priority;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Updated toJson() method</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> JSONObject <span style="color:#a6e22e">toJson</span>() {
+</span></span><span style="display:flex;"><span>        JSONObject json <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject();
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;id&#34;</span>, id.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;title&#34;</span>, title);
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;description&#34;</span>, description);
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;assignedTo&#34;</span>, assignedTo);
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;priority&#34;</span>, priority);
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;state&#34;</span>, state.<span style="color:#a6e22e">getStateName</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> json;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Existing methods for State, Prototype, and Memento patterns</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>
+<p><strong>New Fields:</strong></p>
+<ul>
+<li><code>assignedTo</code>: Represents the user assigned to the task.</li>
+<li><code>priority</code>: An integer representing the task&rsquo;s priority level.</li>
+</ul>
+</li>
+<li>
+<p><strong>Updated Methods:</strong></p>
+<ul>
+<li>Added getters and setters for <code>assignedTo</code> and <code>priority</code>.</li>
+<li>Updated <code>toJson()</code> to include new fields.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Usage Example:</strong></p>
+<p><strong>Creating a Task with Required and Optional Parameters:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Using TaskBuilder to create a Task with optional parameters</span>
+</span></span><span style="display:flex;"><span>Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(<span style="color:#e6db74">&#34;Implement TaskBuilder&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setDescription</span>(<span style="color:#e6db74">&#34;Implement the TaskBuilder class using the Builder pattern.&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setAssignedTo</span>(<span style="color:#e6db74">&#34;Alice&#34;</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">setPriority</span>(1)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">build</span>();
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>A <code>TaskBuilder</code> is instantiated with the required <code>title</code>.</li>
+<li>Optional parameters are set using method chaining.</li>
+<li>The <code>build()</code> method creates the <code>Task</code> object with the specified attributes.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Creating a Task with Only Required Parameters:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Using TaskBuilder to create a Task with only the required parameter</span>
+</span></span><span style="display:flex;"><span>Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(<span style="color:#e6db74">&#34;Simple Task&#34;</span>).<span style="color:#a6e22e">build</span>();
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Only the required <code>title</code> is provided.</li>
+<li>Optional parameters use their default values.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Advantages of Using the Builder Pattern:</strong></p>
+<ol>
+<li><strong>Improved Readability:</strong></li>
+</ol>
+<ul>
+<li>Method chaining provides a fluent interface.</li>
+<li>Code is easier to read and write compared to multiple constructors or setters.</li>
+</ul>
+<ol start="2">
+<li><strong>Flexibility:</strong></li>
+</ol>
+<ul>
+<li>Allows setting only the necessary attributes.</li>
+<li>Simplifies object creation when dealing with multiple optional parameters.</li>
+</ul>
+<ol start="3">
+<li><strong>Maintainability:</strong></li>
+</ol>
+<ul>
+<li>Adding new optional parameters doesn&rsquo;t require modifying existing constructors.</li>
+<li>Changes to the object creation process are centralized in the builder.</li>
+</ul>
+<ol start="4">
+<li><strong>Immutable Objects (Optional):</strong></li>
+</ol>
+<ul>
+<li>While not enforced here, the builder pattern can be used to create immutable objects by omitting setters in the <code>Task</code> class.</li>
+</ul>
+<hr>
+<p><strong>Integration with Other Components:</strong></p>
+<ul>
+<li>
+<p><strong>In <code>TaskRequestHandler</code>:</strong></p>
+<p>The <code>TaskBuilder</code> is used to create <code>Task</code> instances from HTTP request data, particularly in the <code>handlePost</code> method for creating new tasks.</p>
+<p><strong>Example in <code>handlePost</code> Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>    ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Parse the request body to create a new task</span>
+</span></span><span style="display:flex;"><span>    JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>    String title <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">getString</span>(<span style="color:#e6db74">&#34;title&#34;</span>);
+</span></span><span style="display:flex;"><span>    String description <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;description&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    String assignedTo <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;assignedTo&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> priority <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optInt</span>(<span style="color:#e6db74">&#34;priority&#34;</span>, 0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Use TaskBuilder to create a new Task</span>
+</span></span><span style="display:flex;"><span>    Task task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(title)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">setDescription</span>(description)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">setAssignedTo</span>(assignedTo)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">setPriority</span>(priority)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Save the task using DatabaseAdapter (simplified here)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DatabaseAdapter.getInstance().saveTask(task);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return the created task</span>
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setStatusCode</span>(201);
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>Extracts task details from the request body.</li>
+<li>Uses <code>TaskBuilder</code> to create a <code>Task</code> object with the provided attributes.</li>
+<li>Enhances code readability and maintainability.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>With Persistence Layer:</strong></p>
+<ul>
+<li>The <code>Task</code> objects created by <code>TaskBuilder</code> can be saved to the database using the <code>DatabaseAdapter</code> class.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Considerations:</strong></p>
+<ul>
+<li>
+<p><strong>Validation:</strong></p>
+<ul>
+<li>The builder can include validation logic to ensure that required fields are set correctly.</li>
+<li>For example, throwing an exception if <code>title</code> is null or empty.</li>
+</ul>
+</li>
+<li>
+<p><strong>Thread Safety:</strong></p>
+<ul>
+<li>The <code>TaskBuilder</code> is not thread-safe. If used across multiple threads, proper synchronization is necessary.</li>
+</ul>
+</li>
+<li>
+<p><strong>Immutability:</strong></p>
+<ul>
+<li>To create immutable <code>Task</code> objects, setters in the <code>Task</code> class can be removed, and all properties are set through the builder.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Why Not Use Multiple Constructors or Setters?</strong></p>
+<ul>
+<li>
+<p><strong>Constructor Overloading Issues:</strong></p>
+<ul>
+<li>Multiple constructors for different combinations of parameters can become complex and confusing.</li>
+<li>There&rsquo;s a risk of incorrect parameter ordering.</li>
+</ul>
+</li>
+<li>
+<p><strong>Setters Lack Readability:</strong></p>
+<ul>
+<li>Using setters after object creation doesn&rsquo;t convey which attributes are essential.</li>
+<li>Builders provide a clear and concise way to construct objects with necessary attributes.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Key Components of the Builder Pattern:</strong></p>
+<ol>
+<li><strong>Builder Class (<code>TaskBuilder</code>):</strong></li>
+</ol>
+<ul>
+<li>Contains fields corresponding to the <code>Task</code> attributes.</li>
+<li>Provides methods to set optional attributes.</li>
+<li>Implements a <code>build()</code> method to create a <code>Task</code> instance.</li>
+</ul>
+<ol start="2">
+<li><strong>Product Class (<code>Task</code>):</strong></li>
+</ol>
+<ul>
+<li>The class being instantiated.</li>
+<li>May have a private or default constructor.</li>
+</ul>
+<ol start="3">
+<li><strong>Fluent Interface:</strong></li>
+</ol>
+<ul>
+<li>Builder methods return the builder instance.</li>
+<li>Enables method chaining for setting attributes.</li>
+</ul>
+<hr>
+<p><strong>Benefits in the Context of the Application:</strong></p>
+<ul>
+<li>
+<p><strong>Scalability:</strong></p>
+<ul>
+<li>New optional attributes can be added to <code>Task</code> without affecting existing code.</li>
+<li>The builder pattern adapts well to expanding requirements.</li>
+</ul>
+</li>
+<li>
+<p><strong>Consistency:</strong></p>
+<ul>
+<li>Ensures that <code>Task</code> objects are created in a consistent state.</li>
+<li>Centralizes object creation logic.</li>
+</ul>
+</li>
+<li>
+<p><strong>Ease of Use:</strong></p>
+<ul>
+<li>Developers can quickly create <code>Task</code> instances with only the necessary information.</li>
+<li>Reduces the likelihood of errors in object construction.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>TaskBuilder</code> class is an effective implementation of the <strong>Builder Pattern</strong>. It provides a flexible and readable way to create <code>Task</code> objects with varying attributes, enhancing the overall design and maintainability of the application.</p>
+<p>By integrating <code>TaskBuilder</code>:</p>
+<ul>
+<li>Object creation is simplified and centralized.</li>
+<li>The codebase becomes more adaptable to changes.</li>
+<li>Developers can construct <code>Task</code> instances with confidence and clarity.</li>
+</ul>
+<p>This implementation aligns with our goal of utilizing design patterns to create a simple yet robust Java web service application within approximately 20 classes.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>
+<p><strong>Implement <code>DatabaseAdapter</code> (Class 7):</strong></p>
+<ul>
+<li>To handle persistence of <code>Task</code> objects created by the builder.</li>
+</ul>
+</li>
+<li>
+<p><strong>Add Validation Logic:</strong></p>
+<ul>
+<li>Ensure that <code>TaskBuilder</code> validates input data before creating <code>Task</code> instances.</li>
+</ul>
+</li>
+<li>
+<p><strong>Refine Error Handling:</strong></p>
+<ul>
+<li>Improve exception handling in the builder and throughout the application.</li>
+</ul>
+</li>
+<li>
+<p><strong>Consider Immutability:</strong></p>
+<ul>
+<li>Decide if <code>Task</code> should be immutable and adjust the design accordingly.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>By completing the implementation and explanation of <code>TaskBuilder</code>, we have furthered the development of our simple Java web service application. This demonstrates how design patterns like the <strong>Builder Pattern</strong> can significantly improve code quality and maintainability, even within the constraints of a limited number of classes.</p>
+<hr>
+<p><strong>Implementation of <code>TaskFactory</code> (Factory Method Pattern)</strong></p>
+<hr>
+<p><strong>TaskFactory.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Factory method</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> Task <span style="color:#a6e22e">createTask</span>(String type, String title);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Optional: Common operations can be defined here</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleTaskFactory</span> <span style="color:#66d9ef">extends</span> TaskFactory {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">createTask</span>(String type, String title) {
+</span></span><span style="display:flex;"><span>        Task task;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (type) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Simple&#34;</span>:
+</span></span><span style="display:flex;"><span>                task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(title).<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Timed&#34;</span>:
+</span></span><span style="display:flex;"><span>                task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TimedTaskBuilder(title).<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unknown task type: &#34;</span> <span style="color:#f92672">+</span> type);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>TimedTask.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.time.LocalDateTime;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimedTask</span> <span style="color:#66d9ef">extends</span> Task {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> LocalDateTime dueDate;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> LocalDateTime <span style="color:#a6e22e">getDueDate</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> dueDate;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDueDate</span>(LocalDateTime dueDate) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dueDate</span> <span style="color:#f92672">=</span> dueDate;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Override toJson() to include dueDate</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> JSONObject <span style="color:#a6e22e">toJson</span>() {
+</span></span><span style="display:flex;"><span>        JSONObject json <span style="color:#f92672">=</span> <span style="color:#66d9ef">super</span>.<span style="color:#a6e22e">toJson</span>();
+</span></span><span style="display:flex;"><span>        json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;dueDate&#34;</span>, dueDate.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> json;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>TimedTaskBuilder.java</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.time.LocalDateTime;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimedTaskBuilder</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Required parameters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> LocalDateTime dueDate;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Optional parameters with default values</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String assignedTo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> priority <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Constructor for required parameters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TimedTaskBuilder</span>(String title, LocalDateTime dueDate) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dueDate</span> <span style="color:#f92672">=</span> dueDate;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Setter methods for optional parameters</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TimedTaskBuilder <span style="color:#a6e22e">setDescription</span>(String description) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TimedTaskBuilder <span style="color:#a6e22e">setAssignedTo</span>(String assignedTo) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assignedTo</span> <span style="color:#f92672">=</span> assignedTo;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TimedTaskBuilder <span style="color:#a6e22e">setPriority</span>(<span style="color:#66d9ef">int</span> priority) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">priority</span> <span style="color:#f92672">=</span> priority;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Build method to create a TimedTask instance</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TimedTask <span style="color:#a6e22e">build</span>() {
+</span></span><span style="display:flex;"><span>        TimedTask task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TimedTask();
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setTitle</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span>);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setDueDate</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dueDate</span>);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setDescription</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span>);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setAssignedTo</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assignedTo</span>);
+</span></span><span style="display:flex;"><span>        task.<span style="color:#a6e22e">setPriority</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">priority</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><strong>Explanation:</strong></p>
+<p><strong>Purpose of <code>TaskFactory</code>:</strong></p>
+<p>The <code>TaskFactory</code> class is designed to encapsulate the creation logic of different types of <code>Task</code> objects. By applying the <strong>Factory Method Pattern</strong>, it provides an interface for creating objects but allows subclasses to alter the type of objects that will be created.</p>
+<hr>
+<p><strong>Factory Method Pattern Implementation:</strong></p>
+<ol>
+<li>
+<p><strong>Abstract Factory Class (<code>TaskFactory</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaskFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Factory method</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> Task <span style="color:#a6e22e">createTask</span>(String type, String title);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Defines an abstract factory method <code>createTask()</code> that must be implemented by subclasses.</li>
+<li>Provides a common interface for creating tasks without specifying the exact class of the object that will be created.</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>
+<p><strong>Concrete Factory Class (<code>SimpleTaskFactory</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleTaskFactory</span> <span style="color:#66d9ef">extends</span> TaskFactory {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">createTask</span>(String type, String title) {
+</span></span><span style="display:flex;"><span>        Task task;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (type) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Simple&#34;</span>:
+</span></span><span style="display:flex;"><span>                task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(title).<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Timed&#34;</span>:
+</span></span><span style="display:flex;"><span>                task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TimedTaskBuilder(title, LocalDateTime.<span style="color:#a6e22e">now</span>().<span style="color:#a6e22e">plusDays</span>(1)).<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unknown task type: &#34;</span> <span style="color:#f92672">+</span> type);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> task;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Implements the factory method to create specific types of <code>Task</code> objects based on the provided <code>type</code>.</li>
+<li>Determines which concrete <code>Task</code> class to instantiate.</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>Product Classes:</strong></li>
+</ol>
+<ul>
+<li><strong><code>Task</code> (Existing Class):</strong>
+<ul>
+<li>Represents a basic task.</li>
+</ul>
+</li>
+<li><strong><code>TimedTask</code>:</strong>
+<ul>
+<li>Extends <code>Task</code> and adds a <code>dueDate</code> property.</li>
+<li>Represents a task with a deadline.</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li><strong>Builders for Product Classes:</strong></li>
+</ol>
+<ul>
+<li><strong><code>TaskBuilder</code>:</strong>
+<ul>
+<li>Used to construct <code>Task</code> objects.</li>
+</ul>
+</li>
+<li><strong><code>TimedTaskBuilder</code>:</strong>
+<ul>
+<li>Used to construct <code>TimedTask</code> objects with additional <code>dueDate</code> attribute.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Detailed Explanation of the Code:</strong></p>
+<p><strong>1. <code>TaskFactory</code> Class:</strong></p>
+<ul>
+<li>
+<p><strong>Abstract Factory Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> Task <span style="color:#a6e22e">createTask</span>(String type, String title);
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Declares a method for creating <code>Task</code> objects.</li>
+<li>The method is abstract, forcing subclasses to provide an implementation.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. <code>SimpleTaskFactory</code> Class:</strong></p>
+<ul>
+<li>
+<p><strong>Overrides <code>createTask</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Task <span style="color:#a6e22e">createTask</span>(String type, String title) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Creation logic based on task type</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Switch Statement:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">switch</span> (type) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Simple&#34;</span>:
+</span></span><span style="display:flex;"><span>        task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaskBuilder(title).<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;Timed&#34;</span>:
+</span></span><span style="display:flex;"><span>        task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TimedTaskBuilder(title, LocalDateTime.<span style="color:#a6e22e">now</span>().<span style="color:#a6e22e">plusDays</span>(1)).<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unknown task type: &#34;</span> <span style="color:#f92672">+</span> type);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Determines which type of <code>Task</code> to create based on the <code>type</code> parameter.</li>
+<li>Uses appropriate builders to create instances.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Returns the Created Task:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> task;
+</span></span></code></pre></div></li>
+</ul>
+<p><strong>3. <code>TimedTask</code> Class:</strong></p>
+<ul>
+<li>
+<p><strong>Extends <code>Task</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimedTask</span> <span style="color:#66d9ef">extends</span> Task {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> LocalDateTime dueDate;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Getters and setters</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Represents a task with a deadline (<code>dueDate</code>).</li>
+<li>Inherits properties and methods from <code>Task</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Overrides <code>toJson</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> JSONObject <span style="color:#a6e22e">toJson</span>() {
+</span></span><span style="display:flex;"><span>    JSONObject json <span style="color:#f92672">=</span> <span style="color:#66d9ef">super</span>.<span style="color:#a6e22e">toJson</span>();
+</span></span><span style="display:flex;"><span>    json.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;dueDate&#34;</span>, dueDate.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> json;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Ensures the <code>dueDate</code> is included when the task is serialized to JSON.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>4. <code>TimedTaskBuilder</code> Class:</strong></p>
+<ul>
+<li>
+<p><strong>Constructor with Required Parameters:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TimedTaskBuilder</span>(String title, LocalDateTime dueDate) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span> <span style="color:#f92672">=</span> title;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dueDate</span> <span style="color:#f92672">=</span> dueDate;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Setter Methods for Optional Parameters:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> TimedTaskBuilder <span style="color:#a6e22e">setDescription</span>(String description) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Additional setters...</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Build Method:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> TimedTask <span style="color:#a6e22e">build</span>() {
+</span></span><span style="display:flex;"><span>    TimedTask task <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TimedTask();
+</span></span><span style="display:flex;"><span>    task.<span style="color:#a6e22e">setTitle</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">title</span>);
+</span></span><span style="display:flex;"><span>    task.<span style="color:#a6e22e">setDueDate</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dueDate</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Set other attributes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> task;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Purpose:</strong>
+<ul>
+<li>Constructs a <code>TimedTask</code> instance with the specified attributes.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Usage Example:</strong></p>
+<p><strong>Creating Tasks Using the Factory:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>TaskFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleTaskFactory();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create a simple task</span>
+</span></span><span style="display:flex;"><span>Task simpleTask <span style="color:#f92672">=</span> factory.<span style="color:#a6e22e">createTask</span>(<span style="color:#e6db74">&#34;Simple&#34;</span>, <span style="color:#e6db74">&#34;Write documentation&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create a timed task</span>
+</span></span><span style="display:flex;"><span>Task timedTask <span style="color:#f92672">=</span> factory.<span style="color:#a6e22e">createTask</span>(<span style="color:#e6db74">&#34;Timed&#34;</span>, <span style="color:#e6db74">&#34;Submit report&#34;</span>);
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The client code requests task creation through the factory, specifying the type and title.</li>
+<li>The factory handles the instantiation details, returning the appropriate <code>Task</code> subtype.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Using in <code>TaskRequestHandler</code>:</strong></p>
+<p>In the <code>handlePost</code> method, instead of directly using <code>TaskBuilder</code>, we can use <code>TaskFactory</code> to create tasks based on the request data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> ResponseData <span style="color:#a6e22e">handlePost</span>(RequestData requestData) {
+</span></span><span style="display:flex;"><span>    ResponseData responseData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResponseData();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Parse the request body to create a new task</span>
+</span></span><span style="display:flex;"><span>    JSONObject jsonBody <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject(requestData.<span style="color:#a6e22e">getBody</span>());
+</span></span><span style="display:flex;"><span>    String type <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;type&#34;</span>, <span style="color:#e6db74">&#34;Simple&#34;</span>);
+</span></span><span style="display:flex;"><span>    String title <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">getString</span>(<span style="color:#e6db74">&#34;title&#34;</span>);
+</span></span><span style="display:flex;"><span>    String description <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;description&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    String assignedTo <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optString</span>(<span style="color:#e6db74">&#34;assignedTo&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> priority <span style="color:#f92672">=</span> jsonBody.<span style="color:#a6e22e">optInt</span>(<span style="color:#e6db74">&#34;priority&#34;</span>, 0);
+</span></span><span style="display:flex;"><span>    LocalDateTime dueDate <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (jsonBody.<span style="color:#a6e22e">has</span>(<span style="color:#e6db74">&#34;dueDate&#34;</span>)) {
+</span></span><span style="display:flex;"><span>        dueDate <span style="color:#f92672">=</span> LocalDateTime.<span style="color:#a6e22e">parse</span>(jsonBody.<span style="color:#a6e22e">getString</span>(<span style="color:#e6db74">&#34;dueDate&#34;</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Use TaskFactory to create a new Task</span>
+</span></span><span style="display:flex;"><span>    TaskFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleTaskFactory();
+</span></span><span style="display:flex;"><span>    Task task <span style="color:#f92672">=</span> factory.<span style="color:#a6e22e">createTask</span>(type, title);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Set additional properties if necessary</span>
+</span></span><span style="display:flex;"><span>    task.<span style="color:#a6e22e">setDescription</span>(description);
+</span></span><span style="display:flex;"><span>    task.<span style="color:#a6e22e">setAssignedTo</span>(assignedTo);
+</span></span><span style="display:flex;"><span>    task.<span style="color:#a6e22e">setPriority</span>(priority);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (task <span style="color:#66d9ef">instanceof</span> TimedTask <span style="color:#f92672">&amp;&amp;</span> dueDate <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        ((TimedTask) task).<span style="color:#a6e22e">setDueDate</span>(dueDate);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Save the task using DatabaseAdapter (simplified here)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DatabaseAdapter.getInstance().saveTask(task);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return the created task</span>
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setStatusCode</span>(201);
+</span></span><span style="display:flex;"><span>    responseData.<span style="color:#a6e22e">setData</span>(task.<span style="color:#a6e22e">toJson</span>().<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> responseData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>Explanation:</strong>
+<ul>
+<li>The task type is determined from the request data.</li>
+<li>The factory creates the appropriate task subtype.</li>
+<li>Additional attributes are set as needed.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Advantages of the Factory Method Pattern:</strong></p>
+<ol>
+<li><strong>Encapsulation of Object Creation:</strong></li>
+</ol>
+<ul>
+<li>The client code is decoupled from the concrete classes used to instantiate objects.</li>
+<li>New task types can be added without modifying client code.</li>
+</ul>
+<ol start="2">
+<li><strong>Flexibility and Extensibility:</strong></li>
+</ol>
+<ul>
+<li>Easily extend the application to support new task types by adding new cases in the factory or creating new factories.</li>
+<li>Changes in object creation logic are confined to the factory class.</li>
+</ul>
+<ol start="3">
+<li><strong>Single Responsibility Principle:</strong></li>
+</ol>
+<ul>
+<li>The factory class is solely responsible for object creation.</li>
+<li>The <code>TaskRequestHandler</code> focuses on handling requests.</li>
+</ul>
+<hr>
+<p><strong>Integration with Other Design Patterns:</strong></p>
+<ul>
+<li>
+<p><strong>Builder Pattern:</strong></p>
+<ul>
+<li>The factory uses builders (<code>TaskBuilder</code>, <code>TimedTaskBuilder</code>) to construct task objects.</li>
+<li>This combines the flexibility of the Builder Pattern with the encapsulation of the Factory Method Pattern.</li>
+</ul>
+</li>
+<li>
+<p><strong>Prototype Pattern:</strong></p>
+<ul>
+<li>The factory could be extended to clone existing tasks if needed.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Considerations:</strong></p>
+<ul>
+<li>
+<p><strong>Extending Functionality:</strong></p>
+<ul>
+<li>Additional task types can be added by creating new subclasses of <code>Task</code> and corresponding builders.</li>
+<li>The factory can be modified or extended to handle new types.</li>
+</ul>
+</li>
+<li>
+<p><strong>Alternative Implementations:</strong></p>
+<ul>
+<li>If the number of task types grows significantly, consider using the <strong>Abstract Factory Pattern</strong> or <strong>Factory Registry</strong> for better scalability.</li>
+</ul>
+</li>
+<li>
+<p><strong>Error Handling:</strong></p>
+<ul>
+<li>The factory throws an <code>IllegalArgumentException</code> if an unknown task type is requested.</li>
+<li>In a production environment, more robust error handling and logging may be appropriate.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Assumptions and Simplifications:</strong></p>
+<ul>
+<li>
+<p><strong>Due Date Handling:</strong></p>
+<ul>
+<li>For simplicity, <code>TimedTaskBuilder</code> sets a default due date if none is provided.</li>
+<li>In a real-world application, due date parsing and validation would be necessary.</li>
+</ul>
+</li>
+<li>
+<p><strong>Task Creation Logic:</strong></p>
+<ul>
+<li>The factory uses a simple switch-case statement.</li>
+<li>For a larger number of task types, a more scalable approach may be needed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Type Parameter:</strong></p>
+<ul>
+<li>The task type is specified as a string.</li>
+<li>Enums could be used for better type safety.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Conclusion:</strong></p>
+<p>The <code>TaskFactory</code> class effectively implements the <strong>Factory Method Pattern</strong>, providing a flexible and centralized way to create different types of <code>Task</code> objects. By encapsulating the creation logic, it allows the application to:</p>
+<ul>
+<li>Easily introduce new task types without altering client code.</li>
+<li>Maintain a clean separation of concerns.</li>
+<li>Combine with other design patterns to enhance object creation and management.</li>
+</ul>
+<p>This implementation contributes to the overall design of the simple Java web service application, demonstrating how design patterns can be composed to build a robust and maintainable system within the constraint of approximately 20 classes.</p>
+<hr>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>
+<p><strong>Implement <code>DatabaseAdapter</code> (Class 7):</strong></p>
+<ul>
+<li>Integrate persistence for the various task types created by the factory.</li>
+</ul>
+</li>
+<li>
+<p><strong>Enhance Error Handling:</strong></p>
+<ul>
+<li>Improve exception handling and provide meaningful error messages.</li>
+</ul>
+</li>
+<li>
+<p><strong>Expand Task Types:</strong></p>
+<ul>
+<li>Introduce additional task subtypes as needed, such as <code>RecurringTask</code>, and update the factory accordingly.</li>
+</ul>
+</li>
+<li>
+<p><strong>Refactor Factory Logic:</strong></p>
+<ul>
+<li>Consider using design patterns like <strong>Abstract Factory</strong> or <strong>Factory Registry</strong> if the task creation logic becomes more complex.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>By implementing and explaining <code>TaskFactory</code>, we have advanced the development of our simple Java web service application. This demonstrates how the <strong>Factory Method Pattern</strong> can be used to manage object creation effectively, promoting scalability and maintainability even within a limited number of classes.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+      
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

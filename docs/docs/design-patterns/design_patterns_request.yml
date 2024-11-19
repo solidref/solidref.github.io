@@ -1,0 +1,12 @@
+request:
+  description: "Generate new article named Design Patterns in [language]"
+  language: JavaScript
+  requirements:
+    - "You have, as example, the _index.md (Design Patterns) which is the main article"
+    - "You have, as 2nd example, the go.md (Design Patterns in Go)"
+    - "Provide [language] specific examples for each Design Pattern which applies to the mentioned [language]"
+    - "Include any other [language] specific Design Pattern that you are aware of"
+    - "Provide links to external resources for further reading on mentioned [language] Design Patterns as shown in the Go example"
+    - "Add the response under a new file [lowercase(language)].md"
+  files:
+    - path: _index.md

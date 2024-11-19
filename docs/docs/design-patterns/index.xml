@@ -9,156 +9,156 @@
     <atom:link href="http://localhost:1313/docs/design-patterns/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Abstract Factory Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/abstract-factory/</link>
+      <link>http://localhost:1313/docs/design-patterns/creational/abstract-factory/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/abstract-factory/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/creational/abstract-factory/</guid>
       <description>&lt;h1 id=&#34;abstract-factory-pattern&#34;&gt;&#xA;  Abstract Factory Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#abstract-factory-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Abstract Factory&lt;/strong&gt; pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is particularly useful when we need to enforce consistency across multiple products or components that belong to the same family.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Abstract Factory pattern is to encapsulate a group of individual factories with a common interface.&lt;/strong&gt; This allows clients to create families of related objects without coupling the code to specific implementations. It promotes a more modular and scalable design by allowing the creation of product families independently of the client code.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Adapter Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/adapter/</link>
+      <link>http://localhost:1313/docs/design-patterns/structural/adapter/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/adapter/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/structural/adapter/</guid>
       <description>&lt;h1 id=&#34;adapter-pattern&#34;&gt;&#xA;  Adapter Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#adapter-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Adapter&lt;/strong&gt; pattern is a structural design pattern that enables objects with incompatible interfaces to work together. It acts as a bridge between two incompatible interfaces by converting the interface of a class into another interface that the client expects. This pattern is useful when integrating components that were not designed to work together.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Adapter pattern is to allow classes with incompatible interfaces to communicate by providing a wrapper that adapts one interface to another.&lt;/strong&gt; This pattern lets developers reuse existing code with new systems without modifying the original codebase.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Bridge Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/bridge/</link>
+      <link>http://localhost:1313/docs/design-patterns/structural/bridge/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/bridge/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/structural/bridge/</guid>
       <description>&lt;h1 id=&#34;bridge-pattern&#34;&gt;&#xA;  Bridge Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#bridge-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Bridge&lt;/strong&gt; pattern is a structural design pattern that decouples an abstraction from its implementation, allowing both to vary independently. This pattern enables flexibility by creating two separate hierarchies: one for abstractions and another for implementations, with a bridge connecting them.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Bridge pattern is to separate an abstraction from its implementation so that the two can evolve independently.&lt;/strong&gt; This pattern is particularly useful when there are multiple ways to implement an abstraction, as it prevents tight coupling between the abstraction and its concrete implementations.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Builder Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/builder/</link>
+      <link>http://localhost:1313/docs/design-patterns/creational/builder/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/builder/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/creational/builder/</guid>
       <description>&lt;h1 id=&#34;builder-pattern&#34;&gt;&#xA;  Builder Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#builder-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Builder&lt;/strong&gt; pattern is a creational design pattern that allows you to construct complex objects step by step. It provides a flexible solution to create various representations of an object without complicating the main constructor. This pattern is especially helpful when an object has many optional or configurable properties.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Builder pattern is to separate the construction of a complex object from its representation, enabling the creation of different representations through a single process.&lt;/strong&gt; This pattern simplifies the process of creating objects with numerous configurations, providing a structured way to build objects with optional parameters.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Chain of Responsibility Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/chain-of-responsibility/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/chain-of-responsibility/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/chain-of-responsibility/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/chain-of-responsibility/</guid>
       <description>&lt;h1 id=&#34;chain-of-responsibility-pattern&#34;&gt;&#xA;  Chain of Responsibility Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#chain-of-responsibility-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Chain of Responsibility&lt;/strong&gt; pattern is a behavioral design pattern that allows a request to be passed along a chain of handlers. Each handler decides either to process the request or to pass it to the next handler in the chain. This pattern provides a flexible approach to handling requests, especially when multiple handlers are available.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Chain of Responsibility pattern is to decouple the sender of a request from its receiver by giving more than one object a chance to handle the request.&lt;/strong&gt; The pattern creates a chain of handlers, where each handler has the opportunity to process the request or pass it along the chain.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Command Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/command/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/command/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/command/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/command/</guid>
       <description>&lt;h1 id=&#34;command-pattern&#34;&gt;&#xA;  Command Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#command-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Command&lt;/strong&gt; pattern is a behavioral design pattern that encapsulates a request as an object, allowing you to parameterize other objects with different requests, queue requests, log them, and implement undoable operations. The Command pattern decouples the sender of a request from the object that performs the action, providing flexibility and extensibility.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Command pattern is to encapsulate a request as an object, allowing you to manage and manipulate it independently of the object that created the request.&lt;/strong&gt; This pattern is particularly useful for actions that need to be queued, logged, or undone.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Composite Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/composite/</link>
+      <link>http://localhost:1313/docs/design-patterns/structural/composite/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/composite/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/structural/composite/</guid>
       <description>&lt;h1 id=&#34;composite-pattern&#34;&gt;&#xA;  Composite Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#composite-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Composite&lt;/strong&gt; pattern is a structural design pattern that allows you to compose objects into tree-like structures to represent part-whole hierarchies. This pattern enables clients to treat individual objects and groups of objects uniformly, making it particularly useful for handling complex structures such as directories, menus, and graphical objects.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Composite pattern is to allow clients to treat individual objects and compositions of objects uniformly.&lt;/strong&gt; This pattern enables the creation of a tree structure, where both simple and complex elements implement the same interface, making it easier to work with complex object hierarchies.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Decorator Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/decorator/</link>
+      <link>http://localhost:1313/docs/design-patterns/structural/decorator/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/decorator/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/structural/decorator/</guid>
       <description>&lt;h1 id=&#34;decorator-pattern&#34;&gt;&#xA;  Decorator Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#decorator-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Decorator&lt;/strong&gt; pattern is a structural design pattern that allows you to dynamically add responsibilities to objects by placing them inside &amp;ldquo;wrapper&amp;rdquo; objects that contain additional functionality. The Decorator pattern enables flexible and reusable code by providing an alternative to subclassing for extending behavior.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Decorator pattern is to add new functionality to an object dynamically without altering its structure or affecting other objects of the same class.&lt;/strong&gt; This pattern allows you to stack behaviors on objects in a way that is flexible and adheres to the Open-Closed Principle.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Facade Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/facade/</link>
+      <link>http://localhost:1313/docs/design-patterns/structural/facade/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/facade/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/structural/facade/</guid>
       <description>&lt;h1 id=&#34;facade-pattern&#34;&gt;&#xA;  Facade Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#facade-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Facade&lt;/strong&gt; pattern is a structural design pattern that provides a simplified interface to a complex subsystem of classes. It offers a single entry point that abstracts the underlying complexity of various components, making the subsystem easier to use and interact with. This pattern is especially useful when working with a complicated library or set of APIs.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Facade pattern is to provide a simple interface to a complex subsystem, allowing clients to interact with the subsystem without needing to understand its complexity.&lt;/strong&gt; This pattern promotes loose coupling by hiding the inner workings of the subsystem from the client, presenting only what is necessary.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Factory Method Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/factory-method/</link>
+      <link>http://localhost:1313/docs/design-patterns/creational/factory-method/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/factory-method/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/creational/factory-method/</guid>
       <description>&lt;h1 id=&#34;factory-method-pattern&#34;&gt;&#xA;  Factory Method Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#factory-method-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Factory Method&lt;/strong&gt; pattern is a creational design pattern that defines an interface for creating objects but allows subclasses to decide which class to instantiate. This pattern lets a class defer instantiation to subclasses, promoting flexibility and loose coupling in the codebase.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Factory Method pattern is to define a method in a superclass for creating objects but to let subclasses determine the specific class of object that will be instantiated.&lt;/strong&gt; This pattern provides a way to create objects without specifying their exact type in the code.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Flyweight Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/flyweight/</link>
+      <link>http://localhost:1313/docs/design-patterns/structural/flyweight/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/flyweight/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/structural/flyweight/</guid>
       <description>&lt;h1 id=&#34;flyweight-pattern&#34;&gt;&#xA;  Flyweight Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#flyweight-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Flyweight&lt;/strong&gt; pattern is a structural design pattern that focuses on minimizing memory usage by sharing as much data as possible with similar objects. This pattern is especially effective in systems where a large number of similar objects are created, such as in graphics applications or document editing software.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Flyweight pattern is to reduce memory usage by sharing parts of the object state that are common to many objects, allowing many instances to share the same data.&lt;/strong&gt; This pattern promotes the reuse of objects that have shared properties, saving memory and improving performance.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Iterator Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/iterator/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/iterator/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/iterator/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/iterator/</guid>
       <description>&lt;h1 id=&#34;iterator-pattern&#34;&gt;&#xA;  Iterator Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#iterator-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Iterator&lt;/strong&gt; pattern is a behavioral design pattern that provides a way to access the elements of a collection sequentially without exposing the collection&amp;rsquo;s underlying structure. The Iterator pattern decouples the traversal logic from the collection itself, making it easier to use and extend.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Iterator pattern is to allow sequential access to elements in a collection without exposing its internal structure.&lt;/strong&gt; This pattern provides a standard interface for iterating through a collection, enabling different traversal strategies and making collections interchangeable.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Mediator Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/mediator/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/mediator/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/mediator/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/mediator/</guid>
       <description>&lt;h1 id=&#34;mediator-pattern&#34;&gt;&#xA;  Mediator Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#mediator-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Mediator&lt;/strong&gt; pattern is a behavioral design pattern that promotes loose coupling between objects by encapsulating their communication within a mediator. The mediator centralizes interactions between objects, making them easier to modify and reuse independently.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Mediator pattern is to reduce dependencies between communicating objects by introducing a mediator that handles their interactions.&lt;/strong&gt; This pattern is especially useful in scenarios where multiple objects need to communicate, and direct coupling would create a complex web of dependencies.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Memento Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/memento/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/memento/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/memento/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/memento/</guid>
       <description>&lt;h1 id=&#34;memento-pattern&#34;&gt;&#xA;  Memento Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#memento-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Memento&lt;/strong&gt; pattern is a behavioral design pattern that allows an object to save and restore its state without exposing its internal structure. This pattern is particularly useful for implementing undo/redo functionality, as it captures an object’s state at a specific moment and allows it to be restored later.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Memento pattern is to capture and externalize an object’s internal state so that it can be restored later without violating encapsulation.&lt;/strong&gt; By storing snapshots of an object’s state, this pattern enables undo and redo operations, making it ideal for applications like text editors or graphical editors.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Observer Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/observer/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/observer/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/observer/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/observer/</guid>
       <description>&lt;h1 id=&#34;observer-pattern&#34;&gt;&#xA;  Observer Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#observer-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Observer&lt;/strong&gt; pattern is a behavioral design pattern that defines a one-to-many relationship between objects so that when one object’s state changes, all dependent objects are notified and updated automatically. This pattern is commonly used in event-driven programming, GUIs, and distributed event-handling systems.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Observer pattern is to establish a relationship between objects where changes to one object (the subject) automatically propagate to all its dependents (observers).&lt;/strong&gt; This pattern allows for a flexible, decoupled design where the subject and its observers can vary independently.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Prototype Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/prototype/</link>
+      <link>http://localhost:1313/docs/design-patterns/creational/prototype/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/prototype/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/creational/prototype/</guid>
       <description>&lt;h1 id=&#34;prototype-pattern&#34;&gt;&#xA;  Prototype Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#prototype-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Prototype&lt;/strong&gt; pattern is a creational design pattern that enables object creation by cloning existing instances. Instead of creating new instances from scratch, the Prototype pattern allows objects to be duplicated, reducing the need to repeat expensive initialization processes. This pattern is ideal when object creation is costly, complex, or involves significant configuration.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Prototype pattern is to specify the kinds of objects to create using a prototypical instance, allowing new objects to be created by copying this prototype.&lt;/strong&gt; This pattern helps reduce the overhead of creating new instances by cloning pre-configured objects.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Proxy Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/proxy/</link>
+      <link>http://localhost:1313/docs/design-patterns/structural/proxy/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/proxy/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/structural/proxy/</guid>
       <description>&lt;h1 id=&#34;proxy-pattern&#34;&gt;&#xA;  Proxy Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#proxy-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Proxy&lt;/strong&gt; pattern is a structural design pattern that provides a surrogate or placeholder for another object. By controlling access to the underlying object, the Proxy pattern allows additional functionality, such as lazy initialization, access control, logging, or caching, to be added without modifying the original object.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Proxy pattern is to control access to an object by acting as a stand-in for it, allowing additional functionality to be added transparently.&lt;/strong&gt; This pattern is particularly useful when working with resource-intensive objects, objects that need controlled access, or objects that need enhanced functionality.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Singleton Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/singleton/</link>
+      <link>http://localhost:1313/docs/design-patterns/creational/singleton/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/singleton/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/creational/singleton/</guid>
       <description>&lt;h1 id=&#34;singleton-pattern&#34;&gt;&#xA;  Singleton Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#singleton-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Singleton&lt;/strong&gt; pattern is a creational design pattern that restricts the instantiation of a class to one &amp;ldquo;single&amp;rdquo; instance. This single instance is globally accessible and can be used wherever it is needed. The Singleton pattern is particularly useful when a single object is required to coordinate actions across a system, such as in logging, configuration, or connection management.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Singleton pattern is to ensure a class has only one instance and provide a global point of access to that instance.&lt;/strong&gt; This pattern ensures controlled access to resources that must be shared throughout the application.&lt;/p&gt;</description>
     </item>
     <item>
       <title>State Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/state/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/state/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/state/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/state/</guid>
       <description>&lt;h1 id=&#34;state-pattern&#34;&gt;&#xA;  State Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#state-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;State&lt;/strong&gt; pattern is a behavioral design pattern that allows an object to alter its behavior when its internal state changes. It encapsulates state-specific behavior in separate classes and delegates state-dependent tasks to the current state object, promoting flexibility and modularity.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the State pattern is to allow an object to change its behavior when its internal state changes, making the object appear to change its class.&lt;/strong&gt; This pattern eliminates the need for complex conditional logic by organizing state-specific behavior into distinct state classes.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Strategy Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/strategy/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/strategy/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/strategy/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/strategy/</guid>
       <description>&lt;h1 id=&#34;strategy-pattern&#34;&gt;&#xA;  Strategy Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#strategy-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Strategy&lt;/strong&gt; pattern is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each algorithm, and make them interchangeable. This pattern enables clients to choose and switch algorithms dynamically without altering the objects that use them, promoting flexibility and modularity.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Strategy pattern is to enable selecting an algorithm’s behavior at runtime, allowing algorithms to vary independently from the context that uses them.&lt;/strong&gt; This pattern makes it easy to add, remove, or swap algorithms without modifying the client code, adhering to the Open-Closed Principle.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Template Method Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/template-method/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/template-method/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/template-method/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/template-method/</guid>
       <description>&lt;h1 id=&#34;template-method-pattern&#34;&gt;&#xA;  Template Method Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#template-method-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Template Method&lt;/strong&gt; pattern is a behavioral design pattern that defines the structure (or skeleton) of an algorithm in a superclass, allowing subclasses to implement or override specific steps of the algorithm without altering its overall structure. This pattern promotes reuse by centralizing the common parts of the algorithm and leaving the customizable steps to subclasses.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Template Method pattern is to define an algorithm’s structure in a method, deferring some steps to subclasses, which can override specific parts of the algorithm.&lt;/strong&gt; This pattern helps enforce consistency in the algorithm’s structure while still allowing flexibility in individual steps.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Visitor Pattern</title>
-      <link>http://localhost:1313/docs/design-patterns/visitor/</link>
+      <link>http://localhost:1313/docs/design-patterns/behavioral/visitor/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/design-patterns/visitor/</guid>
+      <guid>http://localhost:1313/docs/design-patterns/behavioral/visitor/</guid>
       <description>&lt;h1 id=&#34;visitor-pattern&#34;&gt;&#xA;  Visitor Pattern&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#visitor-pattern&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;strong&gt;Visitor&lt;/strong&gt; pattern is a behavioral design pattern that allows adding new operations to a group of related classes without modifying their structure. This pattern enables you to define operations that can be applied to various objects in a class hierarchy, decoupling the operations from the objects they operate on.&lt;/p&gt;&#xA;&lt;h2 id=&#34;intent&#34;&gt;&#xA;  Intent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#intent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;The main intent of the Visitor pattern is to separate an algorithm from the object structure on which it operates, enabling new operations to be added without modifying the structure.&lt;/strong&gt; This pattern is useful for extending functionality without changing the underlying classes, adhering to the Open-Closed Principle.&lt;/p&gt;</description>
     </item>
   </channel>
