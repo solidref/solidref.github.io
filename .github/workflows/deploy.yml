@@ -1,0 +1,63 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+  workflow_dispatch: # Allow manual triggering
+    inputs:
+      hugo_version:
+        description: 'Specify Hugo version (default: latest)'
+        required: false
+        default: 'latest'
+
+jobs:
+  deploy:
+    name: Deploy Hugo Website to Release
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Main Branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      # Set up Hugo
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: ${{ github.event.inputs.hugo_version || 'latest' }}
+
+      # Fetch the Released Branch
+      - name: Fetch Released Branch
+        run: |
+          git fetch origin released
+          git checkout released || git checkout -b released
+
+      # Merge Main into Release
+      - name: Merge Main into Released
+        run: git merge --no-ff main -m "Merge main into released branch"
+
+      # Build Hugo Website
+      - name: Build Hugo Site
+        run: hugo
+
+      # Remove Old Docs Folder
+      - name: Remove Old Docs Folder
+        run: rm -rf docs
+
+      # Rename Public to Docs
+      - name: Rename Public to Docs
+        run: mv public docs
+
+      # Commit and Push Changes to Release Branch
+      - name: Commit and Push Changes
+        run: |
+          git add docs
+          git commit -m "Deploy Hugo site to released branch"
+          git push origin released
