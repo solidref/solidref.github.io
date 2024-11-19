@@ -26,11 +26,11 @@ Design patterns are generally classified into three main categories: **Creationa
 
 Creational patterns deal with object creation mechanisms, aiming to increase flexibility and reuse of code. They help ensure that objects are created in a manner suitable to the situation, avoiding tight coupling and increasing code modularity.
 
-- **[Abstract Factory](/design-patterns/creational/abstract-factory)**: Provides an interface for creating families of related or dependent objects without specifying their concrete classes.
-- **[Builder](/design-patterns/creational/builder)**: Separates the construction of a complex object from its representation, allowing different representations to be created.
-- **[Factory Method](/design-patterns/creational/factory-method)**: Defines an interface for creating an object but lets subclasses alter the type of object that will be created.
-- **[Prototype](/design-patterns/creational/prototype)**: Creates new objects by copying an existing object, making it easy to duplicate complex objects.
-- **[Singleton](/design-patterns/creational/singleton)**: Ensures a class has only one instance and provides a global point of access to it.
+- **[Abstract Factory](/docs/design-patterns/creational/abstract-factory)**: Provides an interface for creating families of related or dependent objects without specifying their concrete classes.
+- **[Builder](/docs/design-patterns/creational/builder)**: Separates the construction of a complex object from its representation, allowing different representations to be created.
+- **[Factory Method](/docs/design-patterns/creational/factory-method)**: Defines an interface for creating an object but lets subclasses alter the type of object that will be created.
+- **[Prototype](/docs/design-patterns/creational/prototype)**: Creates new objects by copying an existing object, making it easy to duplicate complex objects.
+- **[Singleton](/docs/design-patterns/creational/singleton)**: Ensures a class has only one instance and provides a global point of access to it.
 
 ### 2. Structural Patterns
 
